@@ -240,28 +240,29 @@
                     { num: 1, title: "Уравнение x² = a", link: "algebra/lesson-01.html" },
                     { num: 2, title: "Уравнение x² = a (практика)", link: "algebra/lesson-02.html" },
                     { num: 3, title: "Нахождение приближенных значений квадратного корня", link: "algebra/lesson-03.html" },
-                    { num: 4, title: "Функция y = √x и ее график", link: "algebra/lesson-04.html" },
-                    { num: 5, title: "Квадратный корень из произведения и дроби", link: "algebra/lesson-05.html" },
-                    { num: 6, title: "Квадратный корень из произведения и дроби (практика)", link: "algebra/lesson-06.html" },
-                    { num: 7, title: "Квадратный корень из степени", link: "algebra/lesson-07.html" },
-                    { num: 8, title: "Квадратный корень из степени (практика)", link: "algebra/lesson-08.html" },
-                    { num: 9, title: "Вынесение множителя из-под знака корня", link: "algebra/lesson-09.html" },
-                    { num: 10, title: "Внесение множителя под знак корня", link: "algebra/lesson-10.html" },
-                    { num: 11, title: "Вынесение и внесение множителя (практика)", link: "algebra/lesson-11.html" },
-                    { num: 12, title: "Преобразование выражений, содержащих корни", link: "algebra/lesson-12.html" },
-                    { num: 13, title: "Преобразование выражений (практика 1)", link: "algebra/lesson-13.html" },
-                    { num: 14, title: "Преобразование выражений (практика 2)", link: "algebra/lesson-14.html" },
-                    { num: 15, title: "Определение квадратного уравнения", link: "algebra/lesson-15.html" },
-                    { num: 16, title: "Неполные квадратные уравнения", link: "algebra/lesson-16.html" },
-                    { num: 17, title: "Неполные квадратные уравнения (практика 1)", link: "algebra/lesson-17.html" },
-                    { num: 18, title: "Неполные квадратные уравнения (практика 2)", link: "algebra/lesson-18.html" },
-                    { num: 19, title: "Формула корней квадратного уравнения", link: "algebra/lesson-19.html" },
-                    { num: 20, title: "Формула корней (практика)", link: "algebra/lesson-20.html" },
-                    { num: 21, title: "Контрольная работа", link: "algebra/lesson-21.html" },
-                    { num: 22, title: "Работа над ошибками", link: "algebra/lesson-22.html" },
-                    { num: 23, title: "Решение задач", link: "algebra/lesson-23.html" },
-                    { num: 24, title: "Повторение материала (часть 1)", link: "algebra/lesson-24.html" },
-                    { num: 25, title: "Повторение материала (часть 2)", link: "algebra/lesson-25.html" }
+                    { num: 4, title: "Нахождение приближенных значений квадратного корня (практика)", link: "algebra/lesson-04.html" },
+                    { num: 5, title: "Функция y = √x и ее график", link: "algebra/lesson-05.html" },
+                    { num: 6, title: "Квадратный корень из произведения и дроби", link: "algebra/lesson-06.html" },
+                    { num: 7, title: "Квадратный корень из произведения и дроби (практика)", link: "algebra/lesson-07.html" },
+                    { num: 8, title: "Квадратный корень из степени", link: "algebra/lesson-08.html" },
+                    { num: 9, title: "Квадратный корень из степени (практика)", link: "algebra/lesson-09.html" },
+                    { num: 10, title: "Вынесение множителя из-под знака корня", link: "algebra/lesson-10.html" },
+                    { num: 11, title: "Внесение множителя под знак корня", link: "algebra/lesson-11.html" },
+                    { num: 12, title: "Вынесение и внесение множителя (практика)", link: "algebra/lesson-12.html" },
+                    { num: 13, title: "Преобразование выражений, содержащих корни", link: "algebra/lesson-13.html" },
+                    { num: 14, title: "Преобразование выражений (практика 1)", link: "algebra/lesson-14.html" },
+                    { num: 15, title: "Преобразование выражений (практика 2)", link: "algebra/lesson-15.html" },
+                    { num: 16, title: "Определение квадратного уравнения", link: "algebra/lesson-16.html" },
+                    { num: 17, title: "Неполные квадратные уравнения", link: "algebra/lesson-17.html" },
+                    { num: 18, title: "Неполные квадратные уравнения (практика 1)", link: "algebra/lesson-18.html" },
+                    { num: 19, title: "Неполные квадратные уравнения (практика 2)", link: "algebra/lesson-19.html" },
+                    { num: 20, title: "Формула корней квадратного уравнения", link: "algebra/lesson-20.html" },
+                    { num: 21, title: "Формула корней (практика)", link: "algebra/lesson-21.html" },
+                    { num: 22, title: "Контрольная работа", link: "algebra/lesson-22.html" },
+                    { num: 23, title: "Работа над ошибками", link: "algebra/lesson-23.html" },
+                    { num: 24, title: "Решение задач", link: "algebra/lesson-24.html" },
+                    { num: 25, title: "Повторение материала (часть 1)", link: "algebra/lesson-25.html" },
+                    { num: 26, title: "Повторение материала (часть 2)", link: "algebra/lesson-26.html" }
                 ]
             }
         };
@@ -282,7 +283,6 @@
                 a.href = item.link;
                 a.className = `lesson-item lesson-item--${subject}`;
                 
-                // Если файла урока еще нет, ставим заглушку (ссылку можно оставить рабочей, если ты создашь файлы)
                 a.innerHTML = `
                     <div class="lesson-item__num">${item.num}</div>
                     <span>${item.title}</span>
