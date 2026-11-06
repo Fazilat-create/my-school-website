@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Квадратный корень из произведения и дроби</title>
+<script>MathJax = { tex: {inlineMath: [['$','$'],['\\(','\\)']]}, svg: {fontCache: 'global'},
+  startup: { pageReady: function(){ return MathJax.startup.defaultPageReady().then(function(){ document.body.classList.add('ready'); if(window.fitSlide) fitSlide(); }); } } };</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --blue:#2563eb;--blue-dark:#1e40af;--blue-light:#dbeafe;
+    --teal:#0d9488;--teal-dark:#0f766e;--teal-light:#ccfbf1;
+    --orange:#ea580c;--orange-dark:#c2410c;--amber:#f59e0b;--orange-light:#ffedd5;
+    --ok:#10b981;--ok-light:#d1fae5;--err:#ef4444;--err-light:#fee2e2;
+    --text:#1e293b;--muted:#64748b;--border:#bfdbfe;
+  }
+  *{box-sizing:border-box;font-family:'Segoe UI',system-ui,sans-serif;}
+  html,body{margin:0;padding:0;height:100%;overflow:hidden;}
+  body{
+    background:radial-gradient(1200px 600px at 5% -5%, #eff6ff 0%, transparent 55%),
+               radial-gradient(900px 500px at 100% 100%, #f0fdfa 0%, transparent 55%), #f8fafc;
+    color:var(--text);height:100vh;display:flex;flex-direction:column;
+  }
+  
+  header{
+    height:46px;padding:0 20px;display:flex;justify-content:space-between;align-items:center;
+    background:rgba(248,250,252,.85);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);z-index:10;flex-wrap:nowrap;gap:12px;flex-shrink:0;
+  }
+  .header-title{font-size:14px;font-weight:800;color:var(--blue-dark);white-space:nowrap;}
+  .progress-pills{display:flex;gap:3px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;}
+  .progress-pill{
+    height:22px;min-width:22px;padding:0 6px;border-radius:11px;background:#fff;flex-shrink:0;
+    border:2px solid var(--border);display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:800;color:var(--muted);cursor:pointer;transition:.2s;
+  }
+  .progress-pill.active{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;border-color:transparent;}
+  .progress-pill.done{background:var(--teal-light);color:var(--teal);border-color:var(--teal);}
+
+  main{flex:1;padding:12px 16px 68px;display:flex;justify-content:center;overflow:hidden;min-height:0;opacity:1;}
+  body:not(.ready) main{opacity:0;}
+  .slide{
+    display:none;background:#ffffff;border-radius:16px;padding:20px 30px;
+    box-shadow:0 8px 30px rgba(37,99,235,.08);border:1px solid var(--border);
+    width:100%;max-width:1100px;animation:fade .25s ease;flex-direction:column;
+    overflow-y:auto;min-height:0;scrollbar-width:thin;scrollbar-gutter:stable both-edges;
+  }
+  .slide.active{display:flex;}
+  @keyframes fade{from{opacity:0;}to{opacity:1;}}
+
+  .slide-header{flex-shrink:0;margin-bottom:16px;}
+  .slide-tag{display:inline-block;background:var(--blue-light);color:var(--blue-dark);padding:6px 14px;border-radius:16px;font-size:12px;font-weight:800;margin-bottom:10px;border:1px solid #93c5fd;}
+  .slide-tag.green{background:var(--teal-light);color:var(--teal-dark);border-color:#5eead4;}
+  .slide h2{font-size:28px;margin:0 0 6px;color:var(--blue-dark);font-weight:800;}
+  .slide h2.green{color:var(--teal-dark);}
+  .slide .subtitle{color:var(--muted);font-size:16px;margin:0;}
+
+  .content{flex:1 0 auto;display:flex;flex-direction:column;justify-content:flex-start;}
+  .content>:first-child{margin-top:auto;} .content>:last-child{margin-bottom:auto;}
+
+  /* Шифровка (Таблица) */
+  .cipher-table-wrapper { display: flex; gap: 40px; justify-content: center; }
+  .cipher-col { display: flex; flex-direction: column; gap: 10px; }
+  .cipher-row { display: flex; align-items: center; gap: 8px; font-size: 16px; }
+  .cipher-num { width: 20px; text-align: right; color: var(--muted); font-weight: bold; }
+  .cipher-expr { flex: 1; font-weight: bold; font-family: 'Times New Roman', serif; font-size: 18px; min-width: 120px; }
+  .cipher-input {
+    width: 60px; padding: 4px; border: 2px solid #cbd5e1; border-radius: 20px;
+    text-align: center; font-size: 14px; outline: none; background: #fff;
+  }
+  .cipher-input:focus { border-color: var(--blue); }
+  .cipher-input.correct { background: var(--ok-light); border-color: var(--ok); color: #065f46; }
+  .cipher-input.wrong { background: var(--err-light); border-color: var(--err); }
+  
+  .cipher-bubble {
+    width: 30px; height: 30px; border: 2px solid var(--blue); border-radius: 50%;
+    background: var(--blue-light); display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 14px; color: var(--blue-dark); margin-left: 5px;
+  }
+
+  /* Слайд с деревом */
+  .tree-layout { display: flex; gap: 20px; align-items: flex-start; }
+  
+  .tree-visual { 
+    flex: 1; 
+    position: relative; 
+    min-height: 450px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+  }
+  
+  .tree-bg {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    object-fit: contain;
+  }
+  
+  .tree-card {
+    position: absolute; 
+    display: flex; 
+    align-items: center; 
+    gap: 4px;
+    background: #fff; 
+    border: 2px solid #94a3b8; 
+    border-radius: 6px; 
+    padding: 4px 8px;
+    font-weight: bold; 
+    font-size: 15px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15); 
+    z-index: 2;
+  }
+  .tree-card span.num { color: #000; }
+  .tree-card span.letter { 
+    background: #f1f5f9; 
+    border: 1px solid #94a3b8; 
+    padding: 2px 6px; 
+    border-radius: 4px; 
+    color: #000; 
+  }
+
+  .tree-text { 
+    flex: 1; 
+    font-size: 16px; 
+    line-height: 1.6; 
+    padding-top: 20px;
+  }
+  .tree-text b { color: var(--blue-dark); }
+
+  /* Остальные стили */
+  .static-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  .static-cell{background:#fff;border:2px dashed #93c5fd;border-radius:14px;padding:14px;position:relative;display:flex;flex-direction:column;gap:10px;}
+  .static-cell::before{content:'✏️ Решение';position:absolute;top:-10px;left:16px;background:#fff;padding:0 8px;font-size:10px;font-weight:800;color:var(--blue);text-transform:uppercase;border-radius:5px;}
+  .static-head{display:flex;align-items:flex-start;gap:10px;}
+  .static-letter{display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;font-weight:800;font-size:13px;width:28px;height:28px;border-radius:8px;flex-shrink:0;}
+  .static-expr{background:rgba(239,246,255,.95);border-radius:8px;padding:8px 12px;font-size:17px;font-weight:700;border:1px solid rgba(37,99,235,.15);flex:1;line-height:1.5;}
+  .static-work{flex:1;border-radius:10px;background:linear-gradient(#dbeafe 1px, transparent 1px), linear-gradient(90deg, #dbeafe 1px, transparent 1px);background-size:20px 20px;min-height:90px;border:1px solid rgba(37,99,235,.15);position:relative;}
+
+  /* Флип-карты (Таблица квадратов) */
+  .flip-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;align-content:start;}
+  .flip-card{perspective:1200px;height:120px;cursor:pointer;}
+  .flip-inner{position:relative;width:100%;height:100%;transition:transform .7s;transform-style:preserve-3d;}
+  .flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+  .flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:18px;display:flex;align-items:center;justify-content:center;padding:22px;text-align:center;font-size:18px;box-shadow:0 8px 24px rgba(15,23,42,.08);}
+  .flip-front{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;font-weight:700;}
+  .flip-back{background:linear-gradient(135deg,#ecfdf5,#d1fae5);color:#065f46;font-weight:700;transform:rotateY(180deg);border:2px solid var(--ok);font-size:16px;}
+
+  /* Теория */
+  .theory-block{background:#fff;border:2px solid var(--border);border-radius:16px;padding:22px 32px;width:100%;text-align:center;}
+  .theory-block h3{margin:0 0 14px;font-size:24px;color:var(--blue-dark);}
+  .theory-block p{font-size:19px;line-height:1.55;margin:10px 0;}
+  .formula-highlight{background:linear-gradient(135deg,#eff6ff,#dbeafe);border:2px solid var(--blue);border-radius:12px;padding:14px 24px;text-align:center;font-size:28px;font-weight:700;color:var(--blue-dark);margin:14px 0;}
+  .key-idea{background:linear-gradient(135deg,#fef3c7,#fde68a);border-left:6px solid #d97706;border-radius:12px;padding:16px 24px;font-size:18px;line-height:1.6;width:100%;margin-top:18px;text-align:left;}
+
+  /* Рефлексия */
+  .reflect-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;margin:0 auto;width:100%;}
+  .reflect-card{background:#fff;padding:22px;border-radius:14px;border:3px solid var(--border);text-align:center;cursor:pointer;transition:.2s;}
+  .reflect-card:hover{border-color:var(--teal);}
+  .reflect-card.selected{border-color:var(--blue);background:var(--blue-light);box-shadow:0 8px 22px rgba(37,99,235,.2);}
+  .reflect-card .emo{font-size:44px;} .reflect-card .lbl{font-size:18px;font-weight:800;margin-top:10px;}
+
+  .slide > *{zoom:var(--fit,1);}
+  @media (max-height:820px){
+    .slide{padding:14px 26px;}
+    .slide h2{font-size:24px;}
+    .slide-header{margin-bottom:10px;}
+    .slide-tag{padding:4px 12px;margin-bottom:6px;}
+    .slide .subtitle{font-size:14px;}
+  }
+
+  /* Навигация */
+  nav{position:fixed;bottom:0;left:0;right:0;padding:10px 20px;background:rgba(248,250,252,.9);border-top:1px solid var(--border);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;z-index:100;}
+  nav .nav-prev{justify-self:start;} nav .nav-next{justify-self:end;}
+  nav button{padding:10px 24px;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;}
+  nav .nav-prev{background:#fff;color:var(--blue);border:2px solid var(--blue);}
+  nav .nav-next{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;}
+  nav button:disabled{opacity:.4;cursor:default;}
+  .nav-info{font-size:13px;color:var(--muted);font-weight:700;min-width:120px;text-align:center;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-title">Квадратный корень из произведения и дроби</div>
+  <div class="progress-pills" id="pills"></div>
+</header>
+
+<main>
+  <!-- ========================================== -->
+  <!-- ЧАСТЬ 1: ПРОИЗВЕДЕНИЕ (Слайды 1-13) -->
+  <!-- ========================================== -->
+  
+  <!-- Слайд 1: Актуализация (Корни) -->
+  <section class="slide active">
+    <div class="slide-header"><span class="slide-tag">Актуализация · 1</span><h2>Вычислите корни</h2><p class="subtitle">Вспомним, как извлекать корень из больших чисел и десятичных дробей.</p></div>
+    <div class="content">
+      <div class="static-grid" style="grid-template-columns: repeat(2, 1fr);">
+        <div class="static-cell"><div class="static-head"><span class="static-letter">а</span><div class="static-expr">$\sqrt{360000}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">б</span><div class="static-expr">$\sqrt{810000}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">в</span><div class="static-expr">$\sqrt{0{,}000064}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">г</span><div class="static-expr">$\sqrt{12{,}25}$</div></div><div class="static-work"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 2: Актуализация (Таблица для заполнения) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag">Актуализация · 2</span><h2>Расшифруйте слово</h2><p class="subtitle">Найдите выражения, которые не имеют смысла. Для остальных найдите значения.</p></div>
+    <div class="content">
+      <div class="cipher-table-wrapper">
+        <!-- 1 столбик (1-8) -->
+        <div class="cipher-col">
+          <div class="cipher-row"><span class="cipher-num">1.</span><span class="cipher-expr">$\sqrt{49}$</span><input type="text" class="cipher-input" data-k="7" onchange="checkCipher(this)"><div class="cipher-bubble"></div></div>
+          <div class="cipher-row"><span class="cipher-num">2.</span><span class="cipher-expr">$\sqrt{1}$</span><input type="text" class="cipher-input" data-k="1" onchange="checkCipher(this)"><div class="cipher-bubble"></div></div>
+          <div class="cipher-row"><span class="cipher-num">3.</span><span class="cipher-expr">$-\sqrt{9}$</span><input type="text" class="cipher-input" data-k="-3" onchange="checkCipher(this)"><div class="cipher-bubble"></div></div>
+          <div class="cipher-row"><span class="cipher-num">4.</span><span class="cipher-expr">$\sqrt{-9}$</span><input type="text" class="cipher-input" data-k="нет" onchange="checkCipher(this)"><div class="cipher-bubble"></div></div>
+          <div class="cipher-row"><span class="cipher-num">5.</span><span class="cipher-expr">$\sqrt{(-9)^2}$</span><input type="text" class="cipher-input" data-k="9" onchange="checkCipher(this)"><div class="cipher-bubble"></div></div>
+          <div class="cipher-row"><span class="cipher-num">6.</span><span class="cipher-expr">$(-\sqrt{9})^2$</span><input type="text" class="cipher-input" data-k="9" onchange="checkCipher(this)"><div class="cipher-bubble"></div></div>
+          <div class="cipher-row"><span class="cipher-num">7.</span><span class="cipher-expr">$\sqrt{-9^2}$</span><input type="text" class="cipher-input" data-k="нет" onchange="checkCipher(this)"><div class="cipher-bubble"></div></div>
+          <div class="cipher-row"><span class="cipher-num">8.</span><span class="cipher-expr">$\sqrt{9} - \sqrt{16}$</span><input type="text" class="cipher-input" data-k="-1" onchange="checkCipher(this)"><div class="cipher-bubble"></div></div>
+        </div>
+        <!-- 2 столбик (9-16) -->
+        <div class="cipher-col">
+          <div class="cipher-row"><span class="cipher-num">9.</span><span class="cipher-expr">$\sqrt{9-16}$</span><input type="text" class="cipher-input" data-k="нет" onchange="checkCipher(this)"><div class="cipher-bubble"></div></div>
+          <div class="cipher-row"><span class="cipher-num">10.</span><span class="cipher-expr">$\sqrt{\frac{1}{4}+2}$</span><input type="text" class="cipher-input" data-k="1.5" onchange="checkCipher(this)"><div class="cipher-bubble"></div></div>
+          <div class="cipher-row"><span class="cipher-num">11.</span><span class="cipher-expr">$\sqrt{\frac{1}{4}-2}$</span><input type="text" class="cipher-input" data-k="нет" onchange="checkCipher(this)"><div class="cipher-bubble"></div></div>
+          <div class="cipher-row"><span class="cipher-num">12.</span><span class="cipher-expr">$\sqrt{\frac{1}{4}} - 2$</span><input type="text" class="cipher-input" data-k="-1.5" onchange="checkCipher(this)"><div class="cipher-bubble"></div></div>
+          <div class="cipher-row"><span class="cipher-num">13.</span><span class="cipher-expr">$\frac{\sqrt{36}}{8 - \sqrt{64}}$</span><input type="text" class="cipher-input" data-k="нет" onchange="checkCipher(this)"><div class="cipher-bubble"></div></div>
+          <div class="cipher-row"><span class="cipher-num">14.</span><span class="cipher-expr">$\frac{8 - \sqrt{64}}{\sqrt{36}}$</span><input type="text" class="cipher-input" data-k="0" onchange="checkCipher(this)"><div class="cipher-bubble"></div></div>
+          <div class="cipher-row"><span class="cipher-num">15.</span><span class="cipher-expr">$\frac{\sqrt{8 - 64}}{\sqrt{36}}$</span><input type="text" class="cipher-input" data-k="нет" onchange="checkCipher(this)"><div class="cipher-bubble"></div></div>
+          <div class="cipher-row"><span class="cipher-num">16.</span><span class="cipher-expr">$\frac{81}{\sqrt{81}}$</span><input type="text" class="cipher-input" data-k="9" onchange="checkCipher(this)"><div class="cipher-bubble"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 3: Дерево (Ответы) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag">Актуализация · 3</span><h2>Соберите слово</h2><p class="subtitle">Найдите свои ответы на карточках дерева и впишите буквы в кружочки.</p></div>
+    <div class="content">
+      <div class="tree-layout">
+        <!-- Левая часть: Дерево (Единый SVG) -->
+        <div class="tree-visual">
+          <svg viewBox="0 0 500 500" class="tree-svg" style="width:100%; height:auto; max-height:450px;">
+            <!-- Крона дерева (симметричная) -->
+            <path d="M 250 40 C 320 30, 400 70, 420 140 C 470 170, 470 250, 420 300 C 430 370, 350 420, 280 380 C 260 420, 240 420, 220 380 C 150 420, 70 370, 80 300 C 30 250, 30 170, 80 140 C 100 70, 180 30, 250 40 Z" fill="#0f766e" stroke="#115e59" stroke-width="3"/>
+            
+            <!-- Ствол (строго по центру) -->
+            <rect x="235" y="300" width="30" height="200" fill="#115e59"/>
+            
+            <!-- Ветви (симметричные) -->
+            <path d="M 235 340 C 200 320, 180 280, 170 260" fill="none" stroke="#115e59" stroke-width="15" stroke-linecap="round"/>
+            <path d="M 265 340 C 300 320, 320 280, 330 260" fill="none" stroke="#115e59" stroke-width="15" stroke-linecap="round"/>
+            
+            <!-- Листья (декор) -->
+            <ellipse cx="180" cy="120" rx="12" ry="6" fill="#2dd4bf" transform="rotate(30 180 120)"/>
+            <ellipse cx="320" cy="120" rx="12" ry="6" fill="#2dd4bf" transform="rotate(-30 320 120)"/>
+            <ellipse cx="380" cy="200" rx="10" ry="5" fill="#2dd4bf" transform="rotate(45 380 200)"/>
+            <ellipse cx="120" cy="200" rx="10" ry="5" fill="#2dd4bf" transform="rotate(-45 120 200)"/>
+            <ellipse cx="200" cy="240" rx="8" ry="4" fill="#2dd4bf" transform="rotate(10 200 240)"/>
+            <ellipse cx="300" cy="240" rx="8" ry="4" fill="#2dd4bf" transform="rotate(-10 300 240)"/>
+            <ellipse cx="350" cy="320" rx="10" ry="5" fill="#2dd4bf" transform="rotate(-40 350 320)"/>
+            <ellipse cx="150" cy="320" rx="10" ry="5" fill="#2dd4bf" transform="rotate(40 150 320)"/>
+            <ellipse cx="250" cy="100" rx="10" ry="5" fill="#2dd4bf" transform="rotate(-10 250 100)"/>
+
+            <!-- Карточки с числами и буквами (расположены симметрично, не задевая ствол) -->
+            
+            <!-- Верхний ярус -->
+            <g transform="translate(160, 100)">
+              <rect x="0" y="0" width="60" height="28" fill="#fff" stroke="#64748b" stroke-width="2" rx="6"/>
+              <text x="10" y="19" font-size="16" font-weight="bold" fill="#000">1</text>
+              <rect x="28" y="4" width="24" height="20" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1" rx="4"/>
+              <text x="34" y="19" font-size="16" font-weight="bold" fill="#000">О</text>
+            </g>
+            
+            <g transform="translate(280, 100)">
+              <rect x="0" y="0" width="60" height="28" fill="#fff" stroke="#64748b" stroke-width="2" rx="6"/>
+              <text x="10" y="19" font-size="16" font-weight="bold" fill="#000">0</text>
+              <rect x="28" y="4" width="24" height="20" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1" rx="4"/>
+              <text x="34" y="19" font-size="16" font-weight="bold" fill="#000">Р</text>
+            </g>
+
+            <!-- Средний ярус -->
+            <g transform="translate(120, 180)">
+              <rect x="0" y="0" width="60" height="28" fill="#fff" stroke="#64748b" stroke-width="2" rx="6"/>
+              <text x="8" y="19" font-size="16" font-weight="bold" fill="#000">-3</text>
+              <rect x="30" y="4" width="22" height="20" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1" rx="4"/>
+              <text x="35" y="19" font-size="16" font-weight="bold" fill="#000">П</text>
+            </g>
+
+            <g transform="translate(320, 180)">
+              <rect x="0" y="0" width="60" height="28" fill="#fff" stroke="#64748b" stroke-width="2" rx="6"/>
+              <text x="8" y="19" font-size="16" font-weight="bold" fill="#000">1,5</text>
+              <rect x="32" y="4" width="20" height="20" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1" rx="4"/>
+              <text x="36" y="19" font-size="16" font-weight="bold" fill="#000">Ф</text>
+            </g>
+
+            <!-- Нижний ярус -->
+            <g transform="translate(160, 270)">
+              <rect x="0" y="0" width="70" height="28" fill="#fff" stroke="#64748b" stroke-width="2" rx="6"/>
+              <text x="8" y="19" font-size="16" font-weight="bold" fill="#000">-1,5</text>
+              <rect x="40" y="4" width="22" height="20" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1" rx="4"/>
+              <text x="45" y="19" font-size="16" font-weight="bold" fill="#000">Е</text>
+            </g>
+
+            <g transform="translate(280, 270)">
+              <rect x="0" y="0" width="55" height="28" fill="#fff" stroke="#64748b" stroke-width="2" rx="6"/>
+              <text x="10" y="19" font-size="16" font-weight="bold" fill="#000">7</text>
+              <rect x="24" y="4" width="22" height="20" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1" rx="4"/>
+              <text x="29" y="19" font-size="16" font-weight="bold" fill="#000">К</text>
+            </g>
+
+            <g transform="translate(130, 360)">
+              <rect x="0" y="0" width="55" height="28" fill="#fff" stroke="#64748b" stroke-width="2" rx="6"/>
+              <text x="10" y="19" font-size="16" font-weight="bold" fill="#000">-1</text>
+              <rect x="26" y="4" width="20" height="20" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1" rx="4"/>
+              <text x="30" y="19" font-size="16" font-weight="bold" fill="#000">Й</text>
+            </g>
+
+            <g transform="translate(310, 360)">
+              <rect x="0" y="0" width="55" height="28" fill="#fff" stroke="#64748b" stroke-width="2" rx="6"/>
+              <text x="10" y="19" font-size="16" font-weight="bold" fill="#000">9</text>
+              <rect x="24" y="4" width="20" height="20" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1" rx="4"/>
+              <text x="28" y="19" font-size="16" font-weight="bold" fill="#000">А</text>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Правая часть: Текст -->
+        <div class="tree-text">
+          <p><b>Это удивительное дерево, растущее в тропических лесах Бразилии.</b></p>
+          <p>Из ствола этого дерева вытекает сок, который по своему составу почти не отличается от состава дизельного топлива. Его можно прямо без переработки заливать в бак автомобиля. Из одного отверстия в стволе этого дерева получают около 20 л «растительной солярки». В некоторых странах уже началась массовая посадка этих нефтяных деревьев.</p>
+          <p style="margin-top:20px; font-size:18px; font-weight:bold; color:var(--blue-dark);">
+            Ответ: ___________________________
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 4: Актуализация (Квадраты) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag">Актуализация · 4</span><h2>Таблица квадратов</h2><p class="subtitle">Эти значения пригодятся сегодня.</p></div>
+    <div class="content"><div class="flip-grid">
+      <div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$2^2$</div><div class="flip-back">$4$</div></div></div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$5^2$</div><div class="flip-back">$25$</div></div></div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$7^2$</div><div class="flip-back">$49$</div></div></div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$12^2$</div><div class="flip-back">$144$</div></div></div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$13^2$</div><div class="flip-back">$169$</div></div></div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$15^2$</div><div class="flip-back">$225$</div></div></div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$0,2^2$</div><div class="flip-back">$0,04$</div></div></div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$0,5^2$</div><div class="flip-back">$0,25$</div></div></div>
+    </div></div>
+  </section>
+
+  <!-- Слайд 5: Теория (Теорема 1) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag">Теория</span><h2 class="blue">Корень из произведения</h2></div>
+    <div class="content">
+      <div class="theory-block">
+        <h3>ТЕОРЕМА 1</h3>
+        <p>Если $a \ge 0$ и $b \ge 0$, то</p>
+        <div class="formula-highlight">$\sqrt{ab} = \sqrt{a} \cdot \sqrt{b}$</div>
+        <div class="key-idea">
+          <b>Свойство:</b> Корень из произведения неотрицательных множителей равен произведению корней из этих множителей.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 6: Теория (Обратное) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag">Теория</span><h2 class="blue">Произведение корней</h2></div>
+    <div class="content">
+      <div class="theory-block">
+        <p>Поменяв в тождестве левую и правую части местами, получим:</p>
+        <div class="formula-highlight">$\sqrt{a} \cdot \sqrt{b} = \sqrt{ab}$</div>
+        <p>Это свойство распространяется на случай, когда множителей больше двух.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 7: Практика (Примеры 1, 2) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Практика · 1</span><h2 class="green">Вычислите</h2><p class="subtitle">Используем теорему о корне из произведения.</p></div>
+    <div class="content">
+      <div class="static-grid">
+        <div class="static-cell"><div class="static-head"><span class="static-letter">1</span><div class="static-expr">$\sqrt{64 \cdot 0{,}04}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">2</span><div class="static-expr">$\sqrt{32 \cdot 98}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">3</span><div class="static-expr">$\sqrt{20} \cdot \sqrt{5}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">4</span><div class="static-expr">$\sqrt{11025}$</div></div><div class="static-work"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 8: Практика (Задание 362) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Практика · 2</span><h2 class="green">Задание 362</h2><p class="subtitle">Найдите значение выражения.</p></div>
+    <div class="content">
+      <div class="static-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="static-cell"><div class="static-head"><span class="static-letter">а</span><div class="static-expr">$\sqrt{100 \cdot 49}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">б</span><div class="static-expr">$\sqrt{81 \cdot 400}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">в</span><div class="static-expr">$\sqrt{64 \cdot 121}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">г</span><div class="static-expr">$\sqrt{144 \cdot 0{,}25}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">д</span><div class="static-expr">$\sqrt{0{,}01 \cdot 169}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">е</span><div class="static-expr">$\sqrt{2{,}25 \cdot 0{,}04}$</div></div><div class="static-work"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 9: Практика (Задание 364) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Практика · 3</span><h2 class="green">Задание 364</h2><p class="subtitle">Найдите значение корня.</p></div>
+    <div class="content">
+      <div class="static-grid">
+        <div class="static-cell"><div class="static-head"><span class="static-letter">а</span><div class="static-expr">$\sqrt{81 \cdot 900}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">б</span><div class="static-expr">$\sqrt{0{,}36 \cdot 49}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">в</span><div class="static-expr">$\sqrt{12 \frac{1}{4}}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">г</span><div class="static-expr">$\sqrt{10 \frac{9}{16}}$</div></div><div class="static-work"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 10: Практика (Задание 366) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Практика · 4</span><h2 class="green">Задание 366</h2><p class="subtitle">Найдите значение корня.</p></div>
+    <div class="content">
+      <div class="static-grid">
+        <div class="static-cell"><div class="static-head"><span class="static-letter">а</span><div class="static-expr">$\sqrt{0{,}04 \cdot 81 \cdot 25}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">б</span><div class="static-expr">$\sqrt{0{,}09 \cdot 16 \cdot 0{,}04}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">в</span><div class="static-expr">$\sqrt{1 \frac{7}{9} \cdot \frac{4}{25}}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">г</span><div class="static-expr">$\sqrt{\frac{121}{144} \cdot 2 \frac{1}{4}}$</div></div><div class="static-work"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 11: Практика (Задание 368) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Практика · 5</span><h2 class="green">Задание 368</h2><p class="subtitle">Найдите значение выражения.</p></div>
+    <div class="content">
+      <div class="static-grid">
+        <div class="static-cell"><div class="static-head"><span class="static-letter">а</span><div class="static-expr">$\sqrt{75 \cdot 48}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">б</span><div class="static-expr">$\sqrt{45 \cdot 80}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">в</span><div class="static-expr">$\sqrt{4{,}9 \cdot 360}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">г</span><div class="static-expr">$\sqrt{160 \cdot 6{,}4}$</div></div><div class="static-work"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 12: Практика (Задание 369) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Практика · 6</span><h2 class="green">Задание 369</h2><p class="subtitle">Вычислите значение выражения.</p></div>
+    <div class="content">
+      <div class="static-grid">
+        <div class="static-cell"><div class="static-head"><span class="static-letter">а</span><div class="static-expr">$\sqrt{13^2 - 12^2}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">б</span><div class="static-expr">$\sqrt{8^2 + 6^2}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">в</span><div class="static-expr">$\sqrt{313^2 - 312^2}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">г</span><div class="static-expr">$\sqrt{122^2 - 22^2}$</div></div><div class="static-work"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 13: Рефлексия Часть 1 -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag">Рефлексия</span><h2>Как ты себя чувствуешь?</h2><p class="subtitle">Выбери карточку.</p></div>
+    <div class="content">
+      <div class="reflect-grid">
+        <div class="reflect-card" onclick="selectReflect(this)"><div class="emo">😎</div><div class="lbl">Всё понял!</div></div>
+        <div class="reflect-card" onclick="selectReflect(this)"><div class="emo">🙂</div><div class="lbl">Почти всё понятно</div></div>
+        <div class="reflect-card" onclick="selectReflect(this)"><div class="emo">🤔</div><div class="lbl">Есть вопросы</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- ЧАСТЬ 2: ДРОБЬ (Слайды 14-24) -->
+  <!-- ========================================== -->
+
+  <!-- Слайд 14: Актуализация 1 (Часть 2) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag">Актуализация · 5</span><h2>Корень из произведения</h2><p class="subtitle">Вспомним теорему с прошлого урока.</p></div>
+    <div class="content">
+      <div class="theory-block">
+        <div class="formula-highlight">$\sqrt{a \cdot b} = \sqrt{a} \cdot \sqrt{b}$</div>
+        <p>при $a \ge 0$ и $b \ge 0$.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 15: Актуализация 2 (Часть 2) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag">Актуализация · 6</span><h2>Вычислите</h2><p class="subtitle">Проверка домашнего понимания.</p></div>
+    <div class="content">
+      <div class="static-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="static-cell"><div class="static-head"><span class="static-letter">а</span><div class="static-expr">$\sqrt{25 \cdot 16}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">б</span><div class="static-expr">$\sqrt{0{,}04 \cdot 81}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">в</span><div class="static-expr">$\sqrt{2} \cdot \sqrt{8}$</div></div><div class="static-work"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 16: Теория (Теорема 2) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag">Теория</span><h2 class="blue">Корень из дроби</h2></div>
+    <div class="content">
+      <div class="theory-block">
+        <h3>ТЕОРЕМА 2</h3>
+        <p>Если $a \ge 0$ и $b > 0$, то</p>
+        <div class="formula-highlight">$\sqrt{\frac{a}{b}} = \frac{\sqrt{a}}{\sqrt{b}}$</div>
+        <div class="key-idea">
+          <b>Свойство:</b> Корень из дроби, числитель которой неотрицателен, а знаменатель положителен, равен корню из числителя, делённому на корень из знаменателя.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 17: Теория (Обратное свойство) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag">Теория</span><h2 class="blue">Частное корней</h2></div>
+    <div class="content">
+      <div class="theory-block">
+        <p>Поменяв местами левую и правую части, получим:</p>
+        <div class="formula-highlight">$\frac{\sqrt{a}}{\sqrt{b}} = \sqrt{\frac{a}{b}}$</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 18: Практика (Примеры 3, 5, 7) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Практика · 7</span><h2 class="green">Вычислите</h2><p class="subtitle">Применим теорему о корне из дроби.</p></div>
+    <div class="content">
+      <div class="static-grid">
+        <div class="static-cell"><div class="static-head"><span class="static-letter">1</span><div class="static-expr">$\sqrt{\frac{36}{169}}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">2</span><div class="static-expr">$\frac{\sqrt{80}}{\sqrt{5}}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">3</span><div class="static-expr">$\sqrt{3 \frac{13}{36}}$</div></div><div class="static-work"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 19: Практика (Задание 363) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Практика · 8</span><h2 class="green">Задание 363</h2><p class="subtitle">Вычислите значение корня.</p></div>
+    <div class="content">
+      <div class="static-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="static-cell"><div class="static-head"><span class="static-letter">а</span><div class="static-expr">$\sqrt{\frac{9}{64}}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">б</span><div class="static-expr">$\sqrt{\frac{36}{25}}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">в</span><div class="static-expr">$\sqrt{\frac{121}{25}}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">г</span><div class="static-expr">$\sqrt{1 \frac{9}{16}}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">д</span><div class="static-expr">$\sqrt{2 \frac{7}{81}}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">е</span><div class="static-expr">$\sqrt{5 \frac{1}{16}}$</div></div><div class="static-work"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 20: Практика (Задание 365) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Практика · 9</span><h2 class="green">Задание 365</h2><p class="subtitle">Найдите значение выражения.</p></div>
+    <div class="content">
+      <div class="static-grid">
+        <div class="static-cell"><div class="static-head"><span class="static-letter">а</span><div class="static-expr">$\sqrt{9 \cdot 64 \cdot 0{,}25}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">б</span><div class="static-expr">$\sqrt{1{,}21 \cdot 0{,}09 \cdot 0{,}0001}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">в</span><div class="static-expr">$\sqrt{\frac{25}{81} \cdot \frac{16}{49} \cdot \frac{196}{9}}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">г</span><div class="static-expr">$\sqrt{5 \frac{1}{16} \cdot 2 \frac{34}{81}}$</div></div><div class="static-work"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 21: Практика (Задание 367) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Практика · 10</span><h2 class="green">Задание 367</h2><p class="subtitle">Вычислите значение корня.</p></div>
+    <div class="content">
+      <div class="static-grid" style="grid-template-columns: repeat(2, 1fr);">
+        <div class="static-cell"><div class="static-head"><span class="static-letter">а</span><div class="static-expr">$\sqrt{810 \cdot 40}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">б</span><div class="static-expr">$\sqrt{10 \cdot 250}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">в</span><div class="static-expr">$\sqrt{72 \cdot 32}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">г</span><div class="static-expr">$\sqrt{8 \cdot 98}$</div></div><div class="static-work"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 22: Практика (Задание 376, 378) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Практика · 11</span><h2 class="green">Задания 376, 378</h2><p class="subtitle">Используем свойства корней.</p></div>
+    <div class="content">
+      <div class="static-grid">
+        <div class="static-cell"><div class="static-head"><span class="static-letter">376а</span><div class="static-expr">$\sqrt{57600}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">376б</span><div class="static-expr">$\sqrt{230400}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">378а</span><div class="static-expr">$\sqrt{2} \cdot \sqrt{8}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">378б</span><div class="static-expr">$\sqrt{27} \cdot \sqrt{3}$</div></div><div class="static-work"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 23: Практика (Задание 379) -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Практика · 12</span><h2 class="green">Задание 379</h2><p class="subtitle">Найдите значение частного.</p></div>
+    <div class="content">
+      <div class="static-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="static-cell"><div class="static-head"><span class="static-letter">а</span><div class="static-expr">$\frac{\sqrt{2}}{\sqrt{18}}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">б</span><div class="static-expr">$\frac{\sqrt{23}}{\sqrt{2300}}$</div></div><div class="static-work"></div></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">в</span><div class="static-expr">$\frac{\sqrt{52}}{\sqrt{117}}$</div></div><div class="static-work"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Слайд 24: Рефлексия Итог -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag">Рефлексия</span><h2>Как ты себя чувствуешь?</h2><p class="subtitle">Выбери карточку.</p></div>
+    <div class="content">
+      <div class="reflect-grid">
+        <div class="reflect-card" onclick="selectReflect(this)"><div class="emo">😎</div><div class="lbl">Всё понял!</div></div>
+        <div class="reflect-card" onclick="selectReflect(this)"><div class="emo">🙂</div><div class="lbl">Почти всё понятно</div></div>
+        <div class="reflect-card" onclick="selectReflect(this)"><div class="emo">🤔</div><div class="lbl">Есть вопросы</div></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav>
+  <button class="nav-prev" onclick="changeSlide(-1)" disabled>← Назад</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-next" onclick="changeSlide(1)">Далее →</button>
+</nav>
+
+<script>
+var current = 0;
+var slides = document.querySelectorAll('.slide');
+var total = slides.length;
+var prevBtn = document.querySelector('.nav-prev');
+var nextBtn = document.querySelector('.nav-next');
+var navInfo = document.getElementById('navInfo');
+var pillsBox = document.getElementById('pills');
+
+for (var i = 0; i < total; i++){
+  var p = document.createElement('div');
+  p.className = 'progress-pill';
+  p.textContent = i + 1;
+  (function(idx){ p.addEventListener('click', function(){ current = idx; showSlide(current); }); })(i);
+  pillsBox.appendChild(p);
+}
+var pills = document.querySelectorAll('.progress-pill');
+
+function showSlide(i){
+  slides.forEach(function(s, idx){ s.classList.toggle('active', idx === i); });
+  pills.forEach(function(p, idx){
+    p.classList.toggle('active', idx === i);
+    p.classList.toggle('done', idx < i);
+  });
+  prevBtn.disabled = (i === 0);
+  nextBtn.disabled = (i === total - 1);
+  navInfo.textContent = 'Слайд ' + (i + 1) + ' из ' + total;
+  fitSlide();
+}
+function changeSlide(dir){
+  current = Math.min(Math.max(current + dir, 0), total - 1);
+  showSlide(current);
+}
+
+function fitSlide(){
+  var s = slides[current]; if(!s) return;
+  s.style.setProperty('--fit', 1);
+  var z = 1;
+  for(var k = 0; k < 5; k++){
+    var over = s.scrollHeight - s.clientHeight;
+    if(over <= 1) break;
+    z = Math.max(0.6, z * (s.clientHeight - 2) / s.scrollHeight);
+    s.style.setProperty('--fit', z);
+  }
+}
+window.addEventListener('resize', fitSlide);
+
+function selectReflect(el){
+  document.querySelectorAll('.reflect-card').forEach(function(c){ c.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+
+/* Логика для Шифровки */
+function checkCipher(inp) {
+  if(inp.dataset.done === 'true') return;
+  var user = inp.value.trim().toLowerCase().replace(',', '.');
+  var answer = inp.dataset.k.toLowerCase();
+  
+  if(user === answer || (answer === 'нет' && (user === 'не имеет смысла' || user === 'нет смысла'))) {
+    inp.classList.add('correct');
+    inp.dataset.done = 'true';
+    inp.readOnly = true;
+  } else {
+    inp.classList.add('wrong');
+    setTimeout(function(){ inp.classList.remove('wrong'); }, 1000);
+  }
+}
+
+window.addEventListener('load', function(){
+  showSlide(0);
+  setTimeout(function(){ document.body.classList.add('ready'); }, 4000);
+});
+</script>
+</body>
+</html>
