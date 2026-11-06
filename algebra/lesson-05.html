@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Функция y = √x и ее график</title>
+<script>MathJax = { tex: {inlineMath: [['$','$'],['\\(','\\)']]}, svg: {fontCache: 'global'},
+  startup: { pageReady: function(){ return MathJax.startup.defaultPageReady().then(function(){ document.body.classList.add('ready'); if(window.fitSlide) fitSlide(); }); } } };</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --blue:#2563eb;--blue-dark:#1e40af;--blue-light:#dbeafe;
+    --teal:#0d9488;--teal-dark:#0f766e;--teal-light:#ccfbf1;
+    --orange:#ea580c;--orange-dark:#c2410c;--amber:#f59e0b;--orange-light:#ffedd5;
+    --ok:#10b981;--ok-light:#d1fae5;--err:#ef4444;--err-light:#fee2e2;
+    --text:#1e293b;--muted:#64748b;--border:#bfdbfe;
+  }
+  *{box-sizing:border-box;font-family:'Segoe UI',system-ui,sans-serif;}
+  html,body{margin:0;padding:0;height:100%;overflow:hidden;}
+  body{
+    background:radial-gradient(1200px 600px at 5% -5%, #eff6ff 0%, transparent 55%),
+               radial-gradient(900px 500px at 100% 100%, #f0fdfa 0%, transparent 55%), #f8fafc;
+    color:var(--text);height:100vh;display:flex;flex-direction:column;
+  }
+  header{
+    height:46px;padding:0 20px;display:flex;justify-content:space-between;align-items:center;
+    background:rgba(248,250,252,.85);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);z-index:10;flex-wrap:nowrap;gap:12px;flex-shrink:0;
+  }
+  .header-title{font-size:14px;font-weight:800;color:var(--blue-dark);white-space:nowrap;}
+  .progress-pills{display:flex;gap:3px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;}
+  .progress-pill{
+    height:22px;min-width:22px;padding:0 6px;border-radius:11px;background:#fff;flex-shrink:0;
+    border:2px solid var(--border);display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:800;color:var(--muted);cursor:pointer;transition:.2s;
+  }
+  .progress-pill.active{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;border-color:transparent;}
+  .progress-pill.done{background:var(--teal-light);color:var(--teal);border-color:var(--teal);}
+
+  main{flex:1;padding:12px 16px 68px;display:flex;justify-content:center;overflow:hidden;min-height:0;opacity:1;}
+  body:not(.ready) main{opacity:0;}
+  .slide{
+    display:none;background:#ffffff;border-radius:16px;padding:20px 30px;
+    box-shadow:0 8px 30px rgba(37,99,235,.08);border:1px solid var(--border);
+    width:100%;max-width:1100px;animation:fade .25s ease;flex-direction:column;
+    overflow-y:auto;min-height:0;scrollbar-width:thin;scrollbar-gutter:stable both-edges;
+  }
+  .slide.active{display:flex;}
+  @keyframes fade{from{opacity:0;}to{opacity:1;}}
+
+  .slide-header{flex-shrink:0;margin-bottom:16px;}
+  .slide-tag{display:inline-block;background:var(--blue-light);color:var(--blue-dark);padding:6px 14px;border-radius:16px;font-size:12px;font-weight:800;margin-bottom:10px;border:1px solid #93c5fd;}
+  .slide-tag.green{background:var(--teal-light);color:var(--teal-dark);border-color:#5eead4;}
+  .slide h2{font-size:28px;margin:0 0 6px;color:var(--blue-dark);font-weight:800;}
+  .slide h2.green{color:var(--teal-dark);}
+  .slide .subtitle{color:var(--muted);font-size:16px;margin:0;}
+
+  .content{flex:1 0 auto;display:flex;flex-direction:column;justify-content:flex-start;}
+  .content>:first-child{margin-top:auto;} .content>:last-child{margin-bottom:auto;}
+
+  /* Интерактивные карточки */
+  .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:900px;margin:0 auto;width:100%;}
+  .compare-card{background:#fff;border:2px solid var(--border);border-radius:16px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:15px;position:relative;transition:transform .2s, box-shadow .2s;}
+  .compare-card:hover{transform:translateY(-4px);box-shadow:0 10px 25px rgba(37,99,235,.1);}
+  .compare-task{font-size:26px;font-weight:800;color:var(--blue-dark);display:flex;align-items:center;gap:10px;}
+  .compare-select{font-size:22px; font-weight:800; padding:5px 10px; border-radius:8px; border:2px solid var(--border);background:#f8fafc; color:var(--blue-dark); cursor:pointer; outline:none; appearance:none;text-align:center; width:60px;}
+  .compare-select:focus{border-color:var(--blue);}
+  .compare-select.correct{background:var(--ok-light); border-color:var(--ok); color:#065f46;}
+  .compare-select.wrong{background:var(--err-light); border-color:var(--err); color:#991b1b;}
+
+  /* Задание с промежутками */
+  .between-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:900px;margin:0 auto;width:100%;}
+  .between-card{background:#fff;border:2px solid var(--border);border-radius:16px;padding:20px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:22px;font-weight:800;color:var(--blue-dark);}
+  .between-input{width:60px;padding:8px;text-align:center;font-size:20px;font-weight:800;border:2px solid #cbd5e1;border-radius:8px;outline:none;}
+  .between-input:focus{border-color:var(--blue);}
+  .between-input.correct{background:var(--ok-light);border-color:var(--ok);color:#065f46;}
+  .between-input.wrong{background:var(--err-light);border-color:var(--err);color:#991b1b;}
+
+  /* Флип-карты */
+  .flip-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;align-content:start;}
+  .flip-card{perspective:1200px;height:180px;cursor:pointer;}
+  .flip-inner{position:relative;width:100%;height:100%;transition:transform .7s;transform-style:preserve-3d;}
+  .flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+  .flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:18px;display:flex;align-items:center;justify-content:center;padding:22px;text-align:center;font-size:18px;box-shadow:0 8px 24px rgba(15,23,42,.08);}
+  .flip-front{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;font-weight:700;}
+  .flip-back{background:linear-gradient(135deg,#ecfdf5,#d1fae5);color:#065f46;font-weight:700;transform:rotateY(180deg);border:2px solid var(--ok);font-size:16px;}
+  .flip-card.tall{height:200px;}
+  .fc{width:100%;text-align:center;}
+  .fc-tag{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 12px;border-radius:12px;background:rgba(255,255,255,.2);margin-bottom:10px;}
+  .flip-back .fc-tag{background:#fff;color:#047857;border:1px solid var(--ok);}
+  .fc-text{font-size:20px;line-height:1.4;font-weight:700;}
+  .flip-back .fc-text{font-size:17px;line-height:1.45;}
+
+  /* Таблица значений и график */
+  .graph-container{display:flex;gap:30px;justify-content:center;align-items:center;width:100%;}
+  .table-box{background:#fff; border:2px solid var(--border); border-radius:14px; padding:20px;}
+  .value-table{border-collapse:collapse; font-size:22px; font-weight:700; text-align:center;}
+  .value-table th, .value-table td{border:2px solid var(--border); padding:10px 20px; min-width:60px;}
+  .value-table th{background:var(--blue-light); color:var(--blue-dark);}
+  .value-table td{background:#f8fafc;}
+  .value-table input{width:60px; padding:5px; text-align:center; font-size:20px; font-weight:800; border:2px solid #cbd5e1; border-radius:6px; outline:none;}
+  .value-table input:focus{border-color:var(--blue);}
+  .value-table input.correct{background:var(--ok-light); border-color:var(--ok); color:#065f46;}
+  
+  .graph-box{background:#fff;border:2px solid var(--border);border-radius:14px;padding:10px;position:relative;}
+  .graph-box svg{width:100%;height:auto;display:block;}
+  .controls-box{display:flex;flex-direction:column;gap:10px;min-width:180px;}
+  .point-btn{padding:8px 12px;border:2px solid var(--blue);background:var(--blue-light);color:var(--blue-dark);border-radius:8px;font-weight:700;cursor:pointer;transition:0.2s; font-size:14px;}
+  .point-btn:hover{background:var(--blue);color:#fff;}
+  .point-btn.active{background:var(--blue);color:#fff; opacity:0.5; pointer-events:none;}
+
+  /* Практика (клетка) */
+  .static-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  .static-cell{background:#fff;border:2px dashed #93c5fd;border-radius:14px;padding:14px;position:relative;display:flex;flex-direction:column;gap:10px;}
+  .static-cell::before{content:'✏️ Решение';position:absolute;top:-10px;left:16px;background:#fff;padding:0 8px;font-size:10px;font-weight:800;color:var(--blue);text-transform:uppercase;border-radius:5px;}
+  .static-head{display:flex;align-items:flex-start;gap:10px;}
+  .static-letter{display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;font-weight:800;font-size:13px;width:28px;height:28px;border-radius:8px;flex-shrink:0;}
+  .static-expr{background:rgba(239,246,255,.95);border-radius:8px;padding:8px 12px;font-size:17px;font-weight:700;border:1px solid rgba(37,99,235,.15);flex:1;line-height:1.5;}
+  .static-work{flex:1;border-radius:10px;background:linear-gradient(#dbeafe 1px, transparent 1px), linear-gradient(90deg, #dbeafe 1px, transparent 1px);background-size:20px 20px;min-height:90px;border:1px solid rgba(37,99,235,.15);position:relative;}
+  .ans-btn{align-self:flex-end;min-width:128px;padding:5px 12px;border:1.5px solid #5eead4;background:#f0fdfa;color:var(--teal-dark);border-radius:8px;font-size:12px;font-weight:800;cursor:pointer;}
+  .ans{display:none;position:absolute;inset:0;background:rgba(204,251,241,.97);border:2px solid var(--teal);border-radius:10px;padding:8px 14px;font-size:14px;line-height:1.5;color:#0f766e;font-weight:600;overflow-y:auto;}
+  .ans.open{display:block;}
+
+  /* Верно/Неверно (Да/Нет) */
+  .tf-two{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1000px;margin:0 auto;width:100%;align-content:center;}
+  .tf-card{background:#fff;border:2px solid var(--border);border-radius:14px;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;gap:10px;transition:.25s;}
+  .tf-card .tf-text{font-size:20px;font-weight:700; color:var(--text); white-space:nowrap;}
+  .tf-btns{display:flex;gap:8px;}
+  .tf-btn{padding:8px 16px;border:2px solid var(--border);background:#f8fafc;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;transition:.2s;color:var(--muted);}
+  .tf-btn:hover{border-color:var(--blue); color:var(--blue);}
+  .tf-btn.correct{background:var(--ok-light);border-color:var(--ok);color:#065f46;}
+  .tf-btn.wrong{background:var(--err-light);border-color:var(--err);color:#991b1b;}
+
+  /* Теория */
+  .theory-block{background:#fff;border:2px solid var(--border);border-radius:16px;padding:22px 32px;width:100%;text-align:center;}
+  .theory-block p{font-size:19px;line-height:1.55;margin:10px 0;}
+  .key-idea{background:linear-gradient(135deg,#fef3c7,#fde68a);border-left:6px solid #d97706;border-radius:12px;padding:16px 24px;font-size:18px;line-height:1.6;width:100%;margin-top:18px;text-align:left;}
+
+  /* Рефлексия */
+  .reflect-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;margin:0 auto;width:100%;}
+  .reflect-card{background:#fff;padding:22px;border-radius:14px;border:3px solid var(--border);text-align:center;cursor:pointer;transition:.2s;}
+  .reflect-card:hover{border-color:var(--teal);}
+  .reflect-card.selected{border-color:var(--blue);background:var(--blue-light);box-shadow:0 8px 22px rgba(37,99,235,.2);}
+  .reflect-card .emo{font-size:44px;} .reflect-card .lbl{font-size:18px;font-weight:800;margin-top:10px;}
+
+  .slide > *{zoom:var(--fit,1);}
+  @media (max-height:820px){
+    .slide{padding:14px 26px;}
+    .slide h2{font-size:24px;}
+    .slide-header{margin-bottom:10px;}
+    .slide-tag{padding:4px 12px;margin-bottom:6px;}
+    .slide .subtitle{font-size:14px;}
+  }
+
+  /* Навигация */
+  nav{position:fixed;bottom:0;left:0;right:0;padding:10px 20px;background:rgba(248,250,252,.9);border-top:1px solid var(--border);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;z-index:100;}
+  nav .nav-prev{justify-self:start;} nav .nav-next{justify-self:end;}
+  nav button{padding:10px 24px;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;}
+  nav .nav-prev{background:#fff;color:var(--blue);border:2px solid var(--blue);}
+  nav .nav-next{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;}
+  nav button:disabled{opacity:.4;cursor:default;}
+  .nav-info{font-size:13px;color:var(--muted);font-weight:700;min-width:120px;text-align:center;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-title">Алгебра 8 класс: Функция y = √x</div>
+  <div class="progress-pills" id="pills"></div>
+</header>
+
+<main>
+  <!-- ====== 1-4: АКТУАЛИЗАЦИЯ ====== -->
+  <section class="slide active">
+    <div class="slide-header"><span class="slide-tag">Актуализация · 1</span><h2>Приближенные значения корня</h2><p class="subtitle">Выберите правильный знак из выпадающего списка.</p></div>
+    <div class="content">
+      <div class="compare-grid">
+        <div class="compare-card"><div class="compare-task">$\sqrt{20}$ <select class="compare-select" onchange="checkSelect(this, 'lt')"><option value="" disabled selected></option><option value="lt">&lt;</option><option value="gt">&gt;</option><option value="eq">=</option></select> $4{,}5$</div></div>
+        <div class="compare-card"><div class="compare-task">$\sqrt{50}$ <select class="compare-select" onchange="checkSelect(this, 'gt')"><option value="" disabled selected></option><option value="lt">&lt;</option><option value="gt">&gt;</option><option value="eq">=</option></select> $7$</div></div>
+        <div class="compare-card"><div class="compare-task">$\sqrt{0{,}5}$ <select class="compare-select" onchange="checkSelect(this, 'gt')"><option value="" disabled selected></option><option value="lt">&lt;</option><option value="gt">&gt;</option><option value="eq">=</option></select> $0{,}7$</div></div>
+        <div class="compare-card"><div class="compare-task">$\sqrt{10}$ <select class="compare-select" onchange="checkSelect(this, 'gt')"><option value="" disabled selected></option><option value="lt">&lt;</option><option value="gt">&gt;</option><option value="eq">=</option></select> $3{,}1$</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag">Актуализация · 2</span><h2>Между какими целыми числами?</h2><p class="subtitle">Впишите два соседних целых числа, между которыми заключен корень.</p></div>
+    <div class="content">
+      <div class="between-grid">
+        <div class="between-card"><input type="text" class="between-input" data-k="2" onchange="checkInput(this)"> &lt; $\sqrt{5}$ &lt; <input type="text" class="between-input" data-k="3" onchange="checkInput(this)"></div>
+        <div class="between-card"><input type="text" class="between-input" data-k="4" onchange="checkInput(this)"> &lt; $\sqrt{20}$ &lt; <input type="text" class="between-input" data-k="5" onchange="checkInput(this)"></div>
+        <div class="between-card"><input type="text" class="between-input" data-k="7" onchange="checkInput(this)"> &lt; $\sqrt{50}$ &lt; <input type="text" class="between-input" data-k="8" onchange="checkInput(this)"></div>
+        <div class="between-card"><input type="text" class="between-input" data-k="11" onchange="checkInput(this)"> &lt; $\sqrt{130}$ &lt; <input type="text" class="between-input" data-k="12" onchange="checkInput(this)"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag">Актуализация · 3</span><h2>Таблица квадратов</h2><p class="subtitle">Эти значения нам сегодня пригодятся для построения графика.</p></div>
+    <div class="content"><div class="flip-grid" style="grid-template-columns:repeat(4,1fr);">
+      <div class="flip-card" style="height:120px;" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$12^2$</div><div class="flip-back">$144$</div></div></div>
+      <div class="flip-card" style="height:120px;" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$15^2$</div><div class="flip-back">$225$</div></div></div>
+      <div class="flip-card" style="height:120px;" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$23^2$</div><div class="flip-back">$529$</div></div></div>
+      <div class="flip-card" style="height:120px;" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$28^2$</div><div class="flip-back">$784$</div></div></div>
+      <div class="flip-card" style="height:120px;" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$31^2$</div><div class="flip-back">$961$</div></div></div>
+      <div class="flip-card" style="height:120px;" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$45^2$</div><div class="flip-back">$2025$</div></div></div>
+      <div class="flip-card" style="height:120px;" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$54^2$</div><div class="flip-back">$2916$</div></div></div>
+      <div class="flip-card" style="height:120px;" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$67^2$</div><div class="flip-back">$4489$</div></div></div>
+    </div></div>
+  </section>
+
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag">Актуализация · 4</span><h2>Базовые понятия</h2><p class="subtitle">Вспомним перед изучением новой темы.</p></div>
+    <div class="content"><div class="flip-grid">
+      <div class="flip-card tall" onclick="this.classList.toggle('flipped')"><div class="flip-inner">
+        <div class="flip-front"><div class="fc"><div class="fc-tag">🔍 Вопрос 1</div><div class="fc-text">Что такое ОДЗ?</div></div></div>
+        <div class="flip-back"><div class="fc"><div class="fc-tag">✔ Ответ</div><div class="fc-text">Это все значения переменной $x$, при которых выражение имеет смысл.</div></div></div>
+      </div></div>
+      <div class="flip-card tall" onclick="this.classList.toggle('flipped')"><div class="flip-inner">
+        <div class="flip-front"><div class="fc"><div class="fc-tag">🔍 Вопрос 2</div><div class="fc-text">Какую функцию называют возрастающей?</div></div></div>
+        <div class="flip-back"><div class="fc"><div class="fc-tag">✔ Ответ</div><div class="fc-text">Большему значению $x$ соответствует большее значение $y$.</div></div></div>
+      </div></div>
+      <div class="flip-card tall" onclick="this.classList.toggle('flipped')"><div class="flip-inner">
+        <div class="flip-front"><div class="fc"><div class="fc-tag">🔍 Вопрос 3</div><div class="fc-text">Что является графиком функции $y = x^2$?</div></div></div>
+        <div class="flip-back"><div class="fc"><div class="fc-tag">✔ Ответ</div><div class="fc-text">Парабола. Сегодня мы познакомимся с её «половинкой».</div></div></div>
+      </div></div>
+      <div class="flip-card tall" onclick="this.classList.toggle('flipped')"><div class="flip-inner">
+        <div class="flip-front"><div class="fc"><div class="fc-tag">🔍 Вопрос 4</div><div class="fc-text">При каком условии выражение $\sqrt{a}$ имеет смысл?</div></div></div>
+        <div class="flip-back"><div class="fc"><div class="fc-tag">✔ Ответ</div><div class="fc-text">Подкоренное выражение должно быть неотрицательным, то есть $a \ge 0$.</div></div></div>
+      </div></div>
+    </div></div>
+  </section>
+
+  <!-- ====== 5-6: ОТКРЫТИЕ НОВОГО ====== -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Открытие нового</span><h2 class="green">Таблица значений функции $y = \sqrt{x}$</h2><p class="subtitle">Заполните таблицу. Впишите значения $y$ для каждого $x$.</p></div>
+    <div class="content">
+      <div class="graph-container">
+        <div class="table-box">
+          <table class="value-table">
+            <thead>
+              <tr><th>$x$</th><td>0</td><td>1</td><td>4</td><td>9</td></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>$y$</th>
+                <td><input type="text" inputmode="numeric" data-k="0" onchange="checkInput(this)"></td>
+                <td><input type="text" inputmode="numeric" data-k="1" onchange="checkInput(this)"></td>
+                <td><input type="text" inputmode="numeric" data-k="2" onchange="checkInput(this)"></td>
+                <td><input type="text" inputmode="numeric" data-k="3" onchange="checkInput(this)"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Открытие нового</span><h2 class="green">Строим график</h2><p class="subtitle">Нажимайте на кнопки с точками, чтобы отметить их на координатной плоскости.</p></div>
+    <div class="content">
+      <div class="graph-container">
+        <div class="table-box">
+          <table class="value-table">
+            <thead>
+              <tr><th>$x$</th><td>0</td><td>1</td><td>4</td><td>9</td></tr>
+            </thead>
+            <tbody>
+              <tr><th>$y$</th><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="graph-box" style="width: 350px;">
+          <svg id="plotSvg" viewBox="0 0 300 300" style="max-height: 300px; width:100%;">
+            <g stroke="#e2e8f0" stroke-width="1">
+              <line x1="30" y1="10" x2="30" y2="270" /><line x1="60" y1="10" x2="60" y2="270" />
+              <line x1="90" y1="10" x2="90" y2="270" /><line x1="120" y1="10" x2="120" y2="270" />
+              <line x1="150" y1="10" x2="150" y2="270" /><line x1="180" y1="10" x2="180" y2="270" />
+              <line x1="210" y1="10" x2="210" y2="270" /><line x1="240" y1="10" x2="240" y2="270" />
+              <line x1="270" y1="10" x2="270" y2="270" />
+              <line x1="30" y1="10" x2="270" y2="10" /><line x1="30" y1="40" x2="270" y2="40" />
+              <line x1="30" y1="70" x2="270" y2="70" /><line x1="30" y1="100" x2="270" y2="100" />
+              <line x1="30" y1="130" x2="270" y2="130" /><line x1="30" y1="160" x2="270" y2="160" />
+              <line x1="30" y1="190" x2="270" y2="190" /><line x1="30" y1="220" x2="270" y2="220" />
+              <line x1="30" y1="250" x2="270" y2="250" />
+            </g>
+            <line x1="30" y1="270" x2="290" y2="270" stroke="#1e293b" stroke-width="2"/>
+            <line x1="30" y1="10" x2="30" y2="290" stroke="#1e293b" stroke-width="2"/>
+            <polygon points="290,270 280,265 280,275" fill="#1e293b"/>
+            <polygon points="30,10 25,20 35,20" fill="#1e293b"/>
+            <text x="280" y="290" font-size="14" font-weight="bold">x</text>
+            <text x="40" y="20" font-size="14" font-weight="bold">y</text>
+            <text x="15" y="275" font-size="12">0</text>
+            <text x="55" y="290" font-size="12">1</text><text x="115" y="290" font-size="12">2</text>
+            <text x="175" y="290" font-size="12">3</text><text x="235" y="290" font-size="12">4</text>
+            <text x="15" y="245" font-size="12">1</text><text x="15" y="195" font-size="12">2</text>
+            <text x="15" y="145" font-size="12">3</text><text x="15" y="95" font-size="12">4</text>
+            <g id="pointsGroup"></g>
+            <g id="lineGroup"></g>
+            <g id="negLineGroup" opacity="0" style="transition: opacity 0.5s;"></g>
+          </svg>
+        </div>
+
+        <div class="controls-box">
+          <button class="point-btn" id="btnP1" onclick="addPoint(0,0,this)">Точка (0; 0)</button>
+          <button class="point-btn" id="btnP2" onclick="addPoint(1,1,this)">Точка (1; 1)</button>
+          <button class="point-btn" id="btnP3" onclick="addPoint(4,2,this)">Точка (4; 2)</button>
+          <button class="point-btn" id="btnP4" onclick="addPoint(9,3,this)">Точка (9; 3)</button>
+          
+          <button class="point-btn" id="btnNeg" style="background:#f3f4f6; border-color:#9ca3af; color:#374151; display:none; margin-top:10px;" onclick="showNegativeBranch()">Показать $y = -\sqrt{x}$</button>
+          
+          <div style="margin-top:10px; font-size:14px; color:var(--muted); font-weight:600;">
+            <span id="progressText">Отмечено 0 из 4 точек</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 7: ТЕОРИЯ (Свойства и почему только 1 четверть) ====== -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag">Теория</span><h2 class="blue">Свойства функции $y = \sqrt{x}$</h2></div>
+    <div class="content">
+      <div class="theory-block">
+        <div style="background:var(--blue-light); border:2px dashed var(--blue); border-radius:12px; padding:20px; text-align:left; font-size:18px; line-height:1.6; margin-bottom:20px;">
+          <p style="margin:0 0 10px;"><b>1.</b> Если $x = 0$, то $y = 0$. Начало координат принадлежит графику.</p>
+          <p style="margin:0 0 10px;"><b>2.</b> Если $x > 0$, то $y > 0$. График расположен в первой координатной четверти.</p>
+          <p style="margin:0;"><b>3.</b> Большему значению аргумента соответствует большее значение функции. График идет вверх.</p>
+        </div>
+        
+        <div class="key-idea">
+          <b>Почему график не уходит влево или вниз?</b><br>
+          Область определения: $x \ge 0$ (нельзя извлечь корень из отрицательного числа).<br>
+          Область значений: $y \ge 0$ (арифметический корень всегда неотрицателен).<br>
+          Именно поэтому график существует только в первой четверти.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 8: ПРАКТИКА (Задание 581) ====== -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Практика · 1</span><h2 class="green">Заполните таблицу</h2><p class="subtitle">Задание 581. Функция задана формулой $y = \sqrt{x}$.</p></div>
+    <div class="content">
+      <div class="graph-container">
+        <div class="table-box">
+          <table class="value-table">
+            <thead>
+              <tr>
+                <th>$x$</th>
+                <td>0,01</td>
+                <td>4</td>
+                <td><input type="text" inputmode="numeric" data-k="81" onchange="checkInput(this)" style="width:50px;"></td>
+                <td><input type="text" inputmode="numeric" data-k="121" onchange="checkInput(this)" style="width:50px;"></td>
+                <td><input type="text" inputmode="numeric" data-k="2.25" onchange="checkInput(this)" style="width:50px;"></td>
+                <td>1600</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>$y$</th>
+                <td><input type="text" inputmode="numeric" data-k="0.1" onchange="checkInput(this)" style="width:50px;"></td>
+                <td><input type="text" inputmode="numeric" data-k="2" onchange="checkInput(this)" style="width:50px;"></td>
+                <td>9</td>
+                <td>11</td>
+                <td>1,5</td>
+                <td><input type="text" inputmode="numeric" data-k="40" onchange="checkInput(this)" style="width:50px;"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 9: ПРАКТИКА (Задание 582) ====== -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Практика · 2</span><h2 class="green">Найдите значения</h2><p class="subtitle">Задание 582. Функция задана формулой $y = \sqrt{x}$.</p></div>
+    <div class="content">
+      <div class="static-grid">
+        <div class="static-cell">
+          <div class="static-head"><span class="static-letter">1</span><div class="static-expr">Чему равно значение функции, если аргумент равен: 0,16; 64; 1,44; 3600?</div></div>
+          <div class="static-work"><div class="ans">$y(0,16)=0,4$; $y(64)=8$; $y(1,44)=1,2$; $y(3600)=60$.</div></div>
+          <button class="ans-btn" onclick="toggleAns(this)">Показать ответ</button>
+        </div>
+        <div class="static-cell">
+          <div class="static-head"><span class="static-letter">2</span><div class="static-expr">При каком значении аргумента значение функции равно: 0,2; 5; 120; -4?</div></div>
+          <div class="static-work"><div class="ans">$0,04$; $25$; $14400$. Значение $-4$ невозможно.</div></div>
+          <button class="ans-btn" onclick="toggleAns(this)">Показать ответ</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 10: ПРАКТИКА (Задание 583) ====== -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Практика · 3</span><h2 class="green">Проходит ли график через точку?</h2><p class="subtitle">Задание 583. Не выполняя построения, определите, через какие из данных точек проходит график функции $y = \sqrt{x}$.</p></div>
+    <div class="content">
+      <div class="tf-two">
+        <div class="tf-card"><div class="tf-text">$A(36; 6)$</div><div class="tf-btns"><button class="tf-btn" onclick="checkTF(this,'yes')">Да</button><button class="tf-btn" onclick="checkTF(this,'no')">Нет</button></div></div>
+        <div class="tf-card"><div class="tf-text">$B(4; -2)$</div><div class="tf-btns"><button class="tf-btn" onclick="checkTF(this,'yes')">Да</button><button class="tf-btn" onclick="checkTF(this,'no')">Нет</button></div></div>
+        <div class="tf-card"><div class="tf-text">$C(0,81; 0,9)$</div><div class="tf-btns"><button class="tf-btn" onclick="checkTF(this,'yes')">Да</button><button class="tf-btn" onclick="checkTF(this,'no')">Нет</button></div></div>
+        <div class="tf-card"><div class="tf-text">$D(-1; 1)$</div><div class="tf-btns"><button class="tf-btn" onclick="checkTF(this,'yes')">Да</button><button class="tf-btn" onclick="checkTF(this,'no')">Нет</button></div></div>
+        <div class="tf-card"><div class="tf-text">$E(42,25; 6,5)$</div><div class="tf-btns"><button class="tf-btn" onclick="checkTF(this,'yes')">Да</button><button class="tf-btn" onclick="checkTF(this,'no')">Нет</button></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 11: ПРАКТИКА (Задание 584) ====== -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Практика · 4</span><h2 class="green">Через какую точку проходит график?</h2><p class="subtitle">Задание 584. Выберите верный вариант.</p></div>
+    <div class="content">
+      <div class="tf-two">
+        <div class="tf-card" data-answer="a"><div class="tf-text">1) $A(16; 4)$</div><div class="tf-btns"><button class="tf-btn" onclick="checkTF(this,'a')">Да</button><button class="tf-btn" onclick="checkTF(this,'b')">Нет</button></div></div>
+        <div class="tf-card" data-answer="b"><div class="tf-text">2) $B(49; -7)$</div><div class="tf-btns"><button class="tf-btn" onclick="checkTF(this,'a')">Да</button><button class="tf-btn" onclick="checkTF(this,'b')">Нет</button></div></div>
+        <div class="tf-card" data-answer="b"><div class="tf-text">3) $C(3,6; 0,6)$</div><div class="tf-btns"><button class="tf-btn" onclick="checkTF(this,'a')">Да</button><button class="tf-btn" onclick="checkTF(this,'b')">Нет</button></div></div>
+        <div class="tf-card" data-answer="b"><div class="tf-text">4) $D(-36; 6)$</div><div class="tf-btns"><button class="tf-btn" onclick="checkTF(this,'a')">Да</button><button class="tf-btn" onclick="checkTF(this,'b')">Нет</button></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 12: ПРАКТИКА (Задание 585/586) ====== -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Практика · 5</span><h2 class="green">Сравните числа</h2><p class="subtitle">Задания 585, 586. Выберите правильный знак.</p></div>
+    <div class="content">
+      <div class="compare-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="compare-card"><div class="compare-task">$\sqrt{86}$ <select class="compare-select" onchange="checkSelect(this, 'gt')"><option value="" disabled selected></option><option value="lt">&lt;</option><option value="gt">&gt;</option><option value="eq">=</option></select> $\sqrt{78}$</div></div>
+        <div class="compare-card"><div class="compare-task">$\sqrt{1{,}4}$ <select class="compare-select" onchange="checkSelect(this, 'lt')"><option value="" disabled selected></option><option value="lt">&lt;</option><option value="gt">&gt;</option><option value="eq">=</option></select> $\sqrt{1{,}6}$</div></div>
+        <div class="compare-card"><div class="compare-task">$5$ <select class="compare-select" onchange="checkSelect(this, 'lt')"><option value="" disabled selected></option><option value="lt">&lt;</option><option value="gt">&gt;</option><option value="eq">=</option></select> $\sqrt{26}$</div></div>
+        <div class="compare-card"><div class="compare-task">$\sqrt{\frac{6}{7}}$ <select class="compare-select" onchange="checkSelect(this, 'lt')"><option value="" disabled selected></option><option value="lt">&lt;</option><option value="gt">&gt;</option><option value="eq">=</option></select> $1$</div></div>
+        <div class="compare-card"><div class="compare-task">$-7$ <select class="compare-select" onchange="checkSelect(this, 'gt')"><option value="" disabled selected></option><option value="lt">&lt;</option><option value="gt">&gt;</option><option value="eq">=</option></select> $-\sqrt{48}$</div></div>
+        <div class="compare-card"><div class="compare-task">$3\sqrt{2}$ <select class="compare-select" onchange="checkSelect(this, 'gt')"><option value="" disabled selected></option><option value="lt">&lt;</option><option value="gt">&gt;</option><option value="eq">=</option></select> $2\sqrt{3}$</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 13: ПРАКТИКА (Задание 587) ====== -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Практика · 6</span><h2 class="green">Точки пересечения</h2><p class="subtitle">Задание 587. Не выполняя построения, найдите координаты точки пересечения графика функции $y = \sqrt{x}$ и прямой.</p></div>
+    <div class="content">
+      <div class="static-grid">
+        <div class="static-cell"><div class="static-head"><span class="static-letter">1</span><div class="static-expr">$y = 1$</div></div><div class="static-work"><div class="ans">$(1; 1)$</div></div>
+          <button class="ans-btn" onclick="toggleAns(this)">Показать ответ</button></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">2</span><div class="static-expr">$y = 0{,}8$</div></div><div class="static-work"><div class="ans">$(0{,}64; 0{,}8)$</div></div>
+          <button class="ans-btn" onclick="toggleAns(this)">Показать ответ</button></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">3</span><div class="static-expr">$y = -6$</div></div><div class="static-work"><div class="ans">Нет пересечений, так как $y \ge 0$.</div></div>
+          <button class="ans-btn" onclick="toggleAns(this)">Показать ответ</button></div>
+        <div class="static-cell"><div class="static-head"><span class="static-letter">4</span><div class="static-expr">$y = 500$</div></div><div class="static-work"><div class="ans">$(250000; 500)$</div></div>
+          <button class="ans-btn" onclick="toggleAns(this)">Показать ответ</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 14: ПРАКТИКА (Задание 588/589) ====== -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Практика · 7</span><h2 class="green">Запишите в порядке</h2><p class="subtitle">Задания 588, 589. Расположите числа в нужном порядке.</p></div>
+    <div class="content">
+      <div class="static-grid">
+        <div class="static-cell">
+          <div class="static-head"><span class="static-letter">588</span><div class="static-expr">В порядке убывания: $8$; $\sqrt{62}$; $7{,}9$; $\sqrt{65}$; $8{,}2$</div></div>
+          <div class="static-work"><div class="ans">$8{,}2 > \sqrt{65} > 8 > 7{,}9 > \sqrt{62}$</div></div>
+          <button class="ans-btn" onclick="toggleAns(this)">Показать ответ</button>
+        </div>
+        <div class="static-cell">
+          <div class="static-head"><span class="static-letter">589</span><div class="static-expr">В порядке возрастания: $\sqrt{38}$; $6{,}1$; $6$; $\sqrt{35}$; $5{,}9$</div></div>
+          <div class="static-work"><div class="ans">$5{,}9 < \sqrt{35} < 6 < 6{,}1 < \sqrt{38}$</div></div>
+          <button class="ans-btn" onclick="toggleAns(this)">Показать ответ</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 15: ПРАКТИКА (Задание 590/591/592) ====== -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag green">Практика · 8</span><h2 class="green">Между какими числами?</h2><p class="subtitle">Задания 590, 591, 592. Найдите целые числа.</p></div>
+    <div class="content">
+      <div class="static-grid">
+        <div class="static-cell">
+          <div class="static-head"><span class="static-letter">590</span><div class="static-expr">$\sqrt{2}$; $\sqrt{7}$; $\sqrt{59}$; $-\sqrt{115}$</div></div>
+          <div class="static-work"><div class="ans">$1<\sqrt{2}<2$; $2<\sqrt{7}<3$; $7<\sqrt{59}<8$; $-11<-\sqrt{115}<-10$.</div></div>
+          <button class="ans-btn" onclick="toggleAns(this)">Показать ответ</button>
+        </div>
+        <div class="static-cell">
+          <div class="static-head"><span class="static-letter">591</span><div class="static-expr">$\sqrt{6}$; $\sqrt{19}$; $\sqrt{29}$; $\sqrt{160}$; $-\sqrt{86}$</div></div>
+          <div class="static-work"><div class="ans">$2<\sqrt{6}<3$; $4<\sqrt{19}<5$; $5<\sqrt{29}<6$; $12<\sqrt{160}<13$; $-10<-\sqrt{86}<-9$.</div></div>
+          <button class="ans-btn" onclick="toggleAns(this)">Показать ответ</button>
+        </div>
+        <div class="static-cell">
+          <div class="static-head"><span class="static-letter">592</span><div class="static-expr">Целые между $3$ и $\sqrt{68}$</div></div>
+          <div class="static-work"><div class="ans">$4, 5, 6, 7, 8$</div></div>
+          <button class="ans-btn" onclick="toggleAns(this)">Показать ответ</button>
+        </div>
+        <div class="static-cell">
+          <div class="static-head"><span class="static-letter">592</span><div class="static-expr">Целые между $-\sqrt{42}$ и $2{,}8$</div></div>
+          <div class="static-work"><div class="ans">$-6, -5, -4, -3, -2, -1, 0, 1, 2$</div></div>
+          <button class="ans-btn" onclick="toggleAns(this)">Показать ответ</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 16: РЕФЛЕКСИЯ ====== -->
+  <section class="slide">
+    <div class="slide-header"><span class="slide-tag">Рефлексия</span><h2>Как ты себя чувствуешь?</h2><p class="subtitle">Выбери карточку.</p></div>
+    <div class="content">
+      <div class="reflect-grid">
+        <div class="reflect-card" onclick="selectReflect(this)"><div class="emo">😎</div><div class="lbl">Всё понял!</div></div>
+        <div class="reflect-card" onclick="selectReflect(this)"><div class="emo">🙂</div><div class="lbl">Почти всё понятно</div></div>
+        <div class="reflect-card" onclick="selectReflect(this)"><div class="emo">🤔</div><div class="lbl">Есть вопросы</div></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav>
+  <button class="nav-prev" onclick="changeSlide(-1)" disabled>← Назад</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-next" onclick="changeSlide(1)">Далее →</button>
+</nav>
+
+<script>
+var current = 0;
+var slides = document.querySelectorAll('.slide');
+var total = slides.length;
+var prevBtn = document.querySelector('.nav-prev');
+var nextBtn = document.querySelector('.nav-next');
+var navInfo = document.getElementById('navInfo');
+var pillsBox = document.getElementById('pills');
+
+for (var i = 0; i < total; i++){
+  var p = document.createElement('div');
+  p.className = 'progress-pill';
+  p.textContent = i + 1;
+  (function(idx){ p.addEventListener('click', function(){ current = idx; showSlide(current); }); })(i);
+  pillsBox.appendChild(p);
+}
+var pills = document.querySelectorAll('.progress-pill');
+
+function showSlide(i){
+  slides.forEach(function(s, idx){ s.classList.toggle('active', idx === i); });
+  pills.forEach(function(p, idx){
+    p.classList.toggle('active', idx === i);
+    p.classList.toggle('done', idx < i);
+  });
+  prevBtn.disabled = (i === 0);
+  nextBtn.disabled = (i === total - 1);
+  navInfo.textContent = 'Слайд ' + (i + 1) + ' из ' + total;
+  fitSlide();
+}
+function changeSlide(dir){
+  current = Math.min(Math.max(current + dir, 0), total - 1);
+  showSlide(current);
+}
+
+function fitSlide(){
+  var s = slides[current]; if(!s) return;
+  s.style.setProperty('--fit', 1);
+  var z = 1;
+  for(var k = 0; k < 5; k++){
+    var over = s.scrollHeight - s.clientHeight;
+    if(over <= 1) break;
+    z = Math.max(0.6, z * (s.clientHeight - 2) / s.scrollHeight);
+    s.style.setProperty('--fit', z);
+  }
+}
+window.addEventListener('resize', fitSlide);
+
+function checkSelect(sel, answer){
+  if(sel.dataset.done === 'true') return;
+  if(sel.value === answer){
+    sel.classList.remove('wrong');
+    sel.classList.add('correct');
+    sel.dataset.done = 'true';
+    sel.disabled = true;
+  } else {
+    sel.classList.add('wrong');
+    setTimeout(function(){ sel.classList.remove('wrong'); }, 1000);
+  }
+}
+
+function checkInput(inp){
+  if(inp.dataset.done === 'true') return;
+  var user = inp.value.trim().replace(',', '.');
+  if(user === '') return;
+  if(Number(user) === Number(inp.dataset.k)){
+    inp.classList.remove('wrong');
+    inp.classList.add('correct');
+    inp.dataset.done = 'true';
+    inp.readOnly = true;
+  } else {
+    inp.classList.add('wrong');
+    setTimeout(function(){ inp.classList.remove('wrong'); }, 1000);
+  }
+}
+
+function checkTF(btn, answer){
+  var card = btn.closest('.tf-card');
+  if(card.dataset.answered === 'true') return;
+  if(answer === card.dataset.answer){
+    btn.classList.add('correct');
+    card.dataset.answered = 'true';
+    card.querySelectorAll('.tf-btn').forEach(function(b){ b.disabled = true; });
+  } else {
+    btn.classList.add('wrong');
+    setTimeout(function(){ btn.classList.remove('wrong'); }, 900);
+  }
+}
+
+function checkCompare(btn, sign){ checkTF(btn, sign); }
+
+function toggleAns(btn){
+  var card = btn.closest('.static-cell');
+  var ans = card.querySelector('.ans');
+  var open = ans.classList.toggle('open');
+  btn.textContent = open ? 'Скрыть ответ' : 'Показать ответ';
+}
+
+function selectReflect(el){
+  document.querySelectorAll('.reflect-card').forEach(function(c){ c.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+
+// Интерактивное построение графика
+var pointsAdded = 0;
+var scaleX = 26; // Масштаб по X
+var scaleY = 60; // Масштаб по Y
+var originX = 30;
+var originY = 270;
+
+function addPoint(x, y, btn){
+  if(btn.classList.contains('active')) return;
+  btn.classList.add('active');
+  
+  var svgGroup = document.getElementById('pointsGroup');
+  var cx = originX + x * scaleX;
+  var cy = originY - y * scaleY;
+  
+  var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  circle.setAttribute("cx", cx);
+  circle.setAttribute("cy", cy);
+  circle.setAttribute("r", "5");
+  circle.setAttribute("fill", "#ea580c");
+  circle.setAttribute("stroke", "#fff");
+  circle.setAttribute("stroke-width", "2");
+  svgGroup.appendChild(circle);
+
+  var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  text.setAttribute("x", cx + 8);
+  text.setAttribute("y", cy - 8);
+  text.setAttribute("font-size", "12");
+  text.setAttribute("font-weight", "bold");
+  text.setAttribute("fill", "#ea580c");
+  text.textContent = "(" + x + ";" + y + ")";
+  svgGroup.appendChild(text);
+  
+  pointsAdded++;
+  document.getElementById('progressText').textContent = 'Отмечено ' + pointsAdded + ' из 4 точек';
+  
+  if(pointsAdded === 4){
+    setTimeout(function(){
+      var lineGroup = document.getElementById('lineGroup');
+      var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      
+      var p0 = {x: originX, y: originY}; // (0,0)
+      var p1 = {x: originX + 1*scaleX, y: originY - 1*scaleY}; // (1,1)
+      var p2 = {x: originX + 4*scaleX, y: originY - 2*scaleY}; // (4,2)
+      var p3 = {x: originX + 9*scaleX, y: originY - 3*scaleY}; // (9,3)
+      
+      // Плавная кривая Безье, точно проходящая через точки
+      path.setAttribute("d", `M ${p0.x} ${p0.y} C ${p0.x + 30} ${p0.y - 20}, ${p1.x - 10} ${p1.y + 10}, ${p1.x} ${p1.y} S ${p2.x - 15} ${p2.y + 15}, ${p2.x} ${p2.y} S ${p3.x - 20} ${p3.y + 15}, ${p3.x} ${p3.y}`);
+      
+      path.setAttribute("fill", "none");
+      path.setAttribute("stroke", "#0d9488");
+      path.setAttribute("stroke-width", "3");
+      path.setAttribute("stroke-dasharray", "600");
+      path.setAttribute("stroke-dashoffset", "600");
+      path.style.animation = "dash 1.5s forwards";
+      lineGroup.appendChild(path);
+      
+      var style = document.createElement('style');
+      style.innerHTML = "@keyframes dash { to { stroke-dashoffset: 0; } }";
+      document.head.appendChild(style);
+
+      // Показываем кнопку для отрицательной ветви
+      document.getElementById('btnNeg').style.display = 'block';
+    }, 500);
+  }
+}
+
+function showNegativeBranch(){
+  document.getElementById('btnNeg').style.display = 'none';
+  var negGroup = document.getElementById('negLineGroup');
+  negGroup.style.opacity = '1';
+  
+  var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  var p0 = {x: originX, y: originY};
+  var p1 = {x: originX + 1*scaleX, y: originY + 1*scaleY};
+  var p2 = {x: originX + 4*scaleX, y: originY + 2*scaleY};
+  var p3 = {x: originX + 9*scaleX, y: originY + 3*scaleY};
+  
+  path.setAttribute("d", `M ${p0.x} ${p0.y} C ${p0.x + 30} ${p0.y + 20}, ${p1.x - 10} ${p1.y - 10}, ${p1.x} ${p1.y} S ${p2.x - 15} ${p2.y - 15}, ${p2.x} ${p2.y} S ${p3.x - 20} ${p3.y - 15}, ${p3.x} ${p3.y}`);
+  
+  path.setAttribute("fill", "none");
+  path.setAttribute("stroke", "#f59e0b");
+  path.setAttribute("stroke-width", "3");
+  path.setAttribute("stroke-dasharray", "600");
+  path.setAttribute("stroke-dashoffset", "600");
+  path.style.animation = "dash 1.5s forwards";
+  negGroup.appendChild(path);
+}
+
+window.addEventListener('load', function(){
+  showSlide(0);
+  setTimeout(function(){ document.body.classList.add('ready'); }, 4000);
+});
+</script>
+</body>
+</html>
