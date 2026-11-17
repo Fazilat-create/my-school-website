@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 1. Квадратный корень из степени</title>
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=sq5i1EqtMr4pMOkFNcsQHAzcIbSp2TPNW2v2z3Lx6O7603JFimQ-unUyyLTHjxGlM7d-jdvF8Irt68rhR8lcTLtg92hYK7Z_fGZN9dGHADpY97ZLxX3hRKVD3EmdsmqZUmfuLgliySk4pRno9qMxbiFAiAQbpaFB3j_ela1-KXxLnGZaBjQHEq3WYS3JsfOUBVlerJBAt-Fw7DeWMa2_WNTAKxF87FMd9vpu3Qd08Uy8z0BNbJvJ4FKVJwvY75GXboP6wiDAjFsQVPLBi9rPFguMdtXez6LFtQ88aDZtTHyoK2ZMX8CV9y0DNtWYXilNwC6xud2JeRDVJEgx_XHWN5euntPs-Xwz-lFxLiNGFXDOcR-4f166A06K4kDtA1gt8V3aj6q1TvbYOJxKj51QnpOe3BJrDsY8xUpQiS5pHLiWwpAdW0XBr8uNWG0wa9lb26FheqNy4MgXKUgdddOwAVOVxM6kjy9ubzkfYv_LpM9eIPvs0gL7w2Wuq_RjbHLCWLaZN0ZbVRTMTINyuV5RCNx4XEOuy5XI-0X4rT-UZYD18Uiy7Hz2uzcIAytkye1xsbRbu6hLQKuOOsdZGPyDnmL12QnozzjjCVPQMUIUcTiGg-i0EaQK69elqQMug2UqrHAtVA2KR8LtZqKpFge2Xm7YcvPm7nsCylDibxrSUTnBgnSJ9TwnPKe_jnVPyp7YvByBzN37TBb5lzp2dvFB_oPKTMEoNt5DhNK8haLlX8NqhMGKn4SWmtF0tbfPxgFR6mHMN4wJjmZetvrHcJdutibOi9EX3v1pzM9tcb0xdX0sU9t1fQCiDYfKnD6yjBTrPQj5a7LbcsC-f2Kc5YDqKEIbRwPyWKX-23nSlSy-av8G7mV-E2QkfKvBuhE4i6_Pmhxs3T2KQlO9OzIUyA_4FMkpsbAYCu3OObM8jVruh-ntBqneVlNZaf2ypMfkBWmq7OIsmtk4g1vybnZrO4-dJfNiDOpu2rjmkfXxAXI7-J4niUn7TUH0KVQ90vJIWm9Na_xvXPwawtzh8dsd3XsMFpcfpuesa_t5XEXy78Fe-TMEwy1eNHztgumQnhPgV41AzDOuKq51oyzp1ZmpFwK6K0DqFSWaTtELoTOcpgRaO_xkiyaaps9Ge3FKvmG5Z50oaVe0MLeGIrkFVG0ImBvJVY4AA8SYBkJe4gn6247Av6y7fn6limDZHdMM37Fe_2W93MpBvtGVKFcKD_bvC8HVmmZS0tc4PvpBunEi7vVk8V-9EnQ2Yy-RCHaHZjzA1SqsfY5sxe29VATT6hC_fLkCOjDIEqNC_hpYOREENqzgXuMXDRHRtRfDzPrgMzdmhBwmr3SiQSDFaMiICYd9xJ0EDn75zqGiDXWWQgA_9nNFX0F16CyGGHKi7mRUn2fkPPipakq64sJU3BgbSjjNiTy0SY6l75LHtwOnUQohFH7sAbpsyEmlnv4dC3fwiKn-7lzTcKhU6Hv8XKU5KGf7ei03k2rSeLUvNOf88weia6XCz3W9VFSKhrDYL5GLuYLdnB31ToIIjZiBU9GEoAcgKvf94LoKnzpaOOsWUK_uNjJfJX09CsLm6UtEicpc_5gzFdB2kA7x-DC3b15BERfEPIdJVFgEXKu1qCmx5la7FPOd6agPfjGiVaY6Fqm1ickuYOzUqxGXfg8wOCgfuhHs_IHwm5xk5lSDx2ix91ATNJicIdpN0jskJgCb0iO37leEQw5P" nonce="6a08755eaf799eddbc880398b9293437" charset="UTF-8"></script><link rel="stylesheet" crossorigin="anonymous" href="https://gc.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly9tYWlsLWF0dGFjaG1lbnQuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2F0dGFjaG1lbnQvdS8wLz91aT0yJmlrPWM5NzlmOGUyNDQmYXR0aWQ9MC4xJnBlcm1tc2dpZD1tc2ctZjoxODgyMDMyODQwMzI4ODM3MjU2JnRoPTFhMWU1MmU1OTc2Yjc4ODgmdmlldz1hdHQmZGlzcD1zYWZlJnJlYWxhdHRpZD1mX213amg2aGg5MCZ6dyZzYWRkYmF0PUFOR2pkSi10eGlEdno2RGpjMHJVVkdqbnVoVkxxQ29IZGJMTEpmVG95M01JMTExdGg5MXZtMmc4UjVGQV9ld3o2NXFDVjNtLXkyOWw0UEdkNWpKNWluc3VXXzhtUDY3S3M3bmlfbktZY1BpLUVTR3lIeHNUbzlSTGxqdk9ZaE5RaEVBXzBfc0V5Nml4d0Q2UFRKYks1OXdscVB3dS1Ld1pTRHJrTkxJUU9pSE1jZTRDamVWVUVpZnRGYmlyUU1NZ084MzNESmFIbEhCZHg2a2NFMU8zQXI3QWdEZzBwM2ZsVFRFYUxFemV1c1czQzY1TlBaQUpXV3pELXBUanpBREJnU3ZrRFQydHh1b0g1WDN0alFKQVBQemI0X2V5b3NNU25vS0JORDNKbTJkNEo5WkEzek11cEQwMFNkMWlLZS1tdnBVZzBFZ1FydHQ0cWZ4VF95OUFpRnN2cE83aXpLLTN4VnlySWk1elNsT1RzTmdtV0tUSzNONkJFamRyZ2RQRDRIVXAxWnhCRF81TUk3WTZ3TldXbTVON1U3V2tySlhxOW96ai03STFkbUdzNXNXS20yeUhjVWtRX1U3b2hRTTJ3MGtEb0lwa1hRVDZqc25BNzZGeDFsNzJjWjc1azhyWUN4Zm9pel9pdG5ldldMRF9RT21ERzhPc2dwM1VISWxJNEJmTkl5U3g1LS1HOWlrUnp3ZHFzUm54d0FJd1FESEVuV094WlphRGRiUnBmc1hvc0NKd0VTdVdjR29WT0J0UGlONGgwZFY0eFBKeVFOT2NOblUwUGZGNjg5ai04S3UwT1FTbGJSVFRBQjRuS0xSSkRhdnh4UVdxLXRxZ20wckFRMThMMGI0MlE0cnZRSnhncEZVOGgxeS1IcFNONXduZXVrem5HdS15QW5ibGNoSGdJRm4xNTlXOXI5YTNRM2VsSl9ybTJ0b1VuLTVudTRTcnFYczJZazB3dDJOeXVvUGt3Y0toUjhiLVBhMS1RaGx3bUlvVVU5X1pEZVQzMzd3MFlEMWw1WWRFSGxVdHMwT2VrTjRiOVV6QXdqZGZJZk40UzZncDE1OE9mUjhvVzFaVWZhRFBtaFdsYmQ3OG9CeHo1d3ItS3p3bm9PWHVUa3lFUUI4YXN2X1EtbU5nTEFFRFpVZ181bThRckxEcnNudVNnZU5qX0NueUdTM0otMldKWlc5SmQ5clFiMnN2WXpISGt5dGM4ZlpCRWR3SUN0TnpHSXhra3pCYUE5RkVJZ0lCTnhzRjJJaFJlOWdnZkhBam5GQlRua0tQdzFVYVRfUjlIaGE1TW1xc0dyNW8yMDdQUFdSblJjc2wwZENIMnZ6VlVXRE54RmhXTUJiQkhqdGJOcklONlp6blRJVjFOcHFtMkZyaWFFUTVNNzQ3dTE5Y3pWX2hhNnZqanc"/><script>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]},svg:{fontCache:'global'}};</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+:root{
+  --blue:#2563eb;--blue-dark:#1e40af;--blue-light:#dbeafe;
+  --teal:#0d9488;--teal-dark:#0f766e;--teal-light:#ccfbf1;
+  --orange:#ea580c;--orange-dark:#c2410c;--orange-light:#ffedd5;
+  --ok:#10b981;--ok-light:#d1fae5;--err:#ef4444;--err-light:#fee2e2;
+  --text:#1e293b;--muted:#64748b;--border:#bfdbfe;
+}
+*{box-sizing:border-box;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;}
+html,body{margin:0;padding:0;height:100%;overflow:hidden;}
+body{
+  background:radial-gradient(1200px 600px at 5% -5%,#eff6ff 0%,transparent 55%),
+             radial-gradient(900px 500px at 100% 100%,#f0fdfa 0%,transparent 55%),#f8fafc;
+  color:var(--text);display:flex;flex-direction:column;height:100vh;
+}
+body.board-mode{background:#e2e8f0;}
+
+/* ---------- шапка ---------- */
+header{height:52px;padding:0 18px;display:flex;align-items:center;gap:14px;flex-shrink:0;
+  background:rgba(248,250,252,.9);border-bottom:1px solid var(--border);z-index:10;}
+.header-title{font-size:14px;font-weight:800;color:var(--blue-dark);white-space:nowrap;}
+.progress-pills{display:flex;gap:3px;flex:1;overflow-x:auto;scrollbar-width:none;justify-content:center;}
+.progress-pill{height:22px;min-width:22px;padding:0 6px;border-radius:11px;background:#fff;flex-shrink:0;
+  border:2px solid var(--border);display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;color:var(--muted);cursor:pointer;transition:.2s;}
+.progress-pill.active{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;border-color:transparent;}
+.progress-pill.done{background:var(--teal-light);color:var(--teal);border-color:var(--teal);}
+.progress-pill.reserve{border-style:dashed;}
+.hbtn{border:2px solid var(--border);background:#fff;color:var(--blue-dark);border-radius:10px;padding:5px 12px;
+  font-weight:800;font-size:13px;cursor:pointer;white-space:nowrap;}
+.hbtn:hover{border-color:var(--blue);}
+#timer{display:flex;align-items:center;gap:6px;font-weight:800;color:var(--blue-dark);font-size:14px;}
+#timer.warn{color:var(--err);}
+#tval{min-width:48px;text-align:center;font-variant-numeric:tabular-nums;}
+
+/* ---------- сцена 16:9 ---------- */
+#viewport{flex:1;position:relative;min-height:0;overflow:hidden;}
+#stage{position:absolute;left:0;top:0;width:1280px;height:720px;transform-origin:0 0;background:#fff;
+  border-radius:18px;box-shadow:0 10px 40px rgba(37,99,235,.12);border:1px solid var(--border);overflow:hidden;}
+body.board-mode #stage{border-radius:0;box-shadow:none;border:none;}
+body.board-mode header,body.board-mode nav{display:none;}
+body.board-mode .no-board,body.board-mode .ans,body.board-mode .rv{display:none !important;}
+body.board-mode .concl{visibility:hidden !important;}
+
+.slide{position:absolute;inset:0;display:none;flex-direction:column;padding:24px 44px 22px;}
+.slide.active{display:flex;animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+.sh{flex-shrink:0;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:12px;}
+.sh h2{font-size:30px;margin:6px 0 2px;color:var(--blue-dark);font-weight:800;line-height:1.15;}
+.sh h2.green{color:var(--teal-dark);} .sh h2.orange{color:var(--orange-dark);}
+.subtitle{color:var(--muted);font-size:17px;margin:2px 0 0;}
+.tag{display:inline-block;background:var(--blue-light);color:var(--blue-dark);padding:5px 13px;border-radius:16px;
+  font-size:12px;font-weight:800;border:1px solid #93c5fd;}
+.tag .min{font-weight:600;opacity:.8;}
+.tag.green{background:var(--teal-light);color:var(--teal-dark);border-color:#5eead4;}
+.tag.orange{background:var(--orange-light);color:var(--orange-dark);border-color:#fdba74;}
+.tag.red{background:#fee2e2;color:#991b1b;border-color:#fca5a5;}
+.tag.grey{background:#f1f5f9;color:#475569;border-color:#cbd5e1;}
+.tools{display:flex;gap:8px;align-items:center;flex-shrink:0;padding-top:4px;}
+.badge{background:#fef3c7;color:#92400e;border:1px solid #fcd34d;padding:5px 10px;border-radius:10px;font-size:12px;font-weight:800;}
+.tool{border:2px solid var(--teal);background:var(--teal-light);color:var(--teal-dark);border-radius:10px;
+  padding:5px 12px;font-weight:800;font-size:13px;cursor:pointer;}
+.content{flex:1;min-height:0;display:flex;flex-direction:column;gap:12px;}
+
+/* ---------- титульный слайд ---------- */
+.title-slide{justify-content:center;align-items:center;text-align:center;}
+.title-slide h1{font-size:52px;margin:16px 0 6px;color:var(--blue-dark);font-weight:800;}
+.title-slide .lead{font-size:21px;color:var(--muted);margin:0 0 22px;max-width:860px;}
+.goals{background:#fff;border:2px solid var(--border);border-radius:16px;padding:16px 30px;text-align:left;max-width:860px;width:100%;}
+.goals h3{margin:0 0 8px;color:var(--blue-dark);font-size:21px;}
+.goals ul{margin:0;padding-left:22px;font-size:19px;line-height:1.6;}
+
+/* ---------- план урока ---------- */
+.plan{display:flex;flex-direction:column;gap:7px;flex:1;min-height:0;}
+.plan-row{display:flex;align-items:center;gap:14px;background:#fff;border:2px solid var(--border);border-radius:12px;padding:0 16px;flex:1;min-height:0;}
+.plan-n{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.plan-t{flex:1;font-size:19px;font-weight:700;}
+.plan-t small{display:block;font-size:14px;color:var(--muted);font-weight:500;}
+.plan-m{font-weight:800;color:var(--teal-dark);background:var(--teal-light);border-radius:10px;padding:4px 12px;font-size:16px;}
+.plan-total{text-align:right;color:var(--muted);font-weight:700;font-size:15px;flex-shrink:0;}
+
+/* ---------- карточки-переворотки ---------- */
+.flip-grid{display:grid;gap:18px;flex:1;min-height:0;grid-auto-rows:1fr;}
+.flip-card{perspective:900px;cursor:pointer;min-height:0;}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:700;border:2px solid var(--border);}
+.flip-front{background:linear-gradient(135deg,#eff6ff,#dbeafe);color:var(--blue-dark);}
+.flip-front::after{content:'нажми';position:absolute;bottom:8px;right:12px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.flip-back{background:linear-gradient(135deg,#ecfdf5,#d1fae5);color:#065f46;transform:rotateY(180deg);border-color:var(--ok);}
+
+/* ---------- ячейки «в клетку» (для доски) ---------- */
+.grid{display:grid;gap:18px;flex:1;min-height:0;grid-auto-rows:1fr;}
+.cell{position:relative;background:#fff;border:2px dashed #93c5fd;border-radius:14px;padding:12px 14px 14px;
+  display:flex;flex-direction:column;gap:8px;min-height:0;}
+.cell::before{content:'✏️ Решение';position:absolute;top:-10px;left:16px;background:#fff;padding:0 8px;font-size:10px;
+  font-weight:800;color:var(--blue);text-transform:uppercase;border-radius:5px;}
+.chead{display:flex;align-items:center;gap:10px;}
+.let{display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--blue),var(--teal));
+  color:#fff;font-weight:800;font-size:14px;min-width:30px;height:30px;border-radius:8px;flex-shrink:0;}
+.expr{flex:1;min-width:0;background:rgba(239,246,255,.95);border-radius:8px;padding:6px 12px;font-size:22px;font-weight:700;
+  border:1px solid rgba(37,99,235,.15);line-height:1.5;}
+.work{flex:1;min-height:36px;border-radius:10px;border:1px solid rgba(37,99,235,.18);
+  background:linear-gradient(#dbeafe 1px,transparent 1px),linear-gradient(90deg,#dbeafe 1px,transparent 1px);background-size:20px 20px;background-color:#fff;}
+.eye{border:none;background:var(--blue-light);color:var(--blue-dark);border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:15px;flex-shrink:0;}
+.eye:hover{background:#bfdbfe;}
+.ans{position:absolute;right:20px;bottom:20px;background:var(--ok-light);border:2px solid var(--ok);color:#065f46;
+  border-radius:10px;padding:6px 14px;font-size:21px;font-weight:700;display:none;max-width:92%;text-align:right;z-index:2;}
+.cell.open .ans,.slide.show-ans .ans{display:block;}
+
+/* ---------- таблица-исследование ---------- */
+.tbl{border-collapse:separate;border-spacing:0;width:100%;font-size:24px;}
+.tbl th{background:var(--blue);color:#fff;padding:9px 12px;font-size:18px;}
+.tbl th:first-child{border-radius:12px 0 0 0;} .tbl th:last-child{border-radius:0 12px 0 0;}
+.tbl td{border:1px solid var(--border);padding:5px 12px;text-align:center;background:#fff;}
+.tbl tr:nth-child(even) td{background:#f8fafc;}
+.inp{width:130px;font-size:22px;font-weight:700;text-align:center;padding:5px 8px;border:2px solid var(--border);border-radius:10px;outline:none;color:var(--blue-dark);}
+.inp:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.15);}
+.inp.correct{background:var(--ok-light);border-color:var(--ok);color:#065f46;}
+.inp.wrong{background:var(--err-light);border-color:var(--err);animation:shake .35s;}
+@keyframes shake{25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
+.concl{visibility:hidden;}
+.slide.all-done .concl,.slide.show-ans .concl{visibility:visible;}
+.rv{visibility:hidden;}
+.slide.show-ans .rv{visibility:visible;}
+
+/* ---------- теория ---------- */
+.theory{background:#fff;border:2px solid var(--border);border-radius:16px;padding:18px 30px;text-align:center;}
+.theory p{font-size:20px;line-height:1.5;margin:8px 0;}
+.formula{background:linear-gradient(135deg,#eff6ff,#dbeafe);border:2px solid var(--blue);border-radius:12px;padding:14px 24px;
+  text-align:center;font-size:40px;font-weight:700;color:var(--blue-dark);margin:12px 0;box-shadow:0 4px 15px rgba(37,99,235,.1);}
+.key{background:linear-gradient(135deg,#fef3c7,#fde68a);border-left:6px solid #d97706;border-radius:12px;padding:12px 22px;
+  font-size:19px;line-height:1.5;text-align:left;}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.mini{background:#fff;border:2px solid var(--border);border-radius:12px;padding:10px 16px;font-size:22px;font-weight:700;text-align:center;}
+.mini small{display:block;font-size:14px;color:var(--muted);font-weight:600;margin-bottom:4px;}
+
+.step-grid{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:12px;align-items:stretch;}
+.step-box{background:#fff;border:2px solid var(--border);border-radius:12px;padding:10px 12px;text-align:center;font-size:28px;font-weight:700;box-shadow:0 4px 10px rgba(0,0,0,.04);}
+.step-box.ok{background:var(--ok-light);border-color:var(--ok);}
+.step-arrow{font-size:28px;color:var(--muted);font-weight:700;align-self:center;}
+.step-title{font-size:12px;color:var(--muted);font-weight:700;margin-bottom:3px;text-transform:uppercase;letter-spacing:1px;}
+.reveal{cursor:pointer;} .reveal .a{display:none;} .reveal.on .a{display:block;} .reveal.on .q{display:none;}
+.reveal .q{color:var(--muted);font-size:30px;}
+.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;flex:1;min-height:0;}
+.card{background:#fff;border:2px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;flex-direction:column;gap:8px;text-align:center;justify-content:center;}
+.card h4{margin:0;font-size:17px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.card .big{font-size:34px;font-weight:700;color:var(--blue-dark);}
+.card .why{font-size:17px;line-height:1.4;}
+.card.good{border-color:var(--ok);background:#f0fdf4;} .card.warn{border-color:#f59e0b;background:#fffbeb;}
+
+/* ---------- тест ---------- */
+.qgrid{display:grid;gap:14px;flex:1;min-height:0;grid-auto-rows:1fr;}
+.qcard{position:relative;border:2px solid var(--border);border-radius:14px;padding:12px 18px 12px 52px;display:flex;flex-direction:column;gap:8px;background:#fff;min-height:0;justify-content:center;}
+.qnum{position:absolute;left:14px;top:12px;width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.qtext{font-size:21px;font-weight:700;}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.opt{border:2px solid var(--border);background:#f8fafc;border-radius:10px;padding:7px 10px;font-size:20px;font-weight:600;cursor:pointer;color:var(--text);}
+.opt:hover{border-color:var(--blue);background:#eff6ff;}
+.opt.good{background:var(--ok-light);border-color:var(--ok);color:#065f46;}
+.opt.bad{background:var(--err-light);border-color:var(--err);color:#991b1b;}
+.qcard.done .opt{cursor:default;}
+.expl{display:none;font-size:15px;color:#065f46;line-height:1.35;}
+.qcard.done .expl{display:block;}
+.qscore{flex-shrink:0;text-align:center;font-weight:800;color:var(--teal-dark);font-size:16px;min-height:20px;}
+
+/* ---------- «найди ошибку» ---------- */
+.qgrid>.qcard:only-child{padding-left:22px;}
+.qgrid>.qcard:only-child .qnum{display:none;}
+
+.stmts{display:flex;flex-direction:column;gap:10px;flex:1;min-height:0;}
+.stmt{display:grid;grid-template-columns:1fr auto 1.25fr;gap:16px;align-items:center;background:#fff;border:2px solid var(--border);border-radius:12px;padding:0 18px;flex:1;min-height:0;}
+.st-expr{font-size:26px;font-weight:700;}
+.st-btns{display:flex;gap:8px;}
+.st-btns button{border:2px solid var(--border);background:#f8fafc;border-radius:10px;padding:8px 16px;font-size:16px;font-weight:800;cursor:pointer;}
+.st-btns button:hover{border-color:var(--blue);}
+.st-fb{font-size:17px;color:var(--muted);visibility:hidden;line-height:1.35;}
+.stmt.done .st-fb{visibility:visible;}
+.stmt.good{border-color:var(--ok);background:#f0fdf4;} .stmt.bad{border-color:var(--err);background:#fef2f2;}
+.stmt.done .st-btns button{cursor:default;}
+
+/* ---------- рефлексия ---------- */
+.reflect-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.reflect-card{background:#fff;padding:16px;border-radius:14px;border:3px solid var(--border);text-align:center;cursor:pointer;transition:.2s;}
+.reflect-card:hover{border-color:var(--teal);}
+.reflect-card.selected{border-color:var(--blue);background:var(--blue-light);box-shadow:0 8px 22px rgba(37,99,235,.2);}
+.reflect-card .emo{font-size:42px;} .reflect-card .lbl{font-size:18px;font-weight:800;margin-top:6px;}
+.hw{background:#fff;border:2px solid var(--border);border-radius:14px;padding:12px 24px;font-size:20px;line-height:1.55;}
+.hw ol{margin:6px 0 0;padding-left:26px;} .hw li{margin:6px 0;}
+.hw h3{margin:0;color:var(--blue-dark);}
+
+/* ---------- графики ---------- */
+.gwrap{display:flex;gap:26px;align-items:flex-start;flex:1;min-height:0;}
+.plane{flex-shrink:0;}
+.gright{flex:1;display:flex;flex-direction:column;gap:12px;}
+.xy{border-collapse:collapse;width:100%;font-size:22px;font-weight:700;}
+.xy td,.xy th{border:2px solid #93c5fd;text-align:center;height:46px;min-width:46px;padding:0 4px;}
+.xy th{background:var(--blue-light);color:var(--blue-dark);width:96px;font-size:18px;}
+.xy td.wr{background:linear-gradient(#dbeafe 1px,transparent 1px),linear-gradient(90deg,#dbeafe 1px,transparent 1px);background-size:20px 20px;color:#065f46;}
+
+/* ---------- форма работы, заметки учителю ---------- */
+.mode{display:inline-block;margin-left:8px;background:#fff;color:var(--muted);border:1px solid var(--border);padding:4px 11px;border-radius:14px;font-size:12px;font-weight:800;}
+.note{display:none;position:absolute;left:44px;right:44px;bottom:14px;background:#1e293b;color:#f1f5f9;border-radius:12px;padding:12px 18px;font-size:15px;line-height:1.45;z-index:20;box-shadow:0 8px 24px rgba(0,0,0,.3);}
+.note b{color:#fcd34d;}
+.slide.show-note .note{display:block;}
+.tool.tnote{border-color:#f59e0b;background:#fef3c7;color:#92400e;}
+
+/* ---------- «доказательство Васи» ---------- */
+.proof{display:flex;flex-direction:column;gap:10px;}
+.pline{display:flex;align-items:center;gap:14px;background:#fff;border:2px solid var(--border);border-radius:12px;padding:8px 16px;min-height:62px;font-size:26px;font-weight:700;}
+.pline .pn{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.pline .q{font-size:16px;font-weight:600;}
+.pline.reveal.on{background:#eff6ff;}
+.gtrio{display:flex;gap:14px;justify-content:center;flex-shrink:0;}
+.gtrio .plane{flex-shrink:0;}
+
+/* ---------- игра «Найди пару» ---------- */
+.mem{display:grid;gap:12px;flex:1;min-height:0;grid-auto-rows:1fr;}
+.mcard{perspective:800px;cursor:pointer;min-height:0;}
+.mi{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d;}
+.mcard.open .mi,.mcard.matched .mi{transform:rotateY(180deg);}
+.mf,.mb{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;align-items:center;justify-content:center;border-radius:12px;font-size:28px;font-weight:700;border:2px solid var(--border);}
+.mf{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;font-size:34px;}
+.mb{background:#eff6ff;color:var(--blue-dark);transform:rotateY(180deg);text-align:center;padding:0 6px;}
+.mcard.matched .mb{background:var(--ok-light);border-color:var(--ok);color:#065f46;}
+.mstat{flex-shrink:0;display:flex;gap:16px;align-items:center;justify-content:center;font-weight:800;color:var(--teal-dark);font-size:17px;}
+
+/* ---------- навигация ---------- */
+nav{height:56px;padding:0 24px;background:rgba(255,255,255,.95);border-top:1px solid var(--border);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;flex-shrink:0;}
+nav .nav-prev{justify-self:start;} nav .nav-next{justify-self:end;}
+nav button{padding:9px 26px;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:.2s;}
+nav .nav-prev{background:#fff;color:var(--blue);border:2px solid var(--blue);}
+nav .nav-prev:hover:not(:disabled){background:var(--blue-light);}
+nav .nav-next{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;}
+nav .nav-next:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,99,235,.3);}
+nav button:disabled{opacity:.3;cursor:default;}
+.nav-info{font-size:14px;color:var(--muted);font-weight:700;min-width:140px;text-align:center;}
+#exitBoard{display:none;position:fixed;top:10px;right:10px;z-index:50;opacity:0;transition:.2s;}
+body.board-mode #exitBoard{display:block;}
+#exitBoard:hover{opacity:1;}
+#toast{display:none;position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:rgba(30,41,59,.92);color:#fff;
+  padding:10px 20px;border-radius:12px;font-size:14px;z-index:60;}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-title">Алгебра 8 · Урок 1: Открытие нового</div>
+  <div class="progress-pills" id="pills"></div>
+  <div id="timer"><span>⏱</span><span id="tval">45:00</span>
+    <button class="hbtn" id="tbtn" onclick="tToggle()" title="Старт / пауза">▶</button>
+    <button class="hbtn" onclick="tReset()" title="Сбросить таймер">⟲</button></div>
+  <button class="hbtn" onclick="toggleBoard()" title="Чистый слайд для скриншота (клавиша B)">🖼 Режим доски</button>
+</header>
+<div id="viewport"><div id="stage">
+<section class="slide title-slide" data-name="Титул"><span class="tag">Алгебра · 8 класс · Урок 1 из 2</span><h1>Квадратный корень из степени</h1><p class="lead">Сегодня мы «докажем», что <b>−3 = 3</b>. А потом найдём ошибку — и откроем новое правило!</p><div class="goals"><h3>🎯 Цели урока</h3><ul><li>Узнать, чему равны $\sqrt{x^2}$ и $\sqrt{x^{2n}}$ и почему здесь появляется <b>модуль</b></li><li>Научиться применять правило при вычислениях и упрощении выражений</li><li>Повторить: степени, сравнение корней, функции; потренироваться в заданиях формата ОГЭ</li></ul></div></section>
+<section class="slide" data-name="План"><div class="sh"><div><span class="tag grey">Этап 1 · Организационный момент<span class="min"> · 1 мин</span></span><h2 class="">План урока</h2></div><div class="tools"></div></div><div class="content"><div class="plan"><div class="plan-row"><div class="plan-n">1</div><div class="plan-t">Организационный момент, интрига урока<small>приветствие, настрой, цели</small></div><div class="plan-m">2 мин</div></div><div class="plan-row"><div class="plan-n">2</div><div class="plan-t">Устная разминка (без записи)<small>сравнение корней, «лишнее», графики, степени</small></div><div class="plan-m">8 мин</div></div><div class="plan-row"><div class="plan-n">3</div><div class="plan-t">Проблемная ситуация<small>«Доказательство» Васи: −3 = 3</small></div><div class="plan-m">3 мин</div></div><div class="plan-row"><div class="plan-n">4</div><div class="plan-t">Открытие нового: исследование<small>заполняем таблицу, формулируем гипотезу</small></div><div class="plan-m">6 мин</div></div><div class="plan-row"><div class="plan-n">5</div><div class="plan-t">Теория и обобщение<small>правило, чётные степени, когда нужен модуль</small></div><div class="plan-m">8 мин</div></div><div class="plan-row"><div class="plan-n">6</div><div class="plan-t">Закрепление: от простого к ОГЭ<small>клетка, задания ОГЭ, игра «Найди пару»</small></div><div class="plan-m">12 мин</div></div><div class="plan-row"><div class="plan-n">7</div><div class="plan-t">Самопроверка в формате ОГЭ<small>тест из 4 заданий</small></div><div class="plan-m">4 мин</div></div><div class="plan-row"><div class="plan-n">8</div><div class="plan-t">Итог, рефлексия, домашнее задание<small></small></div><div class="plan-m">2 мин</div></div></div><div class="plan-total">Всего: 45 минут · в конце презентации — резервные слайды для сильного класса</div></div></section>
+<section class="slide" data-name="Светофор"><div class="sh"><div><span class="tag ">Этап 2 · Разминка<span class="min"> · 2 мин</span></span><span class="mode no-board">🗣 устно, хором</span><h2 class="">Светофор: больше, меньше или равно?</h2><p class="subtitle">Решаем устно, без записи. Выберите знак — ответ проверится сразу.</p></div><div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div><div class="content"><div class="qgrid" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div class="qcard"><div class="qnum">1</div><div class="qtext">Сравните: $\sqrt{50}$ и $7$</div><div class="opts" style="grid-template-columns:repeat(3,1fr)"><button class="opt" data-ok="0" onclick="pick(this)">$\lt$</button><button class="opt" data-ok="0" onclick="pick(this)">$=$</button><button class="opt" data-ok="1" onclick="pick(this)">$\gt$</button></div><div class="expl">$7^2=49\lt50$, значит $\sqrt{50}\gt7$.</div></div><div class="qcard"><div class="qnum">2</div><div class="qtext">Сравните: $\sqrt{0{,}16}$ и $0{,}4$</div><div class="opts" style="grid-template-columns:repeat(3,1fr)"><button class="opt" data-ok="0" onclick="pick(this)">$\lt$</button><button class="opt" data-ok="1" onclick="pick(this)">$=$</button><button class="opt" data-ok="0" onclick="pick(this)">$\gt$</button></div><div class="expl">$0{,}4^2=0{,}16$.</div></div><div class="qcard"><div class="qnum">3</div><div class="qtext">Сравните: $\sqrt{30}$ и $5{,}5$</div><div class="opts" style="grid-template-columns:repeat(3,1fr)"><button class="opt" data-ok="1" onclick="pick(this)">$\lt$</button><button class="opt" data-ok="0" onclick="pick(this)">$=$</button><button class="opt" data-ok="0" onclick="pick(this)">$\gt$</button></div><div class="expl">$5{,}5^2=30{,}25\gt30$, значит $\sqrt{30}\lt5{,}5$.</div></div><div class="qcard"><div class="qnum">4</div><div class="qtext">Сравните: $\sqrt{2^4}$ и $5$</div><div class="opts" style="grid-template-columns:repeat(3,1fr)"><button class="opt" data-ok="1" onclick="pick(this)">$\lt$</button><button class="opt" data-ok="0" onclick="pick(this)">$=$</button><button class="opt" data-ok="0" onclick="pick(this)">$\gt$</button></div><div class="expl">$\sqrt{2^4}=4\lt5$.</div></div><div class="qcard"><div class="qnum">5</div><div class="qtext">Сравните: $\sqrt{0{,}5}$ и $0{,}5$</div><div class="opts" style="grid-template-columns:repeat(3,1fr)"><button class="opt" data-ok="0" onclick="pick(this)">$\lt$</button><button class="opt" data-ok="0" onclick="pick(this)">$=$</button><button class="opt" data-ok="1" onclick="pick(this)">$\gt$</button></div><div class="expl">У числа между 0 и 1 корень <b>больше</b> самого числа: $\sqrt{0{,}5}\approx0{,}71$.</div></div><div class="qcard"><div class="qnum">6</div><div class="qtext">Сравните: $\sqrt{(-3)^2}$ и $-3$</div><div class="opts" style="grid-template-columns:repeat(3,1fr)"><button class="opt" data-ok="0" onclick="pick(this)">$\lt$</button><button class="opt" data-ok="0" onclick="pick(this)">$=$</button><button class="opt" data-ok="1" onclick="pick(this)">$\gt$</button></div><div class="expl">$\sqrt{(-3)^2}=\sqrt9=3\gt-3$. Запомним — пригодится!</div></div></div><div class="qscore"></div></div><div class="note no-board"><b>Как провести:</b> 2 мин, темп быстрый. Ученики показывают знак на пальцах или карточкой, затем проверка на экране. <b>Ловушки:</b> √0,5 &gt; 0,5 (многие думают наоборот); последний пример — «затравка» к теме урока. <b>Приём:</b> спросите «как сравнить, не извлекая корень?» — возвести числа в квадрат.</div></section>
+<section class="slide" data-name="Лишнее"><div class="sh"><div><span class="tag ">Этап 2 · Разминка<span class="min"> · 2 мин</span></span><span class="mode no-board">🗣 устно, в парах</span><h2 class="">Найди лишнее</h2><p class="subtitle">В каждой четвёрке три выражения равны, одно — лишнее. Устно!</p></div><div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div><div class="content"><div class="qgrid" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div class="qcard"><div class="qnum">1</div><div class="qtext">Найди лишнее</div><div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="0" onclick="pick(this)">$\sqrt{49}$</button><button class="opt" data-ok="0" onclick="pick(this)">$\sqrt{7^2}$</button><button class="opt" data-ok="0" onclick="pick(this)">$\sqrt{(-7)^2}$</button><button class="opt" data-ok="1" onclick="pick(this)">$-\sqrt{49}$</button></div><div class="expl">Три выражения равны $7$, а $-\sqrt{49}=-7$.</div></div><div class="qcard"><div class="qnum">2</div><div class="qtext">Найди лишнее</div><div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="0" onclick="pick(this)">$(-5)^2$</button><button class="opt" data-ok="0" onclick="pick(this)">$5^2$</button><button class="opt" data-ok="1" onclick="pick(this)">$-5^2$</button><button class="opt" data-ok="0" onclick="pick(this)">$(-5)\cdot(-5)$</button></div><div class="expl">$-5^2=-25$ (минус не в скобках), остальные равны $25$.</div></div><div class="qcard"><div class="qnum">3</div><div class="qtext">Найди лишнее</div><div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="0" onclick="pick(this)">$a^2\cdot a^3$</button><button class="opt" data-ok="0" onclick="pick(this)">$a^5$</button><button class="opt" data-ok="1" onclick="pick(this)">$(a^2)^3$</button><button class="opt" data-ok="0" onclick="pick(this)">$a^{10}:a^5$</button></div><div class="expl">$(a^2)^3=a^6$, остальные равны $a^5$.</div></div></div><div class="qscore"></div></div><div class="note no-board"><b>Как провести:</b> 30 секунд на обсуждение в парах, затем ответ с обоснованием. <b>Цель:</b> вспомнить, что корень — число неотрицательное (первый набор), и свойства степеней (третий) — они понадобятся для $(a^m)^n$.</div></section>
+<section class="slide" data-name="Угадай график"><div class="sh"><div><span class="tag ">Этап 2 · Разминка<span class="min"> · 2 мин</span></span><span class="mode no-board">🗣 устно</span><h2 class="">Угадай график</h2><p class="subtitle">Три графика — три вопроса. Проверяем линейную функцию и обратную пропорциональность.</p></div><div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div><div class="content"><div class="gtrio"><svg class="plane" width="292" height="244" viewBox="-26 -26 292 244" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="240" height="192" fill="#fff" stroke="#93c5fd" stroke-width="2"/><line x1="0" y1="0" x2="0" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="24" y1="0" x2="24" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="48" y1="0" x2="48" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="72" y1="0" x2="72" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="96" y1="0" x2="96" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="120" y1="0" x2="120" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="144" y1="0" x2="144" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="168" y1="0" x2="168" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="192" y1="0" x2="192" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="216" y1="0" x2="216" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="240" y1="0" x2="240" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="192" x2="240" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="168" x2="240" y2="168" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="144" x2="240" y2="144" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="120" x2="240" y2="120" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="96" x2="240" y2="96" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="72" x2="240" y2="72" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="48" x2="240" y2="48" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="24" x2="240" y2="24" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="0" x2="240" y2="0" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="96" x2="240" y2="96" stroke="#1e293b" stroke-width="2"/><line x1="120" y1="0" x2="120" y2="192" stroke="#1e293b" stroke-width="2"/><polygon points="240,96 231,92 231,100" fill="#1e293b"/><polygon points="120,0 116,9 124,9" fill="#1e293b"/><text x="0" y="112" font-size="12" text-anchor="middle" fill="#475569">-5</text><text x="24" y="112" font-size="12" text-anchor="middle" fill="#475569">-4</text><text x="48" y="112" font-size="12" text-anchor="middle" fill="#475569">-3</text><text x="72" y="112" font-size="12" text-anchor="middle" fill="#475569">-2</text><text x="96" y="112" font-size="12" text-anchor="middle" fill="#475569">-1</text><text x="144" y="112" font-size="12" text-anchor="middle" fill="#475569">1</text><text x="168" y="112" font-size="12" text-anchor="middle" fill="#475569">2</text><text x="192" y="112" font-size="12" text-anchor="middle" fill="#475569">3</text><text x="216" y="112" font-size="12" text-anchor="middle" fill="#475569">4</text><text x="240" y="112" font-size="12" text-anchor="middle" fill="#475569">5</text><text x="114" y="196" font-size="12" text-anchor="end" fill="#475569">-4</text><text x="114" y="172" font-size="12" text-anchor="end" fill="#475569">-3</text><text x="114" y="148" font-size="12" text-anchor="end" fill="#475569">-2</text><text x="114" y="124" font-size="12" text-anchor="end" fill="#475569">-1</text><text x="114" y="76" font-size="12" text-anchor="end" fill="#475569">1</text><text x="114" y="52" font-size="12" text-anchor="end" fill="#475569">2</text><text x="114" y="28" font-size="12" text-anchor="end" fill="#475569">3</text><text x="114" y="4" font-size="12" text-anchor="end" fill="#475569">4</text><text x="114" y="111" font-size="12" text-anchor="end" fill="#475569">0</text><text x="248" y="101" font-size="15" font-style="italic" fill="#1e293b">x</text><text x="128" y="-8" font-size="15" font-style="italic" fill="#1e293b">y</text><polyline points="84.0,192.0 180.0,0.0" fill="none" stroke="#2563eb" stroke-width="3" stroke-linejoin="round"/><text x="8" y="22" font-size="20" font-weight="800" fill="#1e40af">А</text></svg><svg class="plane" width="292" height="244" viewBox="-26 -26 292 244" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="240" height="192" fill="#fff" stroke="#93c5fd" stroke-width="2"/><line x1="0" y1="0" x2="0" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="24" y1="0" x2="24" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="48" y1="0" x2="48" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="72" y1="0" x2="72" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="96" y1="0" x2="96" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="120" y1="0" x2="120" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="144" y1="0" x2="144" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="168" y1="0" x2="168" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="192" y1="0" x2="192" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="216" y1="0" x2="216" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="240" y1="0" x2="240" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="192" x2="240" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="168" x2="240" y2="168" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="144" x2="240" y2="144" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="120" x2="240" y2="120" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="96" x2="240" y2="96" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="72" x2="240" y2="72" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="48" x2="240" y2="48" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="24" x2="240" y2="24" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="0" x2="240" y2="0" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="96" x2="240" y2="96" stroke="#1e293b" stroke-width="2"/><line x1="120" y1="0" x2="120" y2="192" stroke="#1e293b" stroke-width="2"/><polygon points="240,96 231,92 231,100" fill="#1e293b"/><polygon points="120,0 116,9 124,9" fill="#1e293b"/><text x="0" y="112" font-size="12" text-anchor="middle" fill="#475569">-5</text><text x="24" y="112" font-size="12" text-anchor="middle" fill="#475569">-4</text><text x="48" y="112" font-size="12" text-anchor="middle" fill="#475569">-3</text><text x="72" y="112" font-size="12" text-anchor="middle" fill="#475569">-2</text><text x="96" y="112" font-size="12" text-anchor="middle" fill="#475569">-1</text><text x="144" y="112" font-size="12" text-anchor="middle" fill="#475569">1</text><text x="168" y="112" font-size="12" text-anchor="middle" fill="#475569">2</text><text x="192" y="112" font-size="12" text-anchor="middle" fill="#475569">3</text><text x="216" y="112" font-size="12" text-anchor="middle" fill="#475569">4</text><text x="240" y="112" font-size="12" text-anchor="middle" fill="#475569">5</text><text x="114" y="196" font-size="12" text-anchor="end" fill="#475569">-4</text><text x="114" y="172" font-size="12" text-anchor="end" fill="#475569">-3</text><text x="114" y="148" font-size="12" text-anchor="end" fill="#475569">-2</text><text x="114" y="124" font-size="12" text-anchor="end" fill="#475569">-1</text><text x="114" y="76" font-size="12" text-anchor="end" fill="#475569">1</text><text x="114" y="52" font-size="12" text-anchor="end" fill="#475569">2</text><text x="114" y="28" font-size="12" text-anchor="end" fill="#475569">3</text><text x="114" y="4" font-size="12" text-anchor="end" fill="#475569">4</text><text x="114" y="111" font-size="12" text-anchor="end" fill="#475569">0</text><text x="248" y="101" font-size="15" font-style="italic" fill="#1e293b">x</text><text x="128" y="-8" font-size="15" font-style="italic" fill="#1e293b">y</text><polyline points="156.0,0.0 162.0,13.7 168.0,24.0 174.0,32.0 180.0,38.4 186.0,43.6 192.0,48.0 198.0,51.7 204.0,54.9 210.0,57.6 216.0,60.0 222.0,62.1 228.0,64.0 234.0,65.7 240.0,67.2" fill="none" stroke="#0d9488" stroke-width="3" stroke-linejoin="round"/><polyline points="84.0,192.0 78.0,178.3 72.0,168.0 66.0,160.0 60.0,153.6 54.0,148.4 48.0,144.0 42.0,140.3 36.0,137.1 30.0,134.4 24.0,132.0 18.0,129.9 12.0,128.0 6.0,126.3 0.0,124.8" fill="none" stroke="#0d9488" stroke-width="3" stroke-linejoin="round"/><text x="8" y="22" font-size="20" font-weight="800" fill="#1e40af">Б</text></svg><svg class="plane" width="292" height="244" viewBox="-26 -26 292 244" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="240" height="192" fill="#fff" stroke="#93c5fd" stroke-width="2"/><line x1="0" y1="0" x2="0" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="24" y1="0" x2="24" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="48" y1="0" x2="48" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="72" y1="0" x2="72" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="96" y1="0" x2="96" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="120" y1="0" x2="120" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="144" y1="0" x2="144" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="168" y1="0" x2="168" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="192" y1="0" x2="192" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="216" y1="0" x2="216" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="240" y1="0" x2="240" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="192" x2="240" y2="192" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="168" x2="240" y2="168" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="144" x2="240" y2="144" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="120" x2="240" y2="120" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="96" x2="240" y2="96" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="72" x2="240" y2="72" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="48" x2="240" y2="48" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="24" x2="240" y2="24" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="0" x2="240" y2="0" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="96" x2="240" y2="96" stroke="#1e293b" stroke-width="2"/><line x1="120" y1="0" x2="120" y2="192" stroke="#1e293b" stroke-width="2"/><polygon points="240,96 231,92 231,100" fill="#1e293b"/><polygon points="120,0 116,9 124,9" fill="#1e293b"/><text x="0" y="112" font-size="12" text-anchor="middle" fill="#475569">-5</text><text x="24" y="112" font-size="12" text-anchor="middle" fill="#475569">-4</text><text x="48" y="112" font-size="12" text-anchor="middle" fill="#475569">-3</text><text x="72" y="112" font-size="12" text-anchor="middle" fill="#475569">-2</text><text x="96" y="112" font-size="12" text-anchor="middle" fill="#475569">-1</text><text x="144" y="112" font-size="12" text-anchor="middle" fill="#475569">1</text><text x="168" y="112" font-size="12" text-anchor="middle" fill="#475569">2</text><text x="192" y="112" font-size="12" text-anchor="middle" fill="#475569">3</text><text x="216" y="112" font-size="12" text-anchor="middle" fill="#475569">4</text><text x="240" y="112" font-size="12" text-anchor="middle" fill="#475569">5</text><text x="114" y="196" font-size="12" text-anchor="end" fill="#475569">-4</text><text x="114" y="172" font-size="12" text-anchor="end" fill="#475569">-3</text><text x="114" y="148" font-size="12" text-anchor="end" fill="#475569">-2</text><text x="114" y="124" font-size="12" text-anchor="end" fill="#475569">-1</text><text x="114" y="76" font-size="12" text-anchor="end" fill="#475569">1</text><text x="114" y="52" font-size="12" text-anchor="end" fill="#475569">2</text><text x="114" y="28" font-size="12" text-anchor="end" fill="#475569">3</text><text x="114" y="4" font-size="12" text-anchor="end" fill="#475569">4</text><text x="114" y="111" font-size="12" text-anchor="end" fill="#475569">0</text><text x="248" y="101" font-size="15" font-style="italic" fill="#1e293b">x</text><text x="128" y="-8" font-size="15" font-style="italic" fill="#1e293b">y</text><polyline points="96.0,0.0 240.0,144.0" fill="none" stroke="#ea580c" stroke-width="3" stroke-linejoin="round"/><text x="8" y="22" font-size="20" font-weight="800" fill="#1e40af">В</text></svg></div><div class="qgrid" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div class="qcard"><div class="qnum">1</div><div class="qtext">Какой график — <b>обратная пропорциональность</b>?</div><div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="0" onclick="pick(this)">А</button><button class="opt" data-ok="1" onclick="pick(this)">Б</button><button class="opt" data-ok="0" onclick="pick(this)">В</button></div><div class="expl">График $y=\dfrac{k}{x}$ — гипербола (две ветви).</div></div><div class="qcard"><div class="qnum">2</div><div class="qtext">Какой график задаёт функцию $y=-x+3$?</div><div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="0" onclick="pick(this)">А</button><button class="opt" data-ok="0" onclick="pick(this)">Б</button><button class="opt" data-ok="1" onclick="pick(this)">В</button></div><div class="expl">Убывающая прямая: $k=-1\lt0$, проходит через $(0;3)$.</div></div><div class="qcard"><div class="qnum">3</div><div class="qtext">Какая точка лежит на графике Б ($y=\dfrac{6}{x}$)?</div><div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="1" onclick="pick(this)">$(2;3)$</button><button class="opt" data-ok="0" onclick="pick(this)">$(3;3)$</button><button class="opt" data-ok="0" onclick="pick(this)">$(-2;3)$</button><button class="opt" data-ok="0" onclick="pick(this)">$(6;6)$</button></div><div class="expl">$6:2=3$.</div></div></div><div class="qscore"></div></div><div class="note no-board"><b>Как провести:</b> 2 мин, без записи. Дополнительный вопрос классу: «Какой знак у $k$ на графике А? А у $k$ в гиперболе Б?» (оба положительные: прямая возрастает, ветви в I и III четвертях).</div></section>
+<section class="slide" data-name="Степени"><div class="sh"><div><span class="tag ">Этап 2 · Разминка<span class="min"> · 2 мин</span></span><span class="mode no-board">🗣 устно, цепочкой</span><h2 class="">Свойства степеней</h2><p class="subtitle">Нажмите на карточку, чтобы проверить ответ.</p></div><div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div><div class="content"><div class="flip-grid" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$a^2 \cdot a^3$</div><div class="flip-back">$a^5$</div></div></div><div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$(a^2)^3$</div><div class="flip-back">$a^6$</div></div></div><div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$a^5 : a^2$</div><div class="flip-back">$a^3$</div></div></div><div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$(a^3)^3$</div><div class="flip-back">$a^9$</div></div></div><div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$a^4 \cdot a^2$</div><div class="flip-back">$a^6$</div></div></div><div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front">$(a^4)^2$</div><div class="flip-back">$a^8$</div></div></div></div></div><div class="note no-board"><b>Как провести:</b> ученики по цепочке называют ответ, карточку переворачивает учитель. Подчеркните свойство $(a^m)^n=a^{mn}$ — оно ключ к обобщению.</div></section>
+<section class="slide" data-name="Проблема"><div class="sh"><div><span class="tag orange">Этап 3 · Проблемная ситуация<span class="min"> · 3 мин</span></span><span class="mode no-board">💬 дискуссия</span><h2 class="orange">Вася «доказал», что −3 = 3</h2><p class="subtitle">Нажимайте на строки по очереди и ищите ошибку.</p></div><div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div><div class="content"><div class="proof"><div class="pline reveal" onclick="this.classList.toggle('on')"><span class="pn">1</span><div class="q">нажми — следующий шаг</div><div class="a">$(-3)^2=3^2$ &nbsp;— верно: $9=9$</div></div><div class="pline reveal" onclick="this.classList.toggle('on')"><span class="pn">2</span><div class="q">нажми — следующий шаг</div><div class="a">Извлечём корень из обеих частей: $\sqrt{(-3)^2}=\sqrt{3^2}$</div></div><div class="pline reveal" onclick="this.classList.toggle('on')"><span class="pn">3</span><div class="q">нажми — следующий шаг</div><div class="a">«Сократим» корень и квадрат: $-3=3$ &nbsp;😱</div></div></div><div class="qgrid" style="grid-template-columns:repeat(1,minmax(0,1fr))"><div class="qcard"><div class="qnum">1</div><div class="qtext">В чём ошибка Васи?</div><div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="0" onclick="pick(this)">$(-3)^2\ne3^2$</button><button class="opt" data-ok="0" onclick="pick(this)">корни равных чисел не равны</button><button class="opt" data-ok="1" onclick="pick(this)">нельзя «сократить» $\sqrt{(-3)^2}$ до $-3$</button><button class="opt" data-ok="0" onclick="pick(this)">ошибки нет</button></div><div class="expl">Верно! $\sqrt{(-3)^2}=\sqrt9=3$, а не $-3$: корень не бывает отрицательным. Как же правильно извлекать корень из $a^2$? Исследуем!</div></div></div><div class="qscore"></div></div><div class="note no-board"><b>Как провести:</b> откройте строки по одной, дайте 1 минуту на поиск ошибки в парах, соберите версии. Не объясняйте сами — пусть класс выйдет на «Вася неправильно извлёк корень». <b>Вопрос урока:</b> чему равен $\sqrt{a^2}$ для любого числа $a$?</div></section>
+<section class="slide" data-name="Таблица"><div class="sh"><div><span class="tag green">Этап 4 · Открытие нового<span class="min"> · 6 мин</span></span><span class="mode no-board">✏️ индивидуально → проверка</span><h2 class="green">Исследуем: заполним таблицу</h2><p class="subtitle">Возведите число в квадрат, затем извлеките корень. Дроби — через «/», модуль — «|a|».</p></div><div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button><button class="tool no-board" onclick="toolAns(this)">👁 Ответы</button></div></div><div class="content"><table class="tbl"><tr><th>Выражение</th><th>Квадрат числа</th><th>Значение</th></tr><tr><td>$\sqrt{5^2}$</td><td><input type="text" class="inp" data-k="25" data-show="" autocomplete="off"></td><td><input type="text" class="inp" data-k="5" data-show="" autocomplete="off"></td></tr><tr><td>$\sqrt{(-5)^2}$</td><td><input type="text" class="inp" data-k="25" data-show="" autocomplete="off"></td><td><input type="text" class="inp" data-k="5" data-show="" autocomplete="off"></td></tr><tr><td>$\sqrt{1{,}5^2}$</td><td><input type="text" class="inp" data-k="2.25" data-show="" autocomplete="off"></td><td><input type="text" class="inp" data-k="1.5" data-show="" autocomplete="off"></td></tr><tr><td>$\sqrt{(-1{,}5)^2}$</td><td><input type="text" class="inp" data-k="2.25" data-show="" autocomplete="off"></td><td><input type="text" class="inp" data-k="1.5" data-show="" autocomplete="off"></td></tr><tr><td>$\sqrt{\left(\frac{2}{3}\right)^2}$</td><td><input type="text" class="inp" data-k="4/9" data-show="4/9" autocomplete="off"></td><td><input type="text" class="inp" data-k="2/3" data-show="2/3" autocomplete="off"></td></tr><tr><td>$\sqrt{\left(-\frac{2}{3}\right)^2}$</td><td><input type="text" class="inp" data-k="4/9" data-show="4/9" autocomplete="off"></td><td><input type="text" class="inp" data-k="2/3" data-show="2/3" autocomplete="off"></td></tr><tr><td>$\sqrt{a^2}$</td><td><input type="text" class="inp" data-k="a^2;a*a" data-show="a²" autocomplete="off"></td><td><input type="text" class="inp" data-k="|a|;abs(a)" data-show="|a|" autocomplete="off"></td></tr></table><div class="key concl" style="text-align:center;font-size:21px"><b>Гипотеза:</b> $\sqrt{a^2}=|a|$. Сравните значения для $5$ и $-5$: они одинаковые — как раз модуль!</div></div><div class="note no-board"><b>Как провести:</b> 4 мин работа в тетради/на планшете, затем ввод ответов. Обратите внимание на пары $5$ и $-5$, $1{,}5$ и $-1{,}5$. Спросите: «Что общего у ответов в строках 1–2? Как это связано с модулем?» Формулировку правила произносит ученик.</div></section>
+<section class="slide" data-name="Правило"><div class="sh"><div><span class="tag ">Этап 5 · Теория<span class="min"> · 2 мин</span></span><span class="mode no-board">🎤 объясняет учитель</span><h2 class="">Главное правило</h2></div><div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div><div class="content"><div class="theory"><p>Арифметический квадратный корень всегда неотрицателен. Поэтому:</p><div class="formula">$\sqrt{x^2}=|x|$</div><p>Читается: <b>корень из квадрата числа равен модулю этого числа</b>.</p></div><div class="two"><div class="mini"><small>если $x \ge 0$</small>$\sqrt{x^2}=x$</div><div class="mini"><small>если $x \lt 0$</small>$\sqrt{x^2}=-x$</div></div><div class="key"><b>Возвращаемся к Васе:</b> $\sqrt{(-3)^2}=|-3|=3$ — и никакого парадокса: $3=3$. Модуль «убирает» минус, ведь корень не может быть отрицательным.</div></div><div class="note no-board"><b>Как провести:</b> попросите двух учеников прочитать правило и привести свои примеры. Запись в тетрадь: формула и две ветки ($x\ge0$, $x\lt0$).</div></section>
+<section class="slide" data-name="Обобщение"><div class="sh"><div><span class="tag orange">Этап 5 · Обобщение<span class="min"> · 3 мин</span></span><span class="mode no-board">🗣 ученики предсказывают</span><h2 class="orange">А если степень другая?</h2><p class="subtitle">Любую чётную степень запишем как квадрат: $(a^m)^n=a^{m\cdot n}$. Предскажите ответ и нажмите.</p></div><div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div><div class="content"><div class="step-grid"><div class="step-box"><div class="step-title">Степень</div>$\sqrt{2^4}$</div><div class="step-arrow">→</div><div class="step-box"><div class="step-title">Раскладываем</div>$\sqrt{(2^2)^2}$</div><div class="step-arrow">→</div><div class="step-box ok reveal" onclick="this.classList.toggle('on')"><div class="step-title">Корень из квадрата · нажми</div><div class="q">?</div><div class="a">$|2^2|=4$</div></div></div><div class="step-grid"><div class="step-box"><div class="step-title">Степень</div>$\sqrt{3^6}$</div><div class="step-arrow">→</div><div class="step-box"><div class="step-title">Раскладываем</div>$\sqrt{(3^3)^2}$</div><div class="step-arrow">→</div><div class="step-box ok reveal" onclick="this.classList.toggle('on')"><div class="step-title">Корень из квадрата · нажми</div><div class="q">?</div><div class="a">$|3^3|=27$</div></div></div><div class="step-grid"><div class="step-box"><div class="step-title">Степень</div>$\sqrt{a^6}$</div><div class="step-arrow">→</div><div class="step-box"><div class="step-title">Раскладываем</div>$\sqrt{(a^3)^2}$</div><div class="step-arrow">→</div><div class="step-box ok reveal" onclick="this.classList.toggle('on')"><div class="step-title">Корень из квадрата · нажми</div><div class="q">?</div><div class="a">$|a^3|$</div></div></div><div class="key" style="text-align:center;font-size:22px"><b>Общее правило:</b> $\sqrt{x^{2n}}=|x^n|$ — корень из чётной степени равен модулю половины этой степени.</div></div><div class="note no-board"><b>Как провести:</b> перед каждым кликом ученик называет ответ. Третья строка — переход от чисел к буквам: зачем модуль у $a^3$? (может быть отрицательным).</div></section>
+<section class="slide" data-name="Модуль"><div class="sh"><div><span class="tag orange">Этап 5 · Обобщение<span class="min"> · 3 мин</span></span><span class="mode no-board">🎤 учитель + вопросы</span><h2 class="orange">Когда модуль можно убрать?</h2><p class="subtitle">Смотрим, чётной или нечётной будет степень после деления на 2.</p></div><div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div><div class="content"><div class="cards3"><div class="card good"><h4>Половина степени — чётная</h4><div class="big">$\sqrt{a^8}=a^4$</div><div class="why">$4$ — чётное, значит $a^4\ge0$ при любом $a$. <b>Модуль не нужен.</b></div></div><div class="card warn"><h4>Половина степени — нечётная</h4><div class="big">$\sqrt{a^6}=|a^3|$</div><div class="why">$a^3$ может быть отрицательным. <b>Модуль нужен.</b></div></div><div class="card"><h4>Есть условие на $a$</h4><div class="big">$\sqrt{a^6}=-a^3$</div><div class="why">при $a\lt0$: $|a^3|=-a^3$. <b>Раскрываем модуль по условию.</b></div></div></div></div><div class="note no-board"><b>Типичная ошибка:</b> писать $\sqrt{a^6}=a^3$ без модуля или $\sqrt{a^8}=|a^4|$ (лишний модуль — не ошибка, но избыточно). Попросите класс сформулировать «алгоритм» из трёх шагов: разделить показатель на 2 → смотреть на чётность → раскрыть модуль, если есть условие.</div></section>
+<section class="slide board" data-name="Практика 1"><div class="sh"><div><span class="tag green">Этап 6 · Закрепление · уровень ★<span class="min"> · 3 мин</span></span><span class="mode no-board">✏️ индивидуально, проверка в парах</span><h2 class="green">Решите примеры</h2><p class="subtitle">Записывайте решение в клетку, проговаривайте правило.</p></div><div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button><span class="badge no-board">📋 для доски</span><button class="tool no-board" onclick="toolAns(this)">👁 Ответы</button></div></div><div class="content"><div class="grid" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div class="cell"><div class="chead"><span class="let">1</span><div class="expr">$\sqrt{7^2}$</div><button class="eye no-board" title="Показать ответ" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$7$</div></div><div class="cell"><div class="chead"><span class="let">2</span><div class="expr">$\sqrt{(-7)^2}$</div><button class="eye no-board" title="Показать ответ" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$|-7|=7$</div></div><div class="cell"><div class="chead"><span class="let">3</span><div class="expr">$\sqrt{3^4}$</div><button class="eye no-board" title="Показать ответ" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$3^2=9$</div></div><div class="cell"><div class="chead"><span class="let">4</span><div class="expr">$\sqrt{2^6}$</div><button class="eye no-board" title="Показать ответ" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$2^3=8$</div></div><div class="cell"><div class="chead"><span class="let">5</span><div class="expr">$\sqrt{5^4}$</div><button class="eye no-board" title="Показать ответ" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$5^2=25$</div></div><div class="cell"><div class="chead"><span class="let">6</span><div class="expr">$\sqrt{(-10)^6}$</div><button class="eye no-board" title="Показать ответ" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$|(-10)^3|=1000$</div></div></div></div><div class="note no-board"><b>Как провести:</b> 2 мин на решение, обмен тетрадями и проверка по ответам (кнопка «Ответы»). Один ученик у доски комментирует №2 и №6.</div></section>
+<section class="slide board" data-name="Практика 2"><div class="sh"><div><span class="tag orange">Этап 6 · Закрепление · уровень ★★<span class="min"> · 3 мин</span></span><span class="mode no-board">✏️ индивидуально</span><h2 class="orange">Буквы под корнем</h2><p class="subtitle">Корень из произведения и дроби + новое правило.</p></div><div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button><span class="badge no-board">📋 для доски</span><button class="tool no-board" onclick="toolAns(this)">👁 Ответы</button></div></div><div class="content"><div class="grid" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div class="cell"><div class="chead"><span class="let">1</span><div class="expr">$\sqrt{4a^2}$</div><button class="eye no-board" title="Показать ответ" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$2|a|$</div></div><div class="cell"><div class="chead"><span class="let">2</span><div class="expr">$\sqrt{9b^2}$</div><button class="eye no-board" title="Показать ответ" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$3|b|$</div></div><div class="cell"><div class="chead"><span class="let">3</span><div class="expr">$\sqrt{16x^2}$</div><button class="eye no-board" title="Показать ответ" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$4|x|$</div></div><div class="cell"><div class="chead"><span class="let">4</span><div class="expr">$\sqrt{25y^2}$</div><button class="eye no-board" title="Показать ответ" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$5|y|$</div></div><div class="cell"><div class="chead"><span class="let">5</span><div class="expr">$\sqrt{a^4}$</div><button class="eye no-board" title="Показать ответ" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$a^2$</div></div><div class="cell"><div class="chead"><span class="let">6</span><div class="expr">$\sqrt{\dfrac{x^2}{49}}$</div><button class="eye no-board" title="Показать ответ" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$\dfrac{|x|}{7}$</div></div></div></div><div class="note no-board"><b>Как провести:</b> следите за №5: модуль не нужен, потому что $a^2\ge0$. Это проверка на понимание слайда «Когда модуль можно убрать».</div></section>
+<section class="slide board" data-name="ОГЭ-задания"><div class="sh"><div><span class="tag red">Этап 6 · Закрепление · формат ОГЭ<span class="min"> · 3 мин</span></span><span class="mode no-board">👥 в парах</span><h2 class="">Задания в формате ОГЭ</h2><p class="subtitle">Числовые выражения со степенями и корнями. В ответе — число.</p></div><div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button><span class="badge no-board">📋 для доски</span><button class="tool no-board" onclick="toolAns(this)">👁 Ответы</button></div></div><div class="content"><div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="cell"><div class="chead"><span class="let">1</span><div class="expr">$\sqrt{(-9)^2}+\sqrt{3^4}$</div><button class="eye no-board" title="Показать ответ" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$9+9=18$</div></div><div class="cell"><div class="chead"><span class="let">2</span><div class="expr">$\dfrac{\sqrt{2^8}}{\sqrt{(-4)^2}}$</div><button class="eye no-board" title="Показать ответ" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$\dfrac{16}{4}=4$</div></div><div class="cell"><div class="chead"><span class="let">3</span><div class="expr">$(\sqrt5)^2\cdot\sqrt{(-3)^4}$</div><button class="eye no-board" title="Показать ответ" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$5\cdot9=45$</div></div><div class="cell"><div class="chead"><span class="let">4</span><div class="expr">$\sqrt{0{,}01\cdot10^4}$</div><button class="eye no-board" title="Показать ответ" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$0{,}1\cdot100=10$</div></div></div></div><div class="note no-board"><b>Как провести:</b> работа в парах, один считает, второй проверяет. Скажите, что такие выражения встречаются в части 1 ОГЭ (вычисления со степенями и корнями), а ответ записывается числом. Задания составлены по образцу прототипов, не дословно.</div></section>
+<section class="slide" data-name="Найди пару"><div class="sh"><div><span class="tag green">Этап 6 · Закрепление · игра<span class="min"> · 3 мин</span></span><span class="mode no-board">🎮 игра, команды по рядам</span><h2 class="green">Игра «Найди пару»</h2><p class="subtitle">Переворачивайте по две карточки: выражение под корнем и его упрощённый вид. Совпали — остаются открытыми.</p></div><div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div><div class="content"><div class="mem" style="grid-template-columns:repeat(4,minmax(0,1fr))"><div class="mcard" data-p="0" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$\sqrt{a^8}$</div></div></div><div class="mcard" data-p="0" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$a^4$</div></div></div><div class="mcard" data-p="1" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$\sqrt{9b^2}$</div></div></div><div class="mcard" data-p="1" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$3|b|$</div></div></div><div class="mcard" data-p="2" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$\sqrt{(-4)^2}$</div></div></div><div class="mcard" data-p="2" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$4$</div></div></div><div class="mcard" data-p="3" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$\sqrt{x^6}$</div></div></div><div class="mcard" data-p="3" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$|x^3|$</div></div></div><div class="mcard" data-p="4" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$\sqrt{25a^{10}}$</div></div></div><div class="mcard" data-p="4" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$5|a^5|$</div></div></div><div class="mcard" data-p="5" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$\sqrt{a^2},\ a\lt0$</div></div></div><div class="mcard" data-p="5" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$-a$</div></div></div></div><div class="mstat"><span class="mmoves">Ходов: 0</span><button class="hbtn" onclick="memReset(this)">🔀 Перемешать</button><span class="mwin"></span></div></div><div class="note no-board"><b>Как провести:</b> класс делится на 2–3 команды, ходят по очереди, карточку выбирает капитан после совещания. Побеждает команда, нашедшая больше пар. Кнопка «Перемешать» запускает игру заново, порядок карточек каждый раз случайный.</div></section>
+<section class="slide" data-name="Тест ОГЭ"><div class="sh"><div><span class="tag red">Этап 7 · Самопроверка<span class="min"> · 4 мин</span></span><span class="mode no-board">✏️ индивидуально</span><h2 class="">Тест в формате ОГЭ</h2><p class="subtitle">Выберите верный ответ. Результат виден сразу, в конце — итог.</p></div><div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div><div class="content"><div class="qgrid" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="qcard"><div class="qnum">1</div><div class="qtext">Какое из чисел принадлежит промежутку $(6;7)$?</div><div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="0" onclick="pick(this)">$6$</button><button class="opt" data-ok="0" onclick="pick(this)">$7$</button><button class="opt" data-ok="0" onclick="pick(this)">$\sqrt{35}$</button><button class="opt" data-ok="1" onclick="pick(this)">$\sqrt{42}$</button></div><div class="expl">$36\lt42\lt49$, значит $6\lt\sqrt{42}\lt7$. А $\sqrt{35}\lt6$.</div></div><div class="qcard"><div class="qnum">2</div><div class="qtext">Какое из выражений равно рациональному числу?</div><div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="0" onclick="pick(this)">$\sqrt2\cdot\sqrt3$</button><button class="opt" data-ok="0" onclick="pick(this)">$\sqrt7+\sqrt3$</button><button class="opt" data-ok="1" onclick="pick(this)">$\sqrt3\cdot\sqrt{12}$</button><button class="opt" data-ok="0" onclick="pick(this)">$\sqrt{10}:\sqrt2$</button></div><div class="expl">$\sqrt3\cdot\sqrt{12}=\sqrt{36}=6$.</div></div><div class="qcard"><div class="qnum">3</div><div class="qtext">Найдите значение выражения $(\sqrt{13}-\sqrt7)(\sqrt{13}+\sqrt7)$.</div><div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="1" onclick="pick(this)">$6$</button><button class="opt" data-ok="0" onclick="pick(this)">$20$</button><button class="opt" data-ok="0" onclick="pick(this)">$13-\sqrt7$</button><button class="opt" data-ok="0" onclick="pick(this)">$2\sqrt{13}$</button></div><div class="expl">Разность квадратов: $13-7=6$.</div></div><div class="qcard"><div class="qnum">4</div><div class="qtext">$\sqrt{2^4\cdot3^2}=\ ?$</div><div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="1" onclick="pick(this)">$12$</button><button class="opt" data-ok="0" onclick="pick(this)">$36$</button><button class="opt" data-ok="0" onclick="pick(this)">$24$</button><button class="opt" data-ok="0" onclick="pick(this)">$144$</button></div><div class="expl">$\sqrt{2^4}\cdot\sqrt{3^2}=4\cdot3=12$.</div></div></div><div class="qscore"></div></div><div class="note no-board"><b>Как провести:</b> 4 минуты, каждый отвечает на своём устройстве или на листочке. Первые два задания — по образцу ОГЭ (определение места числа и рациональность). 3 из 4 — «хорошо», 4 из 4 — «отлично». Результат — материал для рефлексии.</div></section>
+<section class="slide" data-name="Итоги"><div class="sh"><div><span class="tag grey">Этап 8 · Итог и рефлексия<span class="min"> · 1 мин</span></span><span class="mode no-board">💬 фронтально</span><h2 class="">Подведём итоги</h2><p class="subtitle">Нажмите на карточку, чтобы проверить себя, и выберите, как вы себя чувствуете.</p></div><div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div><div class="content"><div class="cards3" style="flex:none;height:210px"><div class="card reveal" style="cursor:pointer" onclick="this.classList.toggle('on')"><h4>Чему равен $\sqrt{x^2}$?</h4><div class="q">?</div><div class="a big" style="font-size:30px">$|x|$</div></div><div class="card reveal" style="cursor:pointer" onclick="this.classList.toggle('on')"><h4>Чему равен $\sqrt{x^{2n}}$?</h4><div class="q">?</div><div class="a big" style="font-size:30px">$|x^n|$</div></div><div class="card reveal" style="cursor:pointer" onclick="this.classList.toggle('on')"><h4>Где ошибка Васи?</h4><div class="q">?</div><div class="a big" style="font-size:30px"><span style="font-size:20px">$\sqrt{(-3)^2}=3$, а не $-3$</span></div></div></div><div class="reflect-row"><div class="reflect-card" onclick="selectReflect(this)"><div class="emo">😎</div><div class="lbl">Всё понял!</div></div><div class="reflect-card" onclick="selectReflect(this)"><div class="emo">🙂</div><div class="lbl">Почти всё понятно</div></div><div class="reflect-card" onclick="selectReflect(this)"><div class="emo">🤔</div><div class="lbl">Есть вопросы</div></div></div></div><div class="note no-board"><b>Как провести:</b> вернитесь к интриге: «Так верно ли, что −3 = 3?» Затем рефлексия: смайлик на листочке или вслух. Это даёт обратную связь для урока 2.</div></section>
+<section class="slide" data-name="ДЗ"><div class="sh"><div><span class="tag grey">Этап 8 · Домашнее задание<span class="min"> · 1 мин</span></span><h2 class="">Домашнее задание</h2><p class="subtitle">Выберите уровень (можно несколько).</p></div><div class="tools"></div></div><div class="content"><div class="hw"><ol><li><b>★ Базовый:</b> вычислить $\sqrt{(-13)^2}$, $\sqrt{2^8}$, $\sqrt{(-3)^6}$, $\sqrt{3^4\cdot2^2}$.</li><li><b>★★ Повышенный:</b> упростить $\sqrt{36a^2}$, $\sqrt{a^{10}}$, $\sqrt{25x^2}$ при $x\lt0$.</li><li><b>★★★ ОГЭ:</b> найти значение $\sqrt{(-7)^2}\cdot\sqrt{2^4}-\sqrt{3^6}$; между какими целыми числами лежит $\sqrt{90}$?</li><li><b>Повторение:</b> для $y=-x+4$ найти точки пересечения с осями; для $y=\dfrac{6}{x}$ найти $y$ при $x=-3$.</li><li>Выучить правило $\sqrt{x^2}=|x|$, $\sqrt{x^{2n}}=|x^n|$. Номера из учебника — по указанию учителя.</li></ol></div></div></section>
+<section class="slide board reserve" data-name="Резерв: график"><div class="sh"><div><span class="tag grey">Этап 6 · Резерв · связь с функциями<span class="min"> · 3 мин</span></span><span class="mode no-board">✏️ индивидуально</span><h2 class="">График функции $y=\sqrt{x^2}$</h2><p class="subtitle">Заполните таблицу, отметьте точки и соедините их. С какой известной функцией совпал график?</p></div><div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button><span class="badge no-board">📋 для доски</span><button class="tool no-board" onclick="toolAns(this)">👁 Ответы</button></div></div><div class="content"><div class="gwrap"><svg class="plane" width="492" height="316" viewBox="-26 -26 492 316" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="440" height="264" fill="#fff" stroke="#93c5fd" stroke-width="2"/><line x1="0" y1="0" x2="0" y2="264" stroke="#bfdbfe" stroke-width="1"/><line x1="44" y1="0" x2="44" y2="264" stroke="#bfdbfe" stroke-width="1"/><line x1="88" y1="0" x2="88" y2="264" stroke="#bfdbfe" stroke-width="1"/><line x1="132" y1="0" x2="132" y2="264" stroke="#bfdbfe" stroke-width="1"/><line x1="176" y1="0" x2="176" y2="264" stroke="#bfdbfe" stroke-width="1"/><line x1="220" y1="0" x2="220" y2="264" stroke="#bfdbfe" stroke-width="1"/><line x1="264" y1="0" x2="264" y2="264" stroke="#bfdbfe" stroke-width="1"/><line x1="308" y1="0" x2="308" y2="264" stroke="#bfdbfe" stroke-width="1"/><line x1="352" y1="0" x2="352" y2="264" stroke="#bfdbfe" stroke-width="1"/><line x1="396" y1="0" x2="396" y2="264" stroke="#bfdbfe" stroke-width="1"/><line x1="440" y1="0" x2="440" y2="264" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="264" x2="440" y2="264" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="220" x2="440" y2="220" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="176" x2="440" y2="176" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="132" x2="440" y2="132" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="88" x2="440" y2="88" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="44" x2="440" y2="44" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="0" x2="440" y2="0" stroke="#bfdbfe" stroke-width="1"/><line x1="0" y1="220" x2="440" y2="220" stroke="#1e293b" stroke-width="2"/><line x1="220" y1="0" x2="220" y2="264" stroke="#1e293b" stroke-width="2"/><polygon points="440,220 431,216 431,224" fill="#1e293b"/><polygon points="220,0 216,9 224,9" fill="#1e293b"/><text x="0" y="236" font-size="12" text-anchor="middle" fill="#475569">-5</text><text x="44" y="236" font-size="12" text-anchor="middle" fill="#475569">-4</text><text x="88" y="236" font-size="12" text-anchor="middle" fill="#475569">-3</text><text x="132" y="236" font-size="12" text-anchor="middle" fill="#475569">-2</text><text x="176" y="236" font-size="12" text-anchor="middle" fill="#475569">-1</text><text x="264" y="236" font-size="12" text-anchor="middle" fill="#475569">1</text><text x="308" y="236" font-size="12" text-anchor="middle" fill="#475569">2</text><text x="352" y="236" font-size="12" text-anchor="middle" fill="#475569">3</text><text x="396" y="236" font-size="12" text-anchor="middle" fill="#475569">4</text><text x="440" y="236" font-size="12" text-anchor="middle" fill="#475569">5</text><text x="214" y="268" font-size="12" text-anchor="end" fill="#475569">-1</text><text x="214" y="180" font-size="12" text-anchor="end" fill="#475569">1</text><text x="214" y="136" font-size="12" text-anchor="end" fill="#475569">2</text><text x="214" y="92" font-size="12" text-anchor="end" fill="#475569">3</text><text x="214" y="48" font-size="12" text-anchor="end" fill="#475569">4</text><text x="214" y="4" font-size="12" text-anchor="end" fill="#475569">5</text><text x="214" y="235" font-size="12" text-anchor="end" fill="#475569">0</text><text x="448" y="225" font-size="15" font-style="italic" fill="#1e293b">x</text><text x="228" y="-8" font-size="15" font-style="italic" fill="#1e293b">y</text><polyline class="rv" points="0.0,0.0 220.0,220.0 440.0,0.0" fill="none" stroke="#10b981" stroke-width="4" stroke-linejoin="round"/><circle class="rv" cx="88" cy="88" r="5" fill="#ea580c"/><circle class="rv" cx="132" cy="132" r="5" fill="#ea580c"/><circle class="rv" cx="176" cy="176" r="5" fill="#ea580c"/><circle class="rv" cx="220" cy="220" r="5" fill="#ea580c"/><circle class="rv" cx="264" cy="176" r="5" fill="#ea580c"/><circle class="rv" cx="308" cy="132" r="5" fill="#ea580c"/><circle class="rv" cx="352" cy="88" r="5" fill="#ea580c"/></svg><div class="gright"><table class="xy"><tr><th>$x$</th><td>-3</td><td>-2</td><td>-1</td><td>0</td><td>1</td><td>2</td><td>3</td></tr><tr><th>$y=\sqrt{x^2}$</th><td class="wr"><span class="rv">3</span></td><td class="wr"><span class="rv">2</span></td><td class="wr"><span class="rv">1</span></td><td class="wr"><span class="rv">0</span></td><td class="wr"><span class="rv">1</span></td><td class="wr"><span class="rv">2</span></td><td class="wr"><span class="rv">3</span></td></tr></table><div class="key rv" style="font-size:20px"><b>Вывод:</b> график $y=\sqrt{x^2}$ совпал с графиком $y=|x|$ — «галочка» с вершиной в начале координат. При $x\ge0$ это прямая $y=x$, при $x\lt0$ — прямая $y=-x$.</div></div></div></div><div class="note no-board"><b>Когда использовать:</b> если класс быстро справился с закреплением. Связывает новую тему с функциями.</div></section>
+<section class="slide board reserve" data-name="Резерв: для сильных"><div class="sh"><div><span class="tag grey">Этап 6 · Резерв · уровень ★★★<span class="min"> · 4 мин</span></span><span class="mode no-board">👥 в парах</span><h2 class="">Для сильных: думаем глубже</h2><p class="subtitle">Задания с подвохом.</p></div><div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button><span class="badge no-board">📋 для доски</span><button class="tool no-board" onclick="toolAns(this)">👁 Ответы</button></div></div><div class="content"><div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="cell"><div class="chead"><span class="let">1</span><div class="expr">Что больше: $\sqrt{2^{10}}$ или $30$?</div><button class="eye no-board" title="Показать ответ" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$32\gt30$</div></div><div class="cell"><div class="chead"><span class="let">2</span><div class="expr">Решите уравнение $\sqrt{x^2}=7$.</div><button class="eye no-board" title="Показать ответ" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$x=7$ или $x=-7$</div></div><div class="cell"><div class="chead"><span class="let">3</span><div class="expr">$\sqrt{(a-3)^2}$, если $a\lt3$</div><button class="eye no-board" title="Показать ответ" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$3-a$</div></div><div class="cell"><div class="chead"><span class="let">4</span><div class="expr">$\sqrt{a^2b^4}$, если $a\lt0$</div><button class="eye no-board" title="Показать ответ" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$-ab^2$</div></div></div></div><div class="note no-board"><b>Подсказки:</b> №2 — два корня, потому что $|x|=7$. №4: $b^4=(b^2)^2$, модуль от $b^2$ не нужен.</div></section>
+
+</div></div>
+<button class="hbtn" id="exitBoard" onclick="toggleBoard(false)">✕ Выйти из режима доски</button>
+<div id="toast">Режим доски: сделайте скриншот слайда · ←/→ листать · Esc — выход</div>
+<nav>
+  <button class="nav-prev" onclick="changeSlide(-1)" disabled>← Назад</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-next" onclick="changeSlide(1)">Далее →</button>
+</nav>
+<script>
+var slides=[],cur=0;
+var stage=document.getElementById('stage'),vp=document.getElementById('viewport');
+
+function fit(){
+  var pad=document.body.classList.contains('board-mode')?0:14;
+  var w=vp.clientWidth-pad*2,h=vp.clientHeight-pad*2;
+  var s=Math.max(0.1,Math.min(w/1280,h/720));
+  stage.style.transform='scale('+s+')';
+  stage.style.left=((vp.clientWidth-1280*s)/2)+'px';
+  stage.style.top=((vp.clientHeight-720*s)/2)+'px';
+}
+function buildPills(){
+  var box=document.getElementById('pills');
+  slides.forEach(function(s,i){
+    var p=document.createElement('div');
+    p.className='progress-pill'+(s.classList.contains('reserve')?' reserve':'');
+    p.textContent=i+1; p.title=s.getAttribute('data-name')||'';
+    p.addEventListener('click',function(){show(i);});
+    box.appendChild(p);
+  });
+}
+function show(i){
+  if(i<0||i>=slides.length)return;
+  cur=i;
+  slides.forEach(function(s,k){s.classList.toggle('active',k===i);});
+  document.querySelectorAll('.progress-pill').forEach(function(p,k){
+    p.classList.toggle('active',k===i);p.classList.toggle('done',k<i);
+  });
+  document.querySelector('.nav-prev').disabled=(i===0);
+  document.querySelector('.nav-next').disabled=(i===slides.length-1);
+  document.getElementById('navInfo').textContent='Слайд '+(i+1)+' из '+slides.length;
+}
+function changeSlide(d){show(cur+d);}
+
+/* режим доски: чистый слайд 16:9 без интерфейса — для скриншота и вставки на онлайн-доску */
+function toggleBoard(on){
+  var b=document.body.classList;
+  if(on===undefined) on=!b.contains('board-mode');
+  b.toggle('board-mode',on);
+  fit();
+  if(on){var t=document.getElementById('toast');t.style.display='block';setTimeout(function(){t.style.display='none';},3200);}
+}
+
+/* тест */
+function pick(b){
+  var card=b.closest('.qcard'); if(card.classList.contains('done'))return;
+  card.classList.add('done');
+  card.querySelectorAll('.opt').forEach(function(o){if(o.dataset.ok==='1')o.classList.add('good');});
+  if(b.dataset.ok==='1')card.classList.add('right'); else b.classList.add('bad');
+  var sl=card.closest('.slide'),all=sl.querySelectorAll('.qcard'),
+      done=sl.querySelectorAll('.qcard.done'),right=sl.querySelectorAll('.qcard.right');
+  var sc=sl.querySelector('.qscore');
+  if(sc&&all.length>1){sc.textContent=(done.length<all.length)?('Отвечено: '+done.length+' из '+all.length):('Верно: '+right.length+' из '+all.length);}
+}
+/* «найди ошибку» */
+function judge(b,val){
+  var st=b.closest('.stmt'); if(st.classList.contains('done'))return;
+  st.classList.add('done');
+  st.classList.add((String(val)===st.dataset.ok)?'good':'bad');
+}
+/* рефлексия */
+function selectReflect(el){
+  el.parentNode.querySelectorAll('.reflect-card').forEach(function(c){c.classList.remove('selected');});
+  el.classList.add('selected');
+}
+/* кнопка «Ответы» на слайде */
+function toolAns(btn){
+  var sl=btn.closest('.slide'),inps=sl.querySelectorAll('.inp');
+  if(inps.length){
+    inps.forEach(function(i){
+      if(!i.disabled){i.value=i.dataset.show||i.dataset.k.split(';')[0];i.classList.remove('wrong');i.classList.add('correct');i.disabled=true;}
+    });
+    sl.classList.add('all-done');return;
+  }
+  var on=sl.classList.toggle('show-ans');
+  btn.textContent=on?'🙈 Скрыть':'👁 Ответы';
+}
+/* проверка полей таблицы */
+function normStr(s){
+  return s.toLowerCase().replace(/\s+/g,'').replace(/,/g,'.').replace(/а/g,'a').replace(/х/g,'x')
+          .replace(/²/g,'^2').replace(/abs\(a\)/g,'|a|').replace(/\*/g,'');
+}
+function toNum(s){
+  var m=s.match(/^(-?\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)$/);
+  if(m)return parseFloat(m[1])/parseFloat(m[2]);
+  if(/^-?\d+(\.\d+)?$/.test(s))return parseFloat(s);
+  return NaN;
+}
+function checkInp(inp){
+  var v=normStr(inp.value); if(!v||inp.disabled)return;
+  var ok=false;
+  inp.dataset.k.split(';').forEach(function(k){
+    var kn=toNum(normStr(k)),vn=toNum(v);
+    if(!isNaN(kn)&&!isNaN(vn)){if(Math.abs(kn-vn)<1e-9)ok=true;}
+    else if(normStr(k)===v)ok=true;
+  });
+  if(ok){
+    inp.classList.remove('wrong');inp.classList.add('correct');inp.disabled=true;
+    var sl=inp.closest('.slide');
+    if(sl.querySelectorAll('.inp:not(.correct)').length===0)sl.classList.add('all-done');
+    var nx=sl.querySelectorAll('.inp:not(:disabled)');if(nx.length)nx[0].focus();
+  }else{
+    inp.classList.add('wrong');
+    setTimeout(function(){inp.classList.remove('wrong');},700);
+  }
+}
+/* таймер урока */
+var tleft=45*60,tint=null;
+function tdraw(){
+  var m=Math.floor(Math.abs(tleft)/60),s=Math.abs(tleft)%60;
+  document.getElementById('tval').textContent=(tleft<0?'−':'')+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+  document.getElementById('timer').classList.toggle('warn',tleft<=300);
+}
+function tToggle(){
+  var b=document.getElementById('tbtn');
+  if(tint){clearInterval(tint);tint=null;b.textContent='▶';}
+  else{tint=setInterval(function(){tleft--;tdraw();},1000);b.textContent='⏸';}
+}
+function tReset(){if(tint){clearInterval(tint);tint=null;}tleft=45*60;document.getElementById('tbtn').textContent='▶';tdraw();}
+
+/* заметки учителю */
+function toggleNote(btn){
+  var sl=btn.closest('.slide');var on=sl.classList.toggle('show-note');
+  btn.textContent=on?'✕ Закрыть заметку':'💡 Учителю';
+}
+/* игра «Найди пару» */
+var memLock=false;
+function shuffleNodes(box){
+  var a=[].slice.call(box.children);
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+  a.forEach(function(x){box.appendChild(x);});
+}
+function memFlip(c){
+  if(memLock||c.classList.contains('open')||c.classList.contains('matched'))return;
+  c.classList.add('open');
+  var sl=c.closest('.slide'),op=sl.querySelectorAll('.mcard.open');
+  if(op.length===2){
+    sl._mv=(sl._mv||0)+1;
+    sl.querySelector('.mmoves').textContent='Ходов: '+sl._mv;
+    if(op[0].dataset.p===op[1].dataset.p){
+      op.forEach(function(x){x.classList.add('matched');x.classList.remove('open');});
+      if(sl.querySelectorAll('.mcard:not(.matched)').length===0)
+        sl.querySelector('.mwin').textContent='🎉 Все пары найдены за '+sl._mv+' ходов!';
+    }else{
+      memLock=true;
+      setTimeout(function(){op.forEach(function(x){x.classList.remove('open');});memLock=false;},1000);
+    }
+  }
+}
+function memReset(btn){
+  var sl=btn.closest('.slide');sl._mv=0;
+  sl.querySelector('.mmoves').textContent='Ходов: 0';sl.querySelector('.mwin').textContent='';
+  var m=sl.querySelector('.mem');
+  [].forEach.call(m.children,function(c){c.classList.remove('open');c.classList.remove('matched');});
+  shuffleNodes(m);
+}
+window.addEventListener('resize',fit);
+window.addEventListener('keydown',function(e){
+  var t=e.target&&e.target.tagName;
+  if(t==='INPUT'||t==='TEXTAREA')return;
+  if(e.key==='ArrowRight'||e.key==='PageDown')changeSlide(1);
+  else if(e.key==='ArrowLeft'||e.key==='PageUp')changeSlide(-1);
+  else if(e.key==='Home')show(0);
+  else if(e.key==='End')show(slides.length-1);
+  else if(e.key==='b'||e.key==='B'||e.key==='и'||e.key==='И')toggleBoard();
+  else if(e.key==='Escape')toggleBoard(false);
+  else if(e.key==='n'||e.key==='N'||e.key==='т'||e.key==='Т'){var nb=slides[cur].querySelector('.tnote');if(nb)toggleNote(nb);}
+});
+document.addEventListener('DOMContentLoaded',function(){
+  slides=[].slice.call(document.querySelectorAll('.slide'));
+  buildPills();show(0);fit();tdraw();
+  document.querySelectorAll('.mem').forEach(shuffleNodes);
+  document.querySelectorAll('.inp').forEach(function(i){
+    i.addEventListener('change',function(){checkInp(i);});
+    i.addEventListener('keydown',function(e){if(e.key==='Enter')checkInp(i);});
+  });
+});
+</script>
+</body>
+</html>
