@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 2. Вынесение множителя из-под знака корня</title>
+<script>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]},svg:{fontCache:'global'}};</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+:root{
+  --blue:#2563eb;--blue-dark:#1e40af;--blue-light:#dbeafe;
+  --teal:#0d9488;--teal-dark:#0f766e;--teal-light:#ccfbf1;
+  --orange:#ea580c;--orange-dark:#c2410c;--orange-light:#ffedd5;
+  --ok:#10b981;--ok-light:#d1fae5;--err:#ef4444;--err-light:#fee2e2;
+  --text:#1e293b;--muted:#64748b;--border:#bfdbfe;
+}
+*{box-sizing:border-box;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;}
+html,body{margin:0;padding:0;height:100%;overflow:hidden;}
+body{
+  background:radial-gradient(1200px 600px at 5% -5%,#eff6ff 0%,transparent 55%),
+             radial-gradient(900px 500px at 100% 100%,#f0fdfa 0%,transparent 55%),#f8fafc;
+  color:var(--text);display:flex;flex-direction:column;height:100vh;
+}
+body.board-mode{background:#e2e8f0;}
+header{height:52px;padding:0 18px;display:flex;align-items:center;gap:14px;flex-shrink:0;
+  background:rgba(248,250,252,.9);border-bottom:1px solid var(--border);z-index:10;}
+.header-title{font-size:14px;font-weight:800;color:var(--blue-dark);white-space:nowrap;}
+.progress-pills{display:flex;gap:3px;flex:1;overflow-x:auto;scrollbar-width:none;justify-content:center;}
+.progress-pill{height:22px;min-width:22px;padding:0 6px;border-radius:11px;background:#fff;flex-shrink:0;
+  border:2px solid var(--border);display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;color:var(--muted);cursor:pointer;transition:.2s;}
+.progress-pill.active{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;border-color:transparent;}
+.progress-pill.done{background:var(--teal-light);color:var(--teal);border-color:var(--teal);}
+.progress-pill.reserve{border-style:dashed;}
+.hbtn{border:2px solid var(--border);background:#fff;color:var(--blue-dark);border-radius:10px;padding:5px 12px;
+  font-weight:800;font-size:13px;cursor:pointer;white-space:nowrap;}
+.hbtn:hover{border-color:var(--blue);}
+#timer{display:flex;align-items:center;gap:6px;font-weight:800;color:var(--blue-dark);font-size:14px;}
+#timer.warn{color:var(--err);}
+#tval{min-width:48px;text-align:center;font-variant-numeric:tabular-nums;}
+#viewport{flex:1;position:relative;min-height:0;overflow:hidden;}
+#stage{position:absolute;left:0;top:0;width:1280px;height:720px;transform-origin:0 0;background:#fff;
+  border-radius:18px;box-shadow:0 10px 40px rgba(37,99,235,.12);border:1px solid var(--border);overflow:hidden;}
+body.board-mode #stage{border-radius:0;box-shadow:none;border:none;}
+body.board-mode header,body.board-mode nav{display:none;}
+body.board-mode .no-board,body.board-mode .ans,body.board-mode .rv{display:none !important;}
+body.board-mode .concl{visibility:hidden !important;}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;padding:24px 44px 22px;}
+.slide.active{display:flex;animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+.sh{flex-shrink:0;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:12px;}
+.sh h2{font-size:30px;margin:6px 0 2px;color:var(--blue-dark);font-weight:800;line-height:1.15;}
+.sh h2.green{color:var(--teal-dark);} .sh h2.orange{color:var(--orange-dark);}
+.subtitle{color:var(--muted);font-size:17px;margin:2px 0 0;}
+.tag{display:inline-block;background:var(--blue-light);color:var(--blue-dark);padding:5px 13px;border-radius:16px;
+  font-size:12px;font-weight:800;border:1px solid #93c5fd;}
+.tag .min{font-weight:600;opacity:.8;}
+.tag.green{background:var(--teal-light);color:var(--teal-dark);border-color:#5eead4;}
+.tag.orange{background:var(--orange-light);color:var(--orange-dark);border-color:#fdba74;}
+.tag.red{background:#fee2e2;color:#991b1b;border-color:#fca5a5;}
+.tag.grey{background:#f1f5f9;color:#475569;border-color:#cbd5e1;}
+.tools{display:flex;gap:8px;align-items:center;flex-shrink:0;padding-top:4px;}
+.badge{background:#fef3c7;color:#92400e;border:1px solid #fcd34d;padding:5px 10px;border-radius:10px;font-size:12px;font-weight:800;}
+.tool{border:2px solid var(--teal);background:var(--teal-light);color:var(--teal-dark);border-radius:10px;
+  padding:5px 12px;font-weight:800;font-size:13px;cursor:pointer;}
+.content{flex:1;min-height:0;display:flex;flex-direction:column;gap:12px;}
+
+/* титул */
+.title-slide{justify-content:center;align-items:center;text-align:center;}
+.title-slide h1{font-size:52px;margin:16px 0 6px;color:var(--blue-dark);font-weight:800;}
+.title-slide .lead{font-size:21px;color:var(--muted);margin:0 0 22px;max-width:860px;}
+.goals{background:#fff;border:2px solid var(--border);border-radius:16px;padding:16px 30px;text-align:left;max-width:860px;width:100%;}
+.goals h3{margin:0 0 8px;color:var(--blue-dark);font-size:21px;}
+.goals ul{margin:0;padding-left:22px;font-size:19px;line-height:1.6;}
+
+/* план */
+.plan{display:flex;flex-direction:column;gap:7px;flex:1;min-height:0;}
+.plan-row{display:flex;align-items:center;gap:14px;background:#fff;border:2px solid var(--border);border-radius:12px;padding:0 16px;flex:1;min-height:0;}
+.plan-n{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.plan-t{flex:1;font-size:19px;font-weight:700;}
+.plan-t small{display:block;font-size:14px;color:var(--muted);font-weight:500;}
+.plan-m{font-weight:800;color:var(--teal-dark);background:var(--teal-light);border-radius:10px;padding:4px 12px;font-size:16px;}
+.plan-total{text-align:right;color:var(--muted);font-weight:700;font-size:15px;flex-shrink:0;}
+
+/* переворотки */
+.flip-grid{display:grid;gap:18px;flex:1;min-height:0;grid-auto-rows:1fr;}
+.flip-card{perspective:900px;cursor:pointer;min-height:0;}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:700;border:2px solid var(--border);}
+.flip-front{background:linear-gradient(135deg,#eff6ff,#dbeafe);color:var(--blue-dark);}
+.flip-front::after{content:'нажми';position:absolute;bottom:8px;right:12px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.flip-back{background:linear-gradient(135deg,#ecfdf5,#d1fae5);color:#065f46;transform:rotateY(180deg);border-color:var(--ok);}
+.fnum{position:absolute;top:10px;left:12px;width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.flip-back .fnum{background:var(--ok);}
+
+/* клетка */
+.grid{display:grid;gap:18px;flex:1;min-height:0;grid-auto-rows:1fr;}
+.cell{position:relative;background:#fff;border:2px dashed #93c5fd;border-radius:14px;padding:12px 14px 14px;
+  display:flex;flex-direction:column;gap:8px;min-height:0;}
+.cell::before{content:'✏️ Решение';position:absolute;top:-10px;left:16px;background:#fff;padding:0 8px;font-size:10px;
+  font-weight:800;color:var(--blue);text-transform:uppercase;border-radius:5px;}
+.chead{display:flex;align-items:center;gap:10px;}
+.let{display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--blue),var(--teal));
+  color:#fff;font-weight:800;font-size:14px;min-width:30px;height:30px;border-radius:8px;flex-shrink:0;}
+.expr{flex:1;min-width:0;background:rgba(239,246,255,.95);border-radius:8px;padding:6px 12px;font-size:22px;font-weight:700;
+  border:1px solid rgba(37,99,235,.15);line-height:1.5;}
+.work{flex:1;min-height:36px;border-radius:10px;border:1px solid rgba(37,99,235,.18);
+  background:linear-gradient(#dbeafe 1px,transparent 1px),linear-gradient(90deg,#dbeafe 1px,transparent 1px);background-size:20px 20px;background-color:#fff;}
+.eye{border:none;background:var(--blue-light);color:var(--blue-dark);border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:15px;flex-shrink:0;}
+.eye:hover{background:#bfdbfe;}
+.ans{position:absolute;right:20px;bottom:20px;background:var(--ok-light);border:2px solid var(--ok);color:#065f46;
+  border-radius:10px;padding:6px 14px;font-size:21px;font-weight:700;display:none;max-width:92%;text-align:right;z-index:2;}
+.cell.open .ans,.slide.show-ans .ans{display:block;}
+
+/* таблица */
+.tbl{border-collapse:separate;border-spacing:0;width:100%;font-size:24px;}
+.tbl th{background:var(--blue);color:#fff;padding:9px 12px;font-size:18px;}
+.tbl th:first-child{border-radius:12px 0 0 0;} .tbl th:last-child{border-radius:0 12px 0 0;}
+.tbl td{border:1px solid var(--border);padding:5px 12px;text-align:center;background:#fff;}
+.tbl tr:nth-child(even) td{background:#f8fafc;}
+.inp{width:150px;font-size:22px;font-weight:700;text-align:center;padding:5px 8px;border:2px solid var(--border);border-radius:10px;outline:none;color:var(--blue-dark);}
+.inp:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.15);}
+.inp.correct{background:var(--ok-light);border-color:var(--ok);color:#065f46;}
+.inp.wrong{background:var(--err-light);border-color:var(--err);animation:shake .35s;}
+@keyframes shake{25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
+.concl{visibility:hidden;}
+.slide.all-done .concl,.slide.show-ans .concl{visibility:visible;}
+.rv{visibility:hidden;}
+.slide.show-ans .rv{visibility:visible;}
+
+/* теория */
+.theory{background:#fff;border:2px solid var(--border);border-radius:16px;padding:18px 30px;text-align:center;}
+.theory p{font-size:20px;line-height:1.5;margin:8px 0;}
+.formula{background:linear-gradient(135deg,#eff6ff,#dbeafe);border:2px solid var(--blue);border-radius:12px;padding:14px 24px;
+  text-align:center;font-size:40px;font-weight:700;color:var(--blue-dark);margin:12px 0;box-shadow:0 4px 15px rgba(37,99,235,.1);}
+.key{background:linear-gradient(135deg,#fef3c7,#fde68a);border-left:6px solid #d97706;border-radius:12px;padding:12px 22px;
+  font-size:19px;line-height:1.5;text-align:left;}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.mini{background:#fff;border:2px solid var(--border);border-radius:12px;padding:10px 16px;font-size:22px;font-weight:700;text-align:center;}
+.mini small{display:block;font-size:14px;color:var(--muted);font-weight:600;margin-bottom:4px;}
+.step-grid{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:12px;align-items:stretch;}
+.step-box{background:#fff;border:2px solid var(--border);border-radius:12px;padding:10px 12px;text-align:center;font-size:26px;font-weight:700;box-shadow:0 4px 10px rgba(0,0,0,.04);}
+.step-box.ok{background:var(--ok-light);border-color:var(--ok);}
+.step-arrow{font-size:28px;color:var(--muted);font-weight:700;align-self:center;}
+.step-title{font-size:12px;color:var(--muted);font-weight:700;margin-bottom:3px;text-transform:uppercase;letter-spacing:1px;}
+.reveal{cursor:pointer;} .reveal .a{display:none;} .reveal.on .a{display:block;} .reveal.on .q{display:none;}
+.reveal .q{color:var(--muted);font-size:30px;}
+.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;flex:1;min-height:0;}
+.card{background:#fff;border:2px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;flex-direction:column;gap:8px;text-align:center;justify-content:center;}
+.card h4{margin:0;font-size:17px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.card .big{font-size:34px;font-weight:700;color:var(--blue-dark);}
+.card .why{font-size:17px;line-height:1.4;}
+.card.good{border-color:var(--ok);background:#f0fdf4;} .card.warn{border-color:#f59e0b;background:#fffbeb;}
+
+/* тест */
+.qgrid{display:grid;gap:14px;flex:1;min-height:0;grid-auto-rows:1fr;}
+.qcard{position:relative;border:2px solid var(--border);border-radius:14px;padding:12px 18px 12px 52px;display:flex;flex-direction:column;gap:8px;background:#fff;min-height:0;justify-content:center;}
+.qnum{position:absolute;left:14px;top:12px;width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.qtext{font-size:21px;font-weight:700;}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.opt{border:2px solid var(--border);background:#f8fafc;border-radius:10px;padding:7px 10px;font-size:20px;font-weight:600;cursor:pointer;color:var(--text);}
+.opt:hover{border-color:var(--blue);background:#eff6ff;}
+.opt.good{background:var(--ok-light);border-color:var(--ok);color:#065f46;}
+.opt.bad{background:var(--err-light);border-color:var(--err);color:#991b1b;}
+.qcard.done .opt{cursor:default;}
+.expl{display:none;font-size:15px;color:#065f46;line-height:1.35;}
+.qcard.done .expl{display:block;}
+.qscore{flex-shrink:0;text-align:center;font-weight:800;color:var(--teal-dark);font-size:16px;min-height:20px;}
+.ol{display:inline-flex;width:24px;height:24px;border-radius:50%;background:var(--blue-light);color:var(--blue-dark);font-size:13px;font-weight:800;align-items:center;justify-content:center;margin-right:8px;vertical-align:middle;}
+.opt.good .ol{background:var(--ok);color:#fff;} .opt.bad .ol{background:var(--err);color:#fff;}
+
+/* найди ошибку */
+.stmts{display:flex;flex-direction:column;gap:10px;flex:1;min-height:0;counter-reset:st;}
+.stmt{display:grid;grid-template-columns:34px 1fr auto 1.25fr;gap:16px;align-items:center;background:#fff;border:2px solid var(--border);border-radius:12px;padding:0 18px;flex:1;min-height:0;}
+.stmt::before{counter-increment:st;content:counter(st);width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;}
+.st-expr{font-size:26px;font-weight:700;}
+.st-btns{display:flex;gap:8px;}
+.st-btns button{border:2px solid var(--border);background:#f8fafc;border-radius:10px;padding:8px 16px;font-size:16px;font-weight:800;cursor:pointer;}
+.st-btns button:hover{border-color:var(--blue);}
+.st-fb{font-size:17px;color:var(--muted);visibility:hidden;line-height:1.35;}
+.stmt.done .st-fb{visibility:visible;}
+.stmt.good{border-color:var(--ok);background:#f0fdf4;} .stmt.bad{border-color:var(--err);background:#fef2f2;}
+.stmt.done .st-btns button{cursor:default;}
+
+/* рефлексия */
+.reflect-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.reflect-card{background:#fff;padding:16px;border-radius:14px;border:3px solid var(--border);text-align:center;cursor:pointer;transition:.2s;}
+.reflect-card:hover{border-color:var(--teal);}
+.reflect-card.selected{border-color:var(--blue);background:var(--blue-light);box-shadow:0 8px 22px rgba(37,99,235,.2);}
+.reflect-card .emo{font-size:42px;} .reflect-card .lbl{font-size:18px;font-weight:800;margin-top:6px;}
+.hw{background:#fff;border:2px solid var(--border);border-radius:14px;padding:12px 24px;font-size:20px;line-height:1.55;}
+.hw ol{margin:6px 0 0;padding-left:26px;} .hw li{margin:6px 0;}
+.hw h3{margin:0;color:var(--blue-dark);}
+
+.mode{display:inline-block;margin-left:8px;background:#fff;color:var(--muted);border:1px solid var(--border);padding:4px 11px;border-radius:14px;font-size:12px;font-weight:800;}
+.note{display:none;position:absolute;left:44px;right:44px;bottom:14px;background:#1e293b;color:#f1f5f9;border-radius:12px;padding:12px 18px;font-size:15px;line-height:1.45;z-index:20;box-shadow:0 8px 24px rgba(0,0,0,.3);}
+.note b{color:#fcd34d;}
+.slide.show-note .note{display:block;}
+.tool.tnote{border-color:#f59e0b;background:#fef3c7;color:#92400e;}
+
+/* доказательство */
+.proof{display:flex;flex-direction:column;gap:10px;}
+.pline{display:flex;align-items:center;gap:14px;background:#fff;border:2px solid var(--border);border-radius:12px;padding:8px 16px;min-height:62px;font-size:26px;font-weight:700;}
+.pline .pn{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.pline .q{font-size:16px;font-weight:600;}
+.pline.reveal.on{background:#eff6ff;}
+
+/* игра */
+.mem{display:grid;gap:12px;flex:1;min-height:0;grid-auto-rows:1fr;}
+.mcard{perspective:800px;cursor:pointer;min-height:0;}
+.mi{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d;}
+.mcard.open .mi,.mcard.matched .mi{transform:rotateY(180deg);}
+.mf,.mb{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;align-items:center;justify-content:center;border-radius:12px;font-size:28px;font-weight:700;border:2px solid var(--border);}
+.mf{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;font-size:34px;}
+.mb{background:#eff6ff;color:var(--blue-dark);transform:rotateY(180deg);text-align:center;padding:0 6px;}
+.mcard.matched .mb{background:var(--ok-light);border-color:var(--ok);color:#065f46;}
+.mstat{flex-shrink:0;display:flex;gap:16px;align-items:center;justify-content:center;font-weight:800;color:var(--teal-dark);font-size:17px;}
+
+/* карточки учеников */
+.roster{columns:3;column-gap:18px;flex:1;min-height:0;overflow:hidden;}
+.rrow{break-inside:avoid;display:flex;justify-content:space-between;align-items:center;background:#fff;border:2px solid var(--border);border-radius:10px;padding:5px 14px;margin-bottom:7px;font-size:20px;font-weight:700;}
+.rnum{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;border-radius:8px;min-width:38px;text-align:center;padding:2px 8px;font-size:19px;}
+.rhint{column-span:all;font-size:20px;color:var(--muted);text-align:center;padding:60px 40px;border:3px dashed var(--border);border-radius:16px;}
+.rbar{flex-shrink:0;display:flex;gap:10px;justify-content:center;}
+.itgrid{display:grid;gap:12px;flex:1;min-height:0;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:1fr;}
+.itask{position:relative;background:#fff;border:2px solid var(--border);border-radius:14px;padding:10px 12px 8px 52px;display:flex;flex-direction:column;gap:6px;min-height:0;overflow:hidden;}
+.itask.unused{opacity:.4;}
+.it-n{position:absolute;left:10px;top:10px;width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;}
+.it-expr{font-size:21px;font-weight:700;line-height:1.35;}
+.who{display:flex;flex-wrap:wrap;gap:4px;margin-top:auto;}
+.chip{background:var(--teal-light);color:var(--teal-dark);border-radius:10px;padding:2px 9px;font-size:13px;font-weight:700;}
+.itask .ans{position:static;margin-top:2px;font-size:16px;padding:3px 10px;text-align:left;}
+#classModal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:200;align-items:center;justify-content:center;}
+.cm{background:#fff;border-radius:18px;padding:22px 26px;width:min(520px,92vw);box-shadow:0 20px 60px rgba(0,0,0,.35);}
+.cm h3{margin:0 0 6px;color:var(--blue-dark);font-size:22px;} .cm p{margin:0 0 10px;color:var(--muted);font-size:15px;}
+.cm textarea{width:100%;font-size:16px;padding:10px;border:2px solid var(--border);border-radius:10px;resize:vertical;outline:none;}
+.cm textarea:focus{border-color:var(--blue);}
+.cm-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:12px;}
+
+nav{height:56px;padding:0 24px;background:rgba(255,255,255,.95);border-top:1px solid var(--border);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;flex-shrink:0;}
+nav .nav-prev{justify-self:start;} nav .nav-next{justify-self:end;}
+nav button{padding:9px 26px;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:.2s;}
+nav .nav-prev{background:#fff;color:var(--blue);border:2px solid var(--blue);}
+nav .nav-prev:hover:not(:disabled){background:var(--blue-light);}
+nav .nav-next{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;}
+nav .nav-next:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,99,235,.3);}
+nav button:disabled{opacity:.3;cursor:default;}
+.nav-info{font-size:14px;color:var(--muted);font-weight:700;min-width:140px;text-align:center;}
+#exitBoard{display:none;position:fixed;top:10px;right:10px;z-index:50;opacity:0;transition:.2s;}
+body.board-mode #exitBoard{display:block;}
+#exitBoard:hover{opacity:1;}
+#toast{display:none;position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:rgba(30,41,59,.92);color:#fff;
+  padding:10px 20px;border-radius:12px;font-size:14px;z-index:60;}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-title">Алгебра 8 · Урок 2: Вынесение множителя из-под корня</div>
+  <div class="progress-pills" id="pills"></div>
+  <div id="timer"><span>⏱</span><span id="tval">45:00</span>
+    <button class="hbtn" id="tbtn" onclick="tToggle()" title="Старт / пауза">▶</button>
+    <button class="hbtn" onclick="tReset()" title="Сбросить таймер">⟲</button></div>
+  <button class="hbtn" onclick="openClass()" title="Список класса">👥 Класс</button>
+  <button class="hbtn" onclick="toggleBoard()" title="Режим доски (B)">🖼 Режим доски</button>
+</header>
+<div id="viewport"><div id="stage">
+
+<!-- 1. ТИТУЛ -->
+<section class="slide title-slide" data-name="Титул">
+  <span class="tag">Алгебра · 8 класс · Урок 2 из 2</span>
+  <h1>Вынесение множителя из-под знака корня</h1>
+  <p class="lead">Вчера мы узнали, что $\sqrt{x^2}=|x|$. Сегодня научимся <b>выносить множитель</b> из-под корня — и считать $\sqrt{72}$ за пять секунд!</p>
+  <div class="goals"><h3>🎯 Цели урока</h3><ul>
+    <li>Понять правило $\sqrt{a^2b}=a\sqrt{b}$ и обратное <b>внесение</b> множителя под корень</li>
+    <li>Научиться упрощать $\sqrt{50}$, $\sqrt{72}$, $\sqrt{8x^2}$ и подобные выражения</li>
+    <li>Повторить свойства корней; потренироваться в заданиях формата ОГЭ</li></ul></div>
+</section>
+
+<!-- 2. ПЛАН -->
+<section class="slide" data-name="План">
+  <div class="sh"><div><span class="tag grey">Этап 1 · Оргмомент<span class="min"> · 1 мин</span></span><h2>План урока</h2></div><div class="tools"></div></div>
+  <div class="content"><div class="plan">
+    <div class="plan-row"><div class="plan-n">1</div><div class="plan-t">Оргмомент, повторение правила $\sqrt{x^2}=|x|$<small>проверка ДЗ, настрой</small></div><div class="plan-m">2 мин</div></div>
+    <div class="plan-row"><div class="plan-n">2</div><div class="plan-t">Устная разминка<small>квадраты чисел, свойства корней, «лишнее»</small></div><div class="plan-m">7 мин</div></div>
+    <div class="plan-row"><div class="plan-n">3</div><div class="plan-t">Проблемная ситуация<small>«$\sqrt{72}$ — как упростить?»</small></div><div class="plan-m">4 мин</div></div>
+    <div class="plan-row"><div class="plan-n">4</div><div class="plan-t">Открытие нового: исследование<small>таблица $\sqrt{a^2b}$, формулируем правило</small></div><div class="plan-m">7 мин</div></div>
+    <div class="plan-row"><div class="plan-n">5</div><div class="plan-t">Теория и обобщение<small>алгоритм вынесения, внесение под корень</small></div><div class="plan-m">8 мин</div></div>
+    <div class="plan-row"><div class="plan-n">6</div><div class="plan-t">Закрепление: от простого к ОГЭ<small>клетка, задания ОГЭ, игра «Найди пару»</small></div><div class="plan-m">12 мин</div></div>
+    <div class="plan-row"><div class="plan-n">7</div><div class="plan-t">Индивидуальные карточки<small>12 вариантов, имена — кнопкой «👥 Класс»</small></div><div class="plan-m">4 мин</div></div>
+    <div class="plan-row"><div class="plan-n">8</div><div class="plan-t">Итог, рефлексия, ДЗ<small></small></div><div class="plan-m">2 мин</div></div>
+  </div><div class="plan-total">Всего: 45 минут · в начале урока нажмите «👥 Класс» · резервные слайды — в конце</div></div>
+</section>
+
+<!-- 3. СВЕТОФОР -->
+<section class="slide" data-name="Светофор">
+  <div class="sh"><div><span class="tag">Этап 2 · Разминка<span class="min"> · 2 мин</span></span><span class="mode no-board">🗣 устно, хором</span>
+    <h2>Светофор: верно или нет?</h2><p class="subtitle">Проверяем, как помним правило $\sqrt{x^2}=|x|$. Выберите «да» или «нет».</p></div>
+    <div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div>
+  <div class="content"><div class="qgrid" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+    <div class="qcard"><div class="qnum">1</div><div class="qtext">$\sqrt{(-8)^2}=-8$?</div>
+      <div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="0" onclick="pick(this)">да</button><button class="opt" data-ok="1" onclick="pick(this)">нет</button></div>
+      <div class="expl">$\sqrt{(-8)^2}=|-8|=8$.</div></div>
+    <div class="qcard"><div class="qnum">2</div><div class="qtext">$\sqrt{x^2}=|x|$?</div>
+      <div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="1" onclick="pick(this)">да</button><button class="opt" data-ok="0" onclick="pick(this)">нет</button></div>
+      <div class="expl">Это правило прошлого урока.</div></div>
+    <div class="qcard"><div class="qnum">3</div><div class="qtext">$\sqrt{3^4}=9$?</div>
+      <div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="1" onclick="pick(this)">да</button><button class="opt" data-ok="0" onclick="pick(this)">нет</button></div>
+      <div class="expl">$\sqrt{3^4}=|3^2|=9$.</div></div>
+    <div class="qcard"><div class="qnum">4</div><div class="qtext">$\sqrt{(-5)^2}=5$?</div>
+      <div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="1" onclick="pick(this)">да</button><button class="opt" data-ok="0" onclick="pick(this)">нет</button></div>
+      <div class="expl">$|-5|=5$.</div></div>
+    <div class="qcard"><div class="qnum">5</div><div class="qtext">$\sqrt{a^6}=a^3$ при любом $a$?</div>
+      <div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="0" onclick="pick(this)">да</button><button class="opt" data-ok="1" onclick="pick(this)">нет</button></div>
+      <div class="expl">При $a\lt0$ нужно $|a^3|=-a^3$.</div></div>
+    <div class="qcard"><div class="qnum">6</div><div class="qtext">$\sqrt{4\cdot9}=\sqrt4\cdot\sqrt9$?</div>
+      <div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="1" onclick="pick(this)">да</button><button class="opt" data-ok="0" onclick="pick(this)">нет</button></div>
+      <div class="expl">Корень из произведения равен произведению корней (для неотрицательных множителей).</div></div>
+  </div><div class="qscore"></div></div>
+  <div class="note no-board"><b>Как провести:</b> 2 мин в быстром темпе. Последний вопрос — «мостик» к новой теме: $\sqrt{4\cdot9}=\sqrt4\cdot\sqrt9=2\cdot3=6$. А если под корнем не полный квадрат? Например, $\sqrt{50}$? Об этом сегодня.</div>
+</section>
+
+<!-- 4. ЛИШНЕЕ -->
+<section class="slide" data-name="Лишнее">
+  <div class="sh"><div><span class="tag">Этап 2 · Разминка<span class="min"> · 2 мин</span></span><span class="mode no-board">🗣 устно, в парах</span>
+    <h2>Найди лишнее</h2><p class="subtitle">В каждой четвёрке три выражения равны, одно — лишнее.</p></div>
+    <div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div>
+  <div class="content"><div class="qgrid" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+    <div class="qcard"><div class="qnum">1</div><div class="qtext">Найди лишнее</div>
+      <div class="opts" style="grid-template-columns:repeat(2,1fr)">
+        <button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">А</span>$\sqrt{18}$</button>
+        <button class="opt" data-ok="1" onclick="pick(this)"><span class="ol">Б</span>$3\sqrt2$</button>
+        <button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">В</span>$\sqrt{9\cdot2}$</button>
+        <button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">Г</span>$\sqrt{2}\cdot3$</button></div>
+      <div class="expl">Все равны $3\sqrt2$, кроме $\sqrt{18}$ — оно «неупрощённое» (хотя и равно остальным!). Здесь ловушка: лишнее по форме записи, а не по значению.</div></div>
+    <div class="qcard"><div class="qnum">2</div><div class="qtext">Найди лишнее (по значению)</div>
+      <div class="opts" style="grid-template-columns:repeat(2,1fr)">
+        <button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">А</span>$\sqrt{75}$</button>
+        <button class="opt" data-ok="1" onclick="pick(this)"><span class="ol">Б</span>$\sqrt{45}$</button>
+        <button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">В</span>$5\sqrt3$</button>
+        <button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">Г</span>$\sqrt{25\cdot3}$</button></div>
+      <div class="expl">$\sqrt{75}=5\sqrt3$, $\sqrt{25\cdot3}=5\sqrt3$; а $\sqrt{45}=3\sqrt5$ — другое число.</div></div>
+    <div class="qcard"><div class="qnum">3</div><div class="qtext">Что можно вынести из-под корня в первую очередь?</div>
+      <div class="opts" style="grid-template-columns:repeat(2,1fr)">
+        <button class="opt" data-ok="1" onclick="pick(this)"><span class="ol">А</span>$\sqrt{2^3}$ → вынести $2^2$</button>
+        <button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">Б</span>$\sqrt{2^3}$ → вынести $2^3$</button>
+        <button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">В</span>ничего нельзя</button>
+        <button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">Г</span>вынести $3$</button></div>
+      <div class="expl">Ищем <b>полный квадрат</b> среди множителей: $2^3=2^2\cdot2$, поэтому $\sqrt{2^3}=2\sqrt2$.</div></div>
+  </div><div class="qscore"></div></div>
+  <div class="note no-board"><b>Как провести:</b> в первом наборе намеренная ловушка: все четыре выражения <i>равны</i>, «лишнее» — по форме. Это хороший повод обсудить: упрощать — значит убирать полные квадраты из-под корня. Во втором наборе уже числовое различие.</div>
+</section>
+
+<!-- 5. ПРОБЛЕМА -->
+<section class="slide" data-name="Проблема">
+  <div class="sh"><div><span class="tag orange">Этап 3 · Проблемная ситуация<span class="min"> · 4 мин</span></span><span class="mode no-board">💬 дискуссия</span>
+    <h2 class="orange">Как упростить $\sqrt{72}$?</h2><p class="subtitle">Нажимайте на строки по очереди — и следите за рассуждением Маши.</p></div>
+    <div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div>
+  <div class="content"><div class="proof">
+    <div class="pline reveal" onclick="this.classList.toggle('on')"><span class="pn">1</span><div class="q">нажми — следующий шаг</div><div class="a">$72=36\cdot2$ &nbsp;— разложили на множители</div></div>
+    <div class="pline reveal" onclick="this.classList.toggle('on')"><span class="pn">2</span><div class="q">нажми — следующий шаг</div><div class="a">$\sqrt{72}=\sqrt{36\cdot2}=\sqrt{36}\cdot\sqrt2$</div></div>
+    <div class="pline reveal" onclick="this.classList.toggle('on')"><span class="pn">3</span><div class="q">нажми — следующий шаг</div><div class="a">$\sqrt{36}\cdot\sqrt2=6\sqrt2$ &nbsp;— готово!</div></div>
+  </div>
+  <div class="qgrid" style="grid-template-columns:repeat(1,minmax(0,1fr))">
+    <div class="qcard"><div class="qnum">1</div><div class="qtext">На каком свойстве основан этот приём?</div>
+      <div class="opts" style="grid-template-columns:repeat(2,1fr)">
+        <button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">А</span>$\sqrt{a^2}=a$</button>
+        <button class="opt" data-ok="1" onclick="pick(this)"><span class="ol">Б</span>$\sqrt{ab}=\sqrt a\cdot\sqrt b$</button>
+        <button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">В</span>$\sqrt{a+b}=\sqrt a+\sqrt b$</button>
+        <button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">Г</span>ни на каком, это случайность</button></div>
+      <div class="expl">Именно $\sqrt{ab}=\sqrt a\cdot\sqrt b$ (для $a,b\ge0$) позволяет «разорвать» корень и вынести полный квадрат.</div></div>
+  </div><div class="qscore"></div></div>
+  <div class="note no-board"><b>Как провести:</b> дайте 1 мин на попытки в парах до открытия строк. Вопрос урока: <b>как найти самый большой полный квадрат</b> среди множителей? Подсказка: $72=36\cdot2$, а не $9\cdot8$ — почему выгоднее 36?</div>
+</section>
+
+<!-- 6. ТАБЛИЦА -->
+<section class="slide" data-name="Таблица">
+  <div class="sh"><div><span class="tag green">Этап 4 · Открытие нового<span class="min"> · 7 мин</span></span><span class="mode no-board">✏️ индивидуально → проверка</span>
+    <h2 class="green">Исследуем: заполним таблицу</h2><p class="subtitle">Представьте подкоренное выражение в виде $a^2b$ и вынесите множитель. Вводите ответ в поле.</p></div>
+    <div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button><button class="tool no-board" onclick="toolAns(this)">👁 Ответы</button></div></div>
+  <div class="content">
+    <table class="tbl">
+      <tr><th>Выражение</th><th>Раскладываем как $a^2b$</th><th>Результат</th></tr>
+      <tr><td>$\sqrt{12}$</td><td><input class="inp" data-k="4*3;2^2*3" data-show="4·3" autocomplete="off"></td><td><input class="inp" data-k="2*sqrt(3);2\sqrt{3}" data-show="2√3" autocomplete="off"></td></tr>
+      <tr><td>$\sqrt{50}$</td><td><input class="inp" data-k="25*2;5^2*2" data-show="25·2" autocomplete="off"></td><td><input class="inp" data-k="5*sqrt(2);5\sqrt{2}" data-show="5√2" autocomplete="off"></td></tr>
+      <tr><td>$\sqrt{72}$</td><td><input class="inp" data-k="36*2;6^2*2" data-show="36·2" autocomplete="off"></td><td><input class="inp" data-k="6*sqrt(2);6\sqrt{2}" data-show="6√2" autocomplete="off"></td></tr>
+      <tr><td>$\sqrt{18}$</td><td><input class="inp" data-k="9*2;3^2*2" data-show="9·2" autocomplete="off"></td><td><input class="inp" data-k="3*sqrt(2);3\sqrt{2}" data-show="3√2" autocomplete="off"></td></tr>
+      <tr><td>$\sqrt{8x^2}$</td><td><input class="inp" data-k="4*2*x^2;2^2*2*x^2" data-show="4·2·x²" autocomplete="off"></td><td><input class="inp" data-k="2*sqrt(2)*|x|;2|x|\sqrt{2};2\sqrt{2}|x|" data-show="2√2·|x|" autocomplete="off"></td></tr>
+      <tr><td>$\sqrt{a^2b}$, $a\ge0$</td><td><input class="inp" data-k="a^2*b" data-show="a²·b" autocomplete="off"></td><td><input class="inp" data-k="a*sqrt(b);a\sqrt{b}" data-show="a√b" autocomplete="off"></td></tr>
+      <tr><td>$\sqrt{a^2b}$, $a\lt0$</td><td><input class="inp" data-k="a^2*b" data-show="a²·b" autocomplete="off"></td><td><input class="inp" data-k="-a*sqrt(b);-a\sqrt{b}" data-show="−a√b" autocomplete="off"></td></tr>
+    </table>
+    <div class="key concl" style="text-align:center;font-size:21px"><b>Вывод:</b> $\sqrt{a^2b}=|a|\sqrt b$. Если $a$ неотрицательно, модуль убираем: $\sqrt{a^2b}=a\sqrt b$.</div>
+  </div>
+  <div class="note no-board"><b>Как провести:</b> 4 мин самостоятельной работы, затем проверка. Обратите внимание на две последние строки: именно там «живёт» модуль. Спросите: «Почему в $\sqrt{8x^2}$ ответ $2\sqrt2\,|x|$, а не $2\sqrt2\,x$?» Формулировку правила произносит ученик.</div>
+</section>
+
+<!-- 7. ПРАВИЛО -->
+<section class="slide" data-name="Правило">
+  <div class="sh"><div><span class="tag">Этап 5 · Теория<span class="min"> · 2 мин</span></span><span class="mode no-board">🎤 объясняет учитель</span>
+    <h2>Главное правило</h2></div><div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div>
+  <div class="content">
+    <div class="theory"><p>Корень из произведения равен произведению корней:</p>
+      <div class="formula">$\sqrt{ab}=\sqrt a\cdot\sqrt b$</div>
+      <p>Если под корнем есть <b>полный квадрат</b>, его можно «вытащить» наружу:</p>
+      <div class="formula" style="font-size:36px">$\sqrt{a^2b}=|a|\sqrt b$</div>
+      <p>При $a\ge0$ это $\sqrt{a^2b}=a\sqrt b$.</p></div>
+    <div class="two"><div class="mini"><small>условие $a\ge0$</small>$\sqrt{a^2b}=a\sqrt b$</div><div class="mini"><small>без условия</small>$\sqrt{a^2b}=|a|\sqrt b$</div></div>
+    <div class="key"><b>Связь с уроком 1:</b> $\sqrt{a^2}=|a|$ — частный случай при $b=1$. Сегодня мы «разрешаем» под корнем остаться неполному квадрату.</div>
+  </div>
+  <div class="note no-board"><b>Как провести:</b> попросите двух учеников прочитать правило и привести свои примеры. Запись в тетрадь: обе формулы. Подчеркните: множитель можно вынести только из-под корня <b>произведения</b>, а не суммы!</div>
+</section>
+
+<!-- 8. АЛГОРИТМ -->
+<section class="slide" data-name="Алгоритм">
+  <div class="sh"><div><span class="tag orange">Этап 5 · Обобщение<span class="min"> · 3 мин</span></span><span class="mode no-board">🗣 ученики предсказывают</span>
+    <h2 class="orange">Алгоритм: выносим за 3 шага</h2><p class="subtitle">Пройдём алгоритм на примере $\sqrt{72}$ — и проверим на других выражениях.</p></div>
+    <div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div>
+  <div class="content">
+    <div class="step-grid">
+      <div class="step-box"><div class="step-title">Шаг 1. Найди полный квадрат</div>$72=36\cdot2$</div><div class="step-arrow">→</div>
+      <div class="step-box"><div class="step-title">Шаг 2. Раздели корень</div>$\sqrt{36}\cdot\sqrt2$</div><div class="step-arrow">→</div>
+      <div class="step-box ok reveal" onclick="this.classList.toggle('on')"><div class="step-title">Шаг 3. Извлеки корень · нажми</div><div class="q">?</div><div class="a">$6\sqrt2$</div></div>
+    </div>
+    <div class="step-grid">
+      <div class="step-box"><div class="step-title">Пример</div>$\sqrt{75}$</div><div class="step-arrow">→</div>
+      <div class="step-box"><div class="step-title">Полный квадрат</div>$75=25\cdot3$</div><div class="step-arrow">→</div>
+      <div class="step-box ok reveal" onclick="this.classList.toggle('on')"><div class="step-title">Нажми</div><div class="q">?</div><div class="a">$5\sqrt3$</div></div>
+    </div>
+    <div class="step-grid">
+      <div class="step-box"><div class="step-title">Пример</div>$\sqrt{45}$</div><div class="step-arrow">→</div>
+      <div class="step-box"><div class="step-title">Полный квадрат</div>$45=9\cdot5$</div><div class="step-arrow">→</div>
+      <div class="step-box ok reveal" onclick="this.classList.toggle('on')"><div class="step-title">Нажми</div><div class="q">?</div><div class="a">$3\sqrt5$</div></div>
+    </div>
+    <div class="key" style="text-align:center;font-size:22px"><b>Общий алгоритм:</b> разложить число на множители так, чтобы один был полным квадратом → разделить корень → извлечь корень из квадрата.</div>
+  </div>
+  <div class="note no-board"><b>Как провести:</b> перед каждым кликом ученик называет ответ. Полезный вопрос: «Почему невыгодно брать $72=9\cdot8$?» (получим $3\sqrt8$, а $\sqrt8$ ещё упрощается). Хорошо бы проговорить: ищем <b>наибольший</b> полный квадрат.</div>
+</section>
+
+<!-- 9. ВНЕСЕНИЕ -->
+<section class="slide" data-name="Внесение">
+  <div class="sh"><div><span class="tag orange">Этап 5 · Обобщение<span class="min"> · 3 мин</span></span><span class="mode no-board">🎤 учитель + вопросы</span>
+    <h2 class="orange">Обратная операция: внесение под корень</h2><p class="subtitle">Если множитель можно вынести — значит, его можно и внести обратно.</p></div>
+    <div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div>
+  <div class="content">
+    <div class="cards3">
+      <div class="card good"><h4>Внесение</h4><div class="big">$3\sqrt2=\sqrt9\cdot\sqrt2=\sqrt{18}$</div><div class="why">Множитель возводим в квадрат и «заводим» под корень.</div></div>
+      <div class="card warn"><h4>Только для $a\ge0$</h4><div class="big">$a\sqrt b=\sqrt{a^2b}$</div><div class="why">Если $a\lt0$, то $a\sqrt b=-\sqrt{a^2b}$.</div></div>
+      <div class="card"><h4>Зачем?</h4><div class="big">Сравнение: $3\sqrt2$ и $\sqrt{17}$</div><div class="why">Внесём: $\sqrt{18}>\sqrt{17}$, значит $3\sqrt2>\sqrt{17}$.</div></div>
+    </div>
+    <div class="key"><b>Осторожно:</b> $\sqrt{a+b}\ne\sqrt a+\sqrt b$! Выносить и вносить можно только множители произведения, а не слагаемые суммы.</div>
+  </div>
+  <div class="note no-board"><b>Типичная ошибка:</b> ученики пишут $3\sqrt2=\sqrt{3\cdot2}=\sqrt6$. Напомните: множитель перед корнем возводится в квадрат: $3=\sqrt9$. Приём «внесение» пригодится при сравнении корней и в ОГЭ.</div>
+</section>
+
+<!-- 10. ПРАКТИКА 1 -->
+<section class="slide board" data-name="Практика 1">
+  <div class="sh"><div><span class="tag green">Этап 6 · Закрепление · уровень ★<span class="min"> · 3 мин</span></span><span class="mode no-board">✏️ индивидуально, проверка в парах</span>
+    <h2 class="green">Вынесите множитель</h2><p class="subtitle">Записывайте решение в клетку, проговаривайте алгоритм.</p></div>
+    <div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button><span class="badge no-board">📋 для доски</span><button class="tool no-board" onclick="toolAns(this)">👁 Ответы</button></div></div>
+  <div class="content"><div class="grid" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+    <div class="cell"><div class="chead"><span class="let">1</span><div class="expr">$\sqrt{12}$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$2\sqrt3$</div></div>
+    <div class="cell"><div class="chead"><span class="let">2</span><div class="expr">$\sqrt{50}$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$5\sqrt2$</div></div>
+    <div class="cell"><div class="chead"><span class="let">3</span><div class="expr">$\sqrt{18}$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$3\sqrt2$</div></div>
+    <div class="cell"><div class="chead"><span class="let">4</span><div class="expr">$\sqrt{8}$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$2\sqrt2$</div></div>
+    <div class="cell"><div class="chead"><span class="let">5</span><div class="expr">$\sqrt{27}$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$3\sqrt3$</div></div>
+    <div class="cell"><div class="chead"><span class="let">6</span><div class="expr">$\sqrt{75}$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$5\sqrt3$</div></div>
+  </div></div>
+  <div class="note no-board"><b>Как провести:</b> 2 мин на решение, обмен тетрадями и проверка по ответам. Один ученик у доски комментирует №5 и №6.</div>
+</section>
+
+<!-- 11. ПРАКТИКА 2 -->
+<section class="slide board" data-name="Практика 2">
+  <div class="sh"><div><span class="tag orange">Этап 6 · Закрепление · уровень ★★<span class="min"> · 3 мин</span></span><span class="mode no-board">✏️ индивидуально</span>
+    <h2 class="orange">Буквы под корнем</h2><p class="subtitle">Корень из произведения + правило $\sqrt{a^2b}=|a|\sqrt b$.</p></div>
+    <div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button><span class="badge no-board">📋 для доски</span><button class="tool no-board" onclick="toolAns(this)">👁 Ответы</button></div></div>
+  <div class="content"><div class="grid" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+    <div class="cell"><div class="chead"><span class="let">1</span><div class="expr">$\sqrt{8x^2}$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$2\sqrt2\,|x|$</div></div>
+    <div class="cell"><div class="chead"><span class="let">2</span><div class="expr">$\sqrt{50a^2}$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$5\sqrt2\,|a|$</div></div>
+    <div class="cell"><div class="chead"><span class="let">3</span><div class="expr">$\sqrt{12b^2}$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$2\sqrt3\,|b|$</div></div>
+    <div class="cell"><div class="chead"><span class="let">4</span><div class="expr">$\sqrt{9x^4}$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$3x^2$</div></div>
+    <div class="cell"><div class="chead"><span class="let">5</span><div class="expr">$\sqrt{18a^2b^2}$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$3\sqrt2\,|a b|$</div></div>
+    <div class="cell"><div class="chead"><span class="let">6</span><div class="expr">$\sqrt{49x^2}$, если $x\lt0$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$-7x$</div></div>
+  </div></div>
+  <div class="note no-board"><b>Как провести:</b> следите за №4: модуль не нужен, потому что $x^2\ge0$. №6 — раскрытие модуля по условию. Это мостик к карточкам ОГЭ.</div>
+</section>
+
+<!-- 12. ОГЭ -->
+<section class="slide board" data-name="ОГЭ-задания">
+  <div class="sh"><div><span class="tag red">Этап 6 · Закрепление · формат ОГЭ<span class="min"> · 3 мин</span></span><span class="mode no-board">👥 в парах</span>
+    <h2>Задания в формате ОГЭ</h2><p class="subtitle">Сравнение корней и вычисления. В ответе — число или знак.</p></div>
+    <div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button><span class="badge no-board">📋 для доски</span><button class="tool no-board" onclick="toolAns(this)">👁 Ответы</button></div></div>
+  <div class="content"><div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+    <div class="cell"><div class="chead"><span class="let">1</span><div class="expr">Сравните $3\sqrt2$ и $\sqrt{17}$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$\sqrt{18}\gt\sqrt{17}$, значит $3\sqrt2\gt\sqrt{17}$</div></div>
+    <div class="cell"><div class="chead"><span class="let">2</span><div class="expr">Внесите множитель: $5\sqrt3$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$\sqrt{25\cdot3}=\sqrt{75}$</div></div>
+    <div class="cell"><div class="chead"><span class="let">3</span><div class="expr">Упростите $\sqrt{20}+\sqrt{45}$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$2\sqrt5+3\sqrt5=5\sqrt5$</div></div>
+    <div class="cell"><div class="chead"><span class="let">4</span><div class="expr">Какое из чисел больше: $\sqrt{32}$ или $2\sqrt7$?</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$\sqrt{32}$ и $\sqrt{28}$: $\sqrt{32}\gt2\sqrt7$</div></div>
+  </div></div>
+  <div class="note no-board"><b>Как провести:</b> работа в парах, один считает, второй проверяет. Скажите, что сравнение корней и упрощение выражений — типичные задания части 1 ОГЭ. Задания составлены по образцу прототипов, не дословно.</div>
+</section>
+
+<!-- 13. ИГРА -->
+<section class="slide" data-name="Найди пару">
+  <div class="sh"><div><span class="tag green">Этап 6 · Закрепление · игра<span class="min"> · 3 мин</span></span><span class="mode no-board">🎮 игра, команды по рядам</span>
+    <h2 class="green">Игра «Найди пару»</h2><p class="subtitle">Называйте номера двух карточек — учитель их переворачивает. Нужно найти выражение и его упрощённый вид.</p></div>
+    <div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div>
+  <div class="content"><div class="mem" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+    <div class="mcard" data-p="0" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$\sqrt{50}$</div></div></div>
+    <div class="mcard" data-p="0" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$5\sqrt2$</div></div></div>
+    <div class="mcard" data-p="1" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$\sqrt{75}$</div></div></div>
+    <div class="mcard" data-p="1" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$5\sqrt3$</div></div></div>
+    <div class="mcard" data-p="2" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$\sqrt{8x^2}$</div></div></div>
+    <div class="mcard" data-p="2" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$2\sqrt2\,|x|$</div></div></div>
+    <div class="mcard" data-p="3" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$\sqrt{9x^4}$</div></div></div>
+    <div class="mcard" data-p="3" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$3x^2$</div></div></div>
+    <div class="mcard" data-p="4" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$3\sqrt2$</div></div></div>
+    <div class="mcard" data-p="4" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$\sqrt{18}$</div></div></div>
+    <div class="mcard" data-p="5" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$\sqrt{49x^2},\ x\lt0$</div></div></div>
+    <div class="mcard" data-p="5" onclick="memFlip(this)"><div class="mi"><div class="mf">?</div><div class="mb">$-7x$</div></div></div>
+  </div><div class="mstat"><span class="mmoves">Ходов: 0</span><button class="hbtn" onclick="memReset(this)">🔀 Перемешать</button><span class="mwin"></span></div></div>
+  <div class="note no-board"><b>Как провести:</b> все карточки пронумерованы, ученики называют номера вслух, а вы кликаете. Класс делится на 2–3 команды, ходят по очереди, карточку выбирает капитан после совещания. Побеждает команда, нашедшая больше пар. Кнопка «Перемешать» запускает игру заново, порядок каждый раз случайный.</div>
+</section>
+
+<!-- 14. КТО ЧТО РЕШАЕТ -->
+<section class="slide" data-name="Кто что решает">
+  <div class="sh"><div><span class="tag red">Этап 7 · Индивидуальная работа<span class="min"> · 1 мин</span></span><span class="mode no-board">👥 индивидуально</span>
+    <h2>Кто что решает</h2><p class="subtitle">Найдите своё имя: рядом номер вашей карточки.</p></div>
+    <div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div>
+  <div class="content"><div class="roster" id="roster"></div>
+    <div class="rbar no-board"><button class="hbtn" onclick="openClass()">👥 Список класса</button><button class="hbtn" onclick="distribute(true)">🔀 Перераспределить</button><button class="hbtn" onclick="copyRoster()">📋 Копировать список</button></div></div>
+  <div class="note no-board"><b>Как пользоваться:</b> в начале урока нажмите «👥 Класс» в шапке и впишите имена (по одному в строке). Они запоминаются в браузере. Карточки раздаются случайно и без повторов; если учеников больше, чем карточек, варианты повторяются поровну. Раздача сохраняется при обновлении страницы; «Перераспределить» перемешивает заново.</div>
+</section>
+
+<!-- 15. КАРТОЧКИ -->
+<section class="slide" data-name="Карточки">
+  <div class="sh"><div><span class="tag red">Этап 7 · Индивидуальная работа<span class="min"> · 3 мин</span></span><span class="mode no-board">✏️ индивидуально</span>
+    <h2>Индивидуальные карточки</h2><p class="subtitle">Решите свою карточку в тетради. Имена под условием показывают, кто какую решает.</p></div>
+    <div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button><button class="tool no-board" onclick="toolAns(this)">👁 Ответы</button></div></div>
+  <div class="content"><div class="itgrid">
+    <div class="itask"><div class="it-n">1</div><div class="it-expr">$\sqrt{48}$</div><div class="who"></div><div class="ans no-board">$4\sqrt3$</div></div>
+    <div class="itask"><div class="it-n">2</div><div class="it-expr">$\sqrt{98}$</div><div class="who"></div><div class="ans no-board">$7\sqrt2$</div></div>
+    <div class="itask"><div class="it-n">3</div><div class="it-expr">$\sqrt{200}$</div><div class="who"></div><div class="ans no-board">$10\sqrt2$</div></div>
+    <div class="itask"><div class="it-n">4</div><div class="it-expr">$\sqrt{12x^2}$</div><div class="who"></div><div class="ans no-board">$2\sqrt3\,|x|$</div></div>
+    <div class="itask"><div class="it-n">5</div><div class="it-expr">$\sqrt{50a^2}$, если $a\lt0$</div><div class="who"></div><div class="ans no-board">$-5\sqrt2\,a$</div></div>
+    <div class="itask"><div class="it-n">6</div><div class="it-expr">$\sqrt{36x^4}$</div><div class="who"></div><div class="ans no-board">$6x^2$</div></div>
+    <div class="itask"><div class="it-n">7</div><div class="it-expr">Внесите: $4\sqrt5$</div><div class="who"></div><div class="ans no-board">$\sqrt{80}$</div></div>
+    <div class="itask"><div class="it-n">8</div><div class="it-expr">Сравните $2\sqrt{10}$ и $\sqrt{39}$</div><div class="who"></div><div class="ans no-board">$\sqrt{40}\gt\sqrt{39}$</div></div>
+    <div class="itask"><div class="it-n">9</div><div class="it-expr">ОГЭ: $\sqrt{45}+\sqrt{20}$</div><div class="who"></div><div class="ans no-board">$3\sqrt5+2\sqrt5=5\sqrt5$</div></div>
+    <div class="itask"><div class="it-n">10</div><div class="it-expr">ОГЭ: $\sqrt{72}-\sqrt{18}$</div><div class="who"></div><div class="ans no-board">$6\sqrt2-3\sqrt2=3\sqrt2$</div></div>
+    <div class="itask"><div class="it-n">11</div><div class="it-expr">ОГЭ: между какими целыми лежит $\sqrt{70}$?</div><div class="who"></div><div class="ans no-board">$64\lt70\lt81$: между $8$ и $9$</div></div>
+    <div class="itask"><div class="it-n">12</div><div class="it-expr">Что больше: $3\sqrt5$ или $7$?</div><div class="who"></div><div class="ans no-board">$\sqrt{45}\lt\sqrt{49}$, значит $3\sqrt5\lt7$</div></div>
+  </div></div>
+  <div class="note no-board"><b>Как провести:</b> ученики решают свою карточку в тетради, затем обмениваются с соседом и проверяют по ответам («Ответы»). Карточки 9–11 в формате ОГЭ, 12 — на сравнение. Оценка: решил верно — «5», помог соседу — бонус.</div>
+</section>
+
+<!-- 16. ИТОГИ -->
+<section class="slide" data-name="Итоги">
+  <div class="sh"><div><span class="tag grey">Этап 8 · Итог и рефлексия<span class="min"> · 1 мин</span></span><span class="mode no-board">💬 фронтально</span>
+    <h2>Подведём итоги</h2><p class="subtitle">Нажмите на карточку, чтобы проверить себя, и выберите, как вы себя чувствуете.</p></div>
+    <div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div>
+  <div class="content">
+    <div class="cards3" style="flex:none;height:210px">
+      <div class="card reveal" style="cursor:pointer" onclick="this.classList.toggle('on')"><h4>Чему равен $\sqrt{a^2b}$?</h4><div class="q">?</div><div class="a big" style="font-size:30px">$|a|\sqrt b$</div></div>
+      <div class="card reveal" style="cursor:pointer" onclick="this.classList.toggle('on')"><h4>Как внести множитель?</h4><div class="q">?</div><div class="a big" style="font-size:30px">$a\sqrt b=\sqrt{a^2b}$</div></div>
+      <div class="card reveal" style="cursor:pointer" onclick="this.classList.toggle('on')"><h4>$\sqrt{50}=$ ?</h4><div class="q">?</div><div class="a big" style="font-size:30px">$5\sqrt2$</div></div>
+    </div>
+    <div class="reflect-row">
+      <div class="reflect-card" onclick="selectReflect(this)"><div class="emo">😎</div><div class="lbl">Всё понял!</div></div>
+      <div class="reflect-card" onclick="selectReflect(this)"><div class="emo">🙂</div><div class="lbl">Почти всё понятно</div></div>
+      <div class="reflect-card" onclick="selectReflect(this)"><div class="emo">🤔</div><div class="lbl">Есть вопросы</div></div>
+    </div>
+  </div>
+  <div class="note no-board"><b>Как провести:</b> вернитесь к вопросу урока: «Что значит вынести множитель из-под корня?» Затем рефлексия: смайлик на листочке или вслух. Это даёт обратную связь для дальнейших уроков.</div>
+</section>
+
+<!-- 17. ДЗ -->
+<section class="slide" data-name="ДЗ">
+  <div class="sh"><div><span class="tag grey">Этап 8 · Домашнее задание<span class="min"> · 1 мин</span></span>
+    <h2>Домашнее задание</h2><p class="subtitle">Выберите уровень (можно несколько).</p></div><div class="tools"></div></div>
+  <div class="content"><div class="hw"><ol>
+    <li><b>★ Базовый:</b> вынести множитель: $\sqrt{28}$, $\sqrt{63}$, $\sqrt{90}$, $\sqrt{32}$.</li>
+    <li><b>★★ Повышенный:</b> упростить $\sqrt{18x^2}$, $\sqrt{75a^4}$, $\sqrt{32x^2}$ при $x\lt0$.</li>
+    <li><b>★★★ ОГЭ:</b> внести множитель: $2\sqrt5$, $3\sqrt7$, $6\sqrt2$; сравнить $\sqrt{45}$ и $3\sqrt5$.</li>
+    <li><b>Повторение:</b> вычислить $\sqrt{(-7)^2}$, $\sqrt{3^6}$, $\sqrt{2^4\cdot5^2}$.</li>
+    <li>Выучить правило $\sqrt{a^2b}=|a|\sqrt b$, $a\sqrt b=\sqrt{a^2b}$ ($a\ge0$). Номера из учебника — по указанию учителя.</li>
+  </ol></div></div>
+</section>
+
+<!-- РЕЗЕРВ 1: ГРАФИК -->
+<section class="slide board reserve" data-name="Резерв: график">
+  <div class="sh"><div><span class="tag grey">Этап 6 · Резерв · связь с функциями<span class="min"> · 3 мин</span></span><span class="mode no-board">✏️ индивидуально</span>
+    <h2>Функция $y=\sqrt{x^2}$ — и вынесение</h2><p class="subtitle">Что общего между правилом $\sqrt{x^2}=|x|$ и вынесением множителя?</p></div>
+    <div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button><span class="badge no-board">📋 для доски</span><button class="tool no-board" onclick="toolAns(this)">👁 Ответы</button></div></div>
+  <div class="content"><div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+    <div class="cell"><div class="chead"><span class="let">1</span><div class="expr">Заполните: $y=\sqrt{x^2}$ при $x=-3;-1;0;1;3$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$3;1;0;1;3$ — график $y=|x|$</div></div>
+    <div class="cell"><div class="chead"><span class="let">2</span><div class="expr">Почему $\sqrt{x^2}=|x|$ — частный случай $\sqrt{a^2b}=|a|\sqrt b$?</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">При $b=1$: $\sqrt{a^2\cdot1}=|a|\cdot1=|a|$</div></div>
+    <div class="cell"><div class="chead"><span class="let">3</span><div class="expr">Упростите $\sqrt{4x^2}$ двумя способами</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$|2x|=2|x|$; через вынесение: $\sqrt4\cdot\sqrt{x^2}=2|x|$</div></div>
+    <div class="cell"><div class="chead"><span class="let">4</span><div class="expr">Найдите ошибку: $\sqrt{16x^2}=4x$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">Пропущен модуль: верно $4|x|$</div></div>
+  </div></div>
+  <div class="note no-board"><b>Когда использовать:</b> если класс быстро справился с закреплением. Связывает новую тему с функцией $y=|x|$ из урока 1.</div>
+</section>
+
+<!-- РЕЗЕРВ 2: ДЛЯ СИЛЬНЫХ -->
+<section class="slide board reserve" data-name="Резерв: для сильных">
+  <div class="sh"><div><span class="tag grey">Этап 6 · Резерв · уровень ★★★<span class="min"> · 4 мин</span></span><span class="mode no-board">👥 в парах</span>
+    <h2>Для сильных: думаем глубже</h2><p class="subtitle">Задания с подвохом.</p></div>
+    <div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button><span class="badge no-board">📋 для доски</span><button class="tool no-board" onclick="toolAns(this)">👁 Ответы</button></div></div>
+  <div class="content"><div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+    <div class="cell"><div class="chead"><span class="let">1</span><div class="expr">Упростите $\sqrt{8a^3}$, если $a\ge0$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$2a\sqrt{2a}$</div></div>
+    <div class="cell"><div class="chead"><span class="let">2</span><div class="expr">Упростите $\sqrt{12x^4}$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$2x^2\sqrt3$</div></div>
+    <div class="cell"><div class="chead"><span class="let">3</span><div class="expr">Сравните $2\sqrt{12}$ и $4\sqrt3$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$\sqrt{48}$ и $\sqrt{48}$ — равны</div></div>
+    <div class="cell"><div class="chead"><span class="let">4</span><div class="expr">Упростите $\sqrt{50a^4b^2}$</div><button class="eye no-board" onclick="this.closest('.cell').classList.toggle('open')">👁</button></div><div class="work"></div><div class="ans no-board">$5\sqrt2\,a^2|b|$</div></div>
+  </div></div>
+  <div class="note no-board"><b>Подсказки:</b> №1 — выделите $a^2$; №4 — $a^4$ даёт $a^2$ без модуля, а $b^2$ — $|b|$. Полезно обсудить, почему.</div>
+</section>
+
+<!-- РЕЗЕРВ 3: ТЕСТ -->
+<section class="slide reserve" data-name="Резерв: тест ОГЭ">
+  <div class="sh"><div><span class="tag grey">Этап 7 · Резерв · тест ОГЭ<span class="min"> · 4 мин</span></span><span class="mode no-board">✏️ индивидуально</span>
+    <h2>Тест в формате ОГЭ</h2><p class="subtitle">Выберите верный ответ. Результат виден сразу, в конце — итог.</p></div>
+    <div class="tools"><button class="tool tnote no-board" onclick="toggleNote(this)">💡 Учителю</button></div></div>
+  <div class="content"><div class="qgrid" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+    <div class="qcard"><div class="qnum">1</div><div class="qtext">Какое из чисел равно $4\sqrt5$?</div>
+      <div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">А</span>$\sqrt{20}$</button><button class="opt" data-ok="1" onclick="pick(this)"><span class="ol">Б</span>$\sqrt{80}$</button><button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">В</span>$\sqrt{40}$</button><button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">Г</span>$\sqrt{45}$</button></div>
+      <div class="expl">$4\sqrt5=\sqrt{16\cdot5}=\sqrt{80}$.</div></div>
+    <div class="qcard"><div class="qnum">2</div><div class="qtext">Упростите $\sqrt{48}$</div>
+      <div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">А</span>$4\sqrt2$</button><button class="opt" data-ok="1" onclick="pick(this)"><span class="ol">Б</span>$4\sqrt3$</button><button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">В</span>$2\sqrt{12}$</button><button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">Г</span>$16\sqrt3$</button></div>
+      <div class="expl">$48=16\cdot3$, поэтому $4\sqrt3$. Вариант $2\sqrt{12}$ не до конца упрощён.</div></div>
+    <div class="qcard"><div class="qnum">3</div><div class="qtext">Какое из чисел больше?</div>
+      <div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="1" onclick="pick(this)"><span class="ol">А</span>$3\sqrt5$</button><button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">Б</span>$\sqrt{40}$</button><button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">В</span>равны</button><button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">Г</span>нельзя сравнить</button></div>
+      <div class="expl">$3\sqrt5=\sqrt{45}>\sqrt{40}$.</div></div>
+    <div class="qcard"><div class="qnum">4</div><div class="qtext">$\sqrt{18x^2}$ при $x\lt0$ равно:</div>
+      <div class="opts" style="grid-template-columns:repeat(2,1fr)"><button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">А</span>$3\sqrt2\,x$</button><button class="opt" data-ok="1" onclick="pick(this)"><span class="ol">Б</span>$-3\sqrt2\,x$</button><button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">В</span>$3x\sqrt2$</button><button class="opt" data-ok="0" onclick="pick(this)"><span class="ol">Г</span>$-3x\sqrt2$</button></div>
+      <div class="expl">$\sqrt{18x^2}=3\sqrt2\,|x|=-3\sqrt2\,x$ при $x\lt0$.</div></div>
+  </div><div class="qscore"></div></div>
+  <div class="note no-board"><b>Как провести:</b> 4 мин, самопроверка на экране. Вопросы 1–2 — базовые, 3–4 — на сравнение и модуль.</div>
+</section>
+
+</div></div>
+<nav>
+  <button class="nav-prev" onclick="prevSlide()">◀ Назад</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-next" onclick="nextSlide()">Вперёд ▶</button>
+</nav>
+<button id="exitBoard" class="hbtn" onclick="toggleBoard()">✕ Выйти из режима доски</button>
+<div id="toast"></div>
+
+<!-- модалка класса -->
+<div id="classModal">
+  <div class="cm">
+    <h3>👥 Список класса</h3>
+    <p>Впишите имена — по одному в строке. Они сохранятся в браузере.</p>
+    <textarea id="classArea" rows="8" placeholder="Иванов Иван&#10;Петрова Мария&#10;..."></textarea>
+    <div class="cm-btns">
+      <button class="hbtn" onclick="closeClass()">Отмена</button>
+      <button class="hbtn" style="border-color:var(--blue);color:#fff;background:var(--blue)" onclick="saveClass()">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ==================== СЛАЙДЫ ==================== */
+const slides=[...document.querySelectorAll('.slide')];
+let cur=0;
+const pills=document.getElementById('pills');
+function buildPills(){
+  pills.innerHTML='';
+  slides.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.className='progress-pill'+(s.classList.contains('reserve')?' reserve':'');
+    b.textContent=i+1;
+    b.title=s.dataset.name||('Слайд '+(i+1));
+    b.onclick=()=>go(i);
+    pills.appendChild(b);
+  });
+}
+function go(i){
+  if(i<0||i>=slides.length)return;
+  slides[cur].classList.remove('active');
+  cur=i;
+  slides[cur].classList.add('active');
+  [...pills.children].forEach((p,j)=>{
+    p.classList.toggle('active',j===cur);
+    p.classList.toggle('done',j<cur);
+  });
+  document.getElementById('navInfo').textContent=(cur+1)+' / '+slides.length+' · '+(slides[cur].dataset.name||'');
+  document.querySelector('.nav-prev').disabled=cur===0;
+  document.querySelector('.nav-next').disabled=cur===slides.length-1;
+  if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise();
+}
+function nextSlide(){go(cur+1);}
+function prevSlide(){go(cur-1);}
+buildPills();
+
+/* ==================== МАСШТАБ ==================== */
+function resize(){
+  const vp=document.getElementById('viewport'),st=document.getElementById('stage');
+  const s=Math.min(vp.clientWidth/1280,vp.clientHeight/720);
+  st.style.transform=`translate(${(vp.clientWidth-1280*s)/2}px,${(vp.clientHeight-720*s)/2}px) scale(${s})`;
+}
+window.addEventListener('resize',resize);resize();
+
+/* ==================== ТАЙМЕР ==================== */
+let tLeft=45*60,tInt=null;
+function tUpd(){
+  const m=String(Math.floor(tLeft/60)).padStart(2,'0'),s=String(tLeft%60).padStart(2,'0');
+  document.getElementById('tval').textContent=m+':'+s;
+  document.getElementById('timer').classList.toggle('warn',tLeft<300);
+}
+function tToggle(){
+  if(tInt){clearInterval(tInt);tInt=null;document.getElementById('tbtn').textContent='▶';}
+  else{document.getElementById('tbtn').textContent='⏸';tInt=setInterval(()=>{if(tLeft>0){tLeft--;tUpd();}},1000);}
+}
+function tReset(){clearInterval(tInt);tInt=null;tLeft=45*60;tUpd();document.getElementById('tbtn').textContent='▶';}
+tUpd();
+
+/* ==================== ТЕСТЫ ==================== */
+function pick(btn){
+  const card=btn.closest('.qcard');
+  if(card.classList.contains('done'))return;
+  card.classList.add('done');
+  const opts=[...card.querySelectorAll('.opt')];
+  opts.forEach(o=>{if(o.dataset.ok==='1')o.classList.add('good');});
+  if(btn.dataset.ok!=='1')btn.classList.add('bad');
+  const grid=card.closest('.qgrid');
+  const score=grid.querySelector('.qscore');
+  if(score){
+    const total=grid.querySelectorAll('.qcard').length;
+    const done=grid.querySelectorAll('.qcard.done').length;
+    const correct=grid.querySelectorAll('.qcard.done .opt.bad').length;
+    score.textContent=`Верно: ${done-correct} из ${total}`;
+  }
+}
+
+/* ==================== ТАБЛИЦА ==================== */
+document.querySelectorAll('.inp').forEach(inp=>{
+  inp.addEventListener('keydown',e=>{
+    if(e.key==='Enter')checkInp(inp);
+  });
+  inp.addEventListener('blur',()=>{if(inp.value.trim())checkInp(inp);});
+});
+function checkInp(inp){
+  const keys=inp.dataset.k.split(';').map(s=>s.trim().toLowerCase().replace(/\s/g,''));
+  const val=inp.value.trim().toLowerCase().replace(/\s/g,'').replace(/,/g,'.');
+  if(keys.includes(val)){
+    inp.classList.add('correct');inp.classList.remove('wrong');
+  }else{
+    inp.classList.add('wrong');inp.classList.remove('correct');
+    setTimeout(()=>inp.classList.remove('wrong'),400);
+  }
+  const slide=inp.closest('.slide');
+  const all=[...slide.querySelectorAll('.inp')];
+  if(all.every(i=>i.classList.contains('correct')))slide.classList.add('all-done');
+}
+
+/* ==================== ОТВЕТЫ / ЗАМЕТКИ ==================== */
+function toolAns(btn){
+  const slide=btn.closest('.slide');
+  slide.classList.toggle('show-ans');
+  btn.textContent=slide.classList.contains('show-ans')?'🙈 Скрыть':'👁 Ответы';
+}
+function toggleNote(btn){
+  btn.closest('.slide').classList.toggle('show-note');
+}
+
+/* ==================== РЕФЛЕКСИЯ ==================== */
+function selectReflect(el){
+  el.closest('.reflect-row').querySelectorAll('.reflect-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+/* ==================== ИГРА ==================== */
+let memOpen=[],memMoves=0,memLock=false;
+function memFlip(card){
+  if(memLock||card.classList.contains('matched')||card.classList.contains('open'))return;
+  card.classList.add('open');
+  memOpen.push(card);
+  if(memOpen.length===2){
+    memMoves++;
+    const [a,b]=memOpen;
+    const stat=a.closest('.mem').parentElement.querySelector('.mstat');
+    if(stat)stat.querySelector('.mmoves').textContent='Ходов: '+memMoves;
+    if(a.dataset.p===b.dataset.p){
+      a.classList.add('matched');b.classList.add('matched');
+      a.classList.remove('open');b.classList.remove('open');
+      memOpen=[];
+      const mem=a.closest('.mem');
+      if(mem.querySelectorAll('.mcard.matched').length===mem.querySelectorAll('.mcard').length){
+        const win=mem.parentElement.querySelector('.mwin');
+        if(win)win.textContent='🎉 Все пары найдены!';
+      }
+    }else{
+      memLock=true;
+      setTimeout(()=>{
+        a.classList.remove('open');b.classList.remove('open');
+        memOpen=[];memLock=false;
+      },800);
+    }
+  }
+}
+function memReset(btn){
+  const mem=btn.closest('.content').querySelector('.mem');
+  const cards=[...mem.querySelectorAll('.mcard')];
+  cards.forEach(c=>{c.classList.remove('open','matched');});
+  cards.sort(()=>Math.random()-0.5).forEach(c=>mem.appendChild(c));
+  memOpen=[];memMoves=0;memLock=false;
+  const stat=btn.closest('.mstat');
+  stat.querySelector('.mmoves').textContent='Ходов: 0';
+  stat.querySelector('.mwin').textContent='';
+}
+
+/* ==================== РЕЖИМ ДОСКИ ==================== */
+function toggleBoard(){
+  document.body.classList.toggle('board-mode');
+  resize();
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();nextSlide();}
+  if(e.key==='ArrowLeft'){e.preventDefault();prevSlide();}
+  if(e.key==='b'||e.key==='B')toggleBoard();
+});
+
+/* ==================== СПИСОК КЛАССА ==================== */
+let roster=[];
+function openClass(){
+  document.getElementById('classArea').value=roster.join('\n');
+  document.getElementById('classModal').style.display='flex';
+}
+function closeClass(){document.getElementById('classModal').style.display='none';}
+function saveClass(){
+  roster=document.getElementById('classArea').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  localStorage.setItem('roster',JSON.stringify(roster));
+  closeClass();
+  distribute(false);
+}
+function distribute(shuffle){
+  const names=roster.slice();
+  if(shuffle)names.sort(()=>Math.random()-0.5);
+  const nTasks=12;
+  const map={};
+  names.forEach((name,i)=>{
+    const task=(i%nTasks)+1;
+    (map[task]=map[task]||[]).push(name);
+  });
+  // очищаем
+  document.querySelectorAll('.itask .who').forEach(w=>w.innerHTML='');
+  document.querySelectorAll('.itask').forEach(t=>t.classList.remove('unused'));
+  // заполняем
+  for(let t=1;t<=nTasks;t++){
+    const taskEl=document.querySelector(`.itask:nth-child(${t}) .who`);
+    if(!taskEl)continue;
+    if(map[t]){
+      map[t].forEach(name=>{
+        const chip=document.createElement('span');
+        chip.className='chip';chip.textContent=name;
+        taskEl.appendChild(chip);
+      });
+    }else{
+      taskEl.closest('.itask').classList.add('unused');
+    }
+  }
+  // ростер
+  const rosterEl=document.getElementById('roster');
+  if(!rosterEl)return;
+  if(!names.length){
+    rosterEl.innerHTML='<div class="rhint">Нажмите «👥 Список класса» и впишите имена — карточки раздадутся автоматически.</div>';
+    return;
+  }
+  rosterEl.innerHTML='';
+  names.forEach((name,i)=>{
+    const num=(i%nTasks)+1;
+    const row=document.createElement('div');
+    row.className='rrow';
+    row.innerHTML=`<span>${name}</span><span class="rnum">${num}</span>`;
+    rosterEl.appendChild(row);
+  });
+}
+function copyRoster(){
+  const names=roster.slice();
+  if(!names.length){toast('Список класса пуст');return;}
+  const lines=names.map((n,i)=>`${n} — карточка ${(i%12)+1}`);
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>toast('Список скопирован')).catch(()=>toast('Не удалось скопировать'));
+}
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.display='block';
+  clearTimeout(t._tm);
+  t._tm=setTimeout(()=>t.style.display='none',2000);
+}
+// загрузка ростера
+try{
+  roster=JSON.parse(localStorage.getItem('roster')||'[]');
+}catch(e){roster=[];}
+distribute(false);
+
+/* ==================== СТАРТ ==================== */
+go(0);
+if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise();
+</script>
+</body>
+</html>
